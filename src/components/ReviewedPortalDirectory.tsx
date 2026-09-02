@@ -30,22 +30,28 @@ export default function ReviewedPortalDirectory({ activeKey = "" }: { activeKey?
         list if you need another reviewed department.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search department or domain"
-          className="min-w-[12rem] flex-1 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
-        />
-        <select
-          value={stateFilter}
-          onChange={(event) => setStateFilter(event.target.value as "all" | "Maharashtra" | "India")}
-          className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-xs"
-        >
-          <option value="all">All states</option>
-          <option value="Maharashtra">Maharashtra</option>
-          <option value="India">India-wide</option>
-        </select>
+        <label className="min-w-[12rem] flex-1 text-xs text-[var(--muted)]">
+          <span className="mb-1 block font-semibold uppercase tracking-[0.12em]">Search</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Department or domain"
+            className="w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+          />
+        </label>
+        <label className="text-xs text-[var(--muted)]">
+          <span className="mb-1 block font-semibold uppercase tracking-[0.12em]">State</span>
+          <select
+            value={stateFilter}
+            onChange={(event) => setStateFilter(event.target.value as "all" | "Maharashtra" | "India")}
+            className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-xs"
+          >
+            <option value="all">All states</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="India">India-wide</option>
+          </select>
+        </label>
       </div>
       <ul className="mt-4 max-h-72 divide-y divide-[var(--line)] overflow-y-auto border-y border-[var(--line)]">
         {portals.map((portal) => {

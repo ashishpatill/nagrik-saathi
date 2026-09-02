@@ -289,40 +289,107 @@ const MONTHS: Record<string, string> = {
   dec: "12",
 };
 
-function parseDeadline(text: string): string | null {
-  const iso = text.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/);
-  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+function isPaidReceipt(text: string): boolean {
+  return /\b(thank you for .{0,80}payment|payment\s+receip|online\s+payment\s+facility|transaction\s+reference|transaction\s+id|successfully\s+paid|payment\s+successful|amount\s+paid)\b/i.test(
+    text,
+  );
+}
 
-  const dmy = text.match(/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](20\d{2})\b/);
-  if (dmy) {
-    return `${dmy[3]}-${dmy[2].padStart(2, "0")}-${dmy[1].padStart(2, "0")}`;
-  }
+function toIsoDate(year: string, month: number, day: number): string | null {
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const iso = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  const parsed = Date.parse(`${iso}T12:00:00`);
+  if (Number.isNaN(parsed)) return null;
+  return iso;
+}
 
+/** Ambiguous slash dates: prefer M/D/Y when day>12 in second slot (portal receipts), else D/M/Y (India). */
+function fromSlashParts(first: string, second: string, year: string): string | null {
+  const a = Number(first);
+  const b = Number(second);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+  if (b > 12 && a <= 12) return toIsoDate(year, a, b);
+  if (a > 12 && b <= 12) return toIsoDate(year, b, a);
+  return toIsoDate(year, b, a);
+}
+
+function parseNamedDate(text: string): string | null {
   const named = text.match(
     /\b(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.?[,\s]+(20\d{2})\b/i,
   );
-  if (named) {
-    const month = MONTHS[named[2].toLowerCase()];
-    if (month) return `${named[3]}-${month}-${named[1].padStart(2, "0")}`;
+  if (!named) return null;
+  const month = MONTHS[named[2].toLowerCase()];
+  if (!month) return null;
+  return toIsoDate(named[3], Number(month), Number(named[1]));
+}
+
+function parseAnyDateToken(fragment: string): string | null {
+  const iso = fragment.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/);
+  if (iso) return toIsoDate(iso[1], Number(iso[2]), Number(iso[3]));
+
+  const slash = fragment.match(/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](20\d{2})\b/);
+  if (slash) return fromSlashParts(slash[1], slash[2], slash[3]);
+
+  return parseNamedDate(fragment);
+}
+
+function parseDeadline(text: string): string | null {
+  const labeled = text.match(
+    /(?:pay\s*by|due\s*(?:date|by|on)?|last\s*date|deadline|अंतिम\s*तारीख|देय\s*तारीख)\s*[:\-]?\s*([^\n.]{6,40})/i,
+  );
+  if (labeled) {
+    const fromLabel = parseAnyDateToken(labeled[1]);
+    if (fromLabel) return fromLabel;
   }
 
+  const iso = text.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/);
+  if (iso) return toIsoDate(iso[1], Number(iso[2]), Number(iso[3]));
+
+  const named = parseNamedDate(text);
+  if (named) return named;
+
+  const slash = text.match(/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](20\d{2})\b/);
+  if (slash) return fromSlashParts(slash[1], slash[2], slash[3]);
+
+  return null;
+}
+
+function parseTransactionDate(text: string): string | null {
+  const labeled = text.match(
+    /(?:transaction\s+date(?:\s*(?:&|and)?\s*times?)?|payment\s+date|paid\s+on)\s*[:\-]?\s*([^\n]{6,40})/i,
+  );
+  if (labeled) {
+    const fromLabel = parseAnyDateToken(labeled[1]);
+    if (fromLabel) return fromLabel;
+  }
   return null;
 }
 
 function parseAmount(text: string): number | null {
   const rupee = text.match(/(?:₹|rs\.?|inr)\s*([\d,]+(?:\.\d{1,2})?)/i)?.[1];
   if (rupee) return Number(rupee.replaceAll(",", ""));
-  const due = text.match(/(?:amount\s*(?:due|payable)|कुल\s*राशि|रक्कम)\s*[:\-]?\s*([\d,]+)/i)?.[1];
-  if (due) return Number(due.replaceAll(",", ""));
+  const labeled = text.match(
+    /(?:amount\s*(?:due|payable|paid)?|कुल\s*राशि|रक्कम)\s*[:\-]?\s*([\d,]+(?:\.\d{1,2})?)\s*(?:\/\s*-)?/i,
+  )?.[1];
+  if (labeled) return Number(labeled.replaceAll(",", ""));
+  const slashRupee = text.match(/\b([\d,]+(?:\.\d{1,2})?)\s*\/\s*-/);
+  if (slashRupee) return Number(slashRupee[1].replaceAll(",", ""));
   return null;
 }
 
-function parseReference(text: string): string {
-  const patterns = [
-    /(?:consumer\s*(?:no|number)|ग्राहक\s*क्रमांक|खाते\s*क्रमांक)\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
-    /(?:reference|ref(?:erence)?\s*(?:no|number)|चॅलन\s*क्रमांक|challan\s*(?:no|number))\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
-    /(?:bill\s*(?:no|number)|बिल\s*क्रमांक)\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
-  ];
+function parseReference(text: string, paid: boolean): string {
+  const patterns = paid
+    ? [
+        /(?:transaction\s+reference|transaction\s+id|txn\s*(?:id|ref|no|number)?)\s*(?:no|number|num)?\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+        /(?:payment\s+receip(?:t)?\s*(?:no|number|num)?|receip(?:t)?\s*(?:no|number|num)?)\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+        /(?:consumer\s*(?:no|number|num)?)\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+      ]
+    : [
+        /(?:consumer\s*(?:no|number|num)?|ग्राहक\s*क्रमांक|खाते\s*क्रमांक)\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+        /(?:transaction\s+reference|reference|ref)\s*(?:no|number|num)?\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+        /(?:challan\s*(?:no|number|num)?|चॅलन\s*क्रमांक)\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+        /(?:bill\s*(?:no|number|num)?|बिल\s*क्रमांक)\.?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{4,})/i,
+      ];
   for (const pattern of patterns) {
     const match = text.match(pattern)?.[1];
     if (match) return match.toUpperCase();
@@ -359,13 +426,23 @@ function buildSummaries(input: {
   amountDue: number | null;
   deadlineDate: string | null;
   referenceNumber: string;
+  paid: boolean;
 }): Record<Language, string> {
   const amount =
     input.amountDue == null ? "an unspecified amount" : `₹${input.amountDue.toLocaleString("en-IN")}`;
-  const deadline = input.deadlineDate ?? "a date not clearly stated";
   const reference =
     input.referenceNumber === "Not found" ? "no clear reference number" : `reference ${input.referenceNumber}`;
 
+  if (input.paid) {
+    const paidOn = input.deadlineDate ?? "a date not clearly stated";
+    return {
+      en: `This appears to be a payment receipt from ${input.issuer} for ${amount}, paid on ${paidOn} (${reference}). Nothing in this text indicates a further amount due. Keep the receipt and transaction ID for queries; do not pay again from this page alone.`,
+      hi: `यह ${input.issuer} की भुगतान रसीद लगती है—${amount}, भुगतान तिथि ${paidOn} (${reference})। इस पाठ से कोई और देय राशि नहीं दिखती। रसीद और लेनदेन आईडी सुरक्षित रखें; केवल इसी पृष्ठ से दोबारा भुगतान न करें।`,
+      mr: `ही ${input.issuer} ची पेमेंट पावती दिसते—${amount}, भरल्याची तारीख ${paidOn} (${reference}). या मजकुरात आणखी देय रक्कम दिसत नाही. पावती व व्यवहार क्रमांक जपून ठेवा; फक्त या पृष्ठावरून पुन्हा पैसे भरू नका.`,
+    };
+  }
+
+  const deadline = input.deadlineDate ?? "a date not clearly stated";
   return {
     en: `This notice appears to be from ${input.issuer}. It mentions ${amount}, deadline ${deadline}, and ${reference}. Verify details against your own records, then open only a reviewed official channel yourself.`,
     hi: `यह सूचना संभवतः ${input.issuer} से संबंधित है। इसमें ${amount}, अंतिम तिथि ${deadline}, और ${reference} का उल्लेख है। अपनी पुरानी रिकॉर्ड से जाँच करें और केवल सत्यापित आधिकारिक चैनल स्वयं खोलें।`,
@@ -381,9 +458,12 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
   }
 
   const issuer = detectIssuer(text);
+  const paid = isPaidReceipt(text);
   const amountDue = parseAmount(text);
-  const deadlineDate = parseDeadline(text);
-  const referenceNumber = parseReference(text);
+  const transactionDate = paid ? parseTransactionDate(text) : null;
+  const deadlineDate = paid ? transactionDate : parseDeadline(text);
+  const referenceNumber = parseReference(text, paid);
+  const documentType: DocumentType = paid ? "payment_receipt" : issuer.documentType;
   const scamRiskScore = /\b(otp|upi\s*pin|password|send\s*money|gift\s*card|whatsapp\s*pay)\b/i.test(text)
     ? "suspicious"
     : "safe";
@@ -391,12 +471,12 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
   return {
     id: `case-${Date.now()}`,
     fileName: "pasted-notice.txt",
-    documentType: issuer.documentType,
+    documentType,
     issuer: issuer.issuer,
     referenceNumber,
     deadlineDate,
     amountDue,
-    urgency: urgencyFromDeadline(deadlineDate),
+    urgency: paid ? "low" : urgencyFromDeadline(deadlineDate),
     scamRiskScore,
     riskReason:
       scamRiskScore === "suspicious"
@@ -407,14 +487,24 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
       amountDue,
       deadlineDate,
       referenceNumber,
+      paid,
     }),
-    requiredActionItems: [
-      "Compare the reference number and amount with your own records.",
-      "Confirm the deadline before choosing any payment or response.",
-      "Open only a reviewed official portal yourself; this app never pays or submits.",
-      "Keep a copy of any official receipt or acknowledgement.",
-    ],
-    requiredDocuments: ["A previous bill or notice for comparison", "A copy of this notice"],
+    requiredActionItems: paid
+      ? [
+          "Save this receipt and the transaction / receipt numbers for future queries.",
+          "Match the paid amount with your bank or UPI statement.",
+          "Do not pay again based on this receipt alone.",
+          "Open only a reviewed official portal yourself if you need a duplicate bill or complaint help.",
+        ]
+      : [
+          "Compare the reference number and amount with your own records.",
+          "Confirm the deadline before choosing any payment or response.",
+          "Open only a reviewed official portal yourself; this app never pays or submits.",
+          "Keep a copy of any official receipt or acknowledgement.",
+        ],
+    requiredDocuments: paid
+      ? ["This payment receipt", "Bank or UPI confirmation if available"]
+      : ["A previous bill or notice for comparison", "A copy of this notice"],
     officialDepartmentKey: issuer.departmentKey,
     sourceText: text,
   };

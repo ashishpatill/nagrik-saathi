@@ -36,7 +36,9 @@ export function scamSignals(doc: DocumentAnalysis) {
     flags.push("The message mentions credentials, OTP, payment handles, or urgent clicking.");
   }
   if (doc.scamRiskScore !== "safe") flags.push(doc.riskReason);
-  if (!doc.deadlineDate) flags.push("No clear deadline was found; verify the notice through a printed helpline.");
+  if (!doc.deadlineDate && doc.documentType !== "payment_receipt") {
+    flags.push("No clear deadline was found; verify the notice through a printed helpline.");
+  }
   return {
     risk: flags.length ? "needs_review" : "no_obvious_signals",
     flags,

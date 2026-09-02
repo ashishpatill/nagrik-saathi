@@ -1,6 +1,7 @@
 export type Language = "en" | "hi" | "mr";
 export type DocumentType =
   | "electricity_bill"
+  | "payment_receipt"
   | "property_tax"
   | "traffic_challan"
   | "grievance_notice"

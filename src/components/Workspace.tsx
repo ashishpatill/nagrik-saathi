@@ -365,7 +365,7 @@ export default function Workspace() {
               </div>
             ) : (
               <article className="border-t border-[var(--line)] pt-8">
-                <div className="flex flex-wrap items-start justify-between gap-6">
+                <div className="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
                       {currentCase.documentType.replaceAll("_", " ")}
@@ -377,17 +377,25 @@ export default function Workspace() {
                       Reference <span className="font-mono text-[var(--ink)]">{currentCase.referenceNumber}</span>
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--warn)]">Deadline</p>
+                  <div className="sm:text-right">
+                    <p
+                      className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${
+                        currentCase.documentType === "payment_receipt" ? "text-[var(--muted)]" : "text-[var(--warn)]"
+                      }`}
+                    >
+                      {currentCase.documentType === "payment_receipt" ? "Paid on" : "Deadline"}
+                    </p>
                     <p className="mt-1 font-mono text-2xl font-semibold text-[var(--ink)]">
                       {currentCase.deadlineDate ?? "—"}
                     </p>
                   </div>
                 </div>
 
-                <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-[var(--line)] py-5">
+                <dl className="mt-8 grid grid-cols-1 gap-4 border-y border-[var(--line)] py-5 sm:grid-cols-3">
                   <div>
-                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Amount</dt>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
+                      {currentCase.documentType === "payment_receipt" ? "Amount paid" : "Amount"}
+                    </dt>
                     <dd className="mt-1 text-lg font-semibold text-[var(--ink)]">
                       {currentCase.amountDue == null ? "—" : `₹${currentCase.amountDue.toLocaleString("en-IN")}`}
                     </dd>
@@ -409,17 +417,21 @@ export default function Workspace() {
                 </dl>
 
                 <div className="mt-8">
-                  <div className="mb-3 flex items-center justify-between gap-3">
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                     <h3 className="text-sm font-semibold">Plain-language brief</h3>
-                    <select
-                      value={language}
-                      onChange={(event) => setLanguage(event.target.value as Language)}
-                      className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
-                    >
-                      <option value="en">English</option>
-                      <option value="hi">हिन्दी</option>
-                      <option value="mr">मराठी</option>
-                    </select>
+                    <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
+                      <span className="sr-only">Summary language</span>
+                      <select
+                        value={language}
+                        onChange={(event) => setLanguage(event.target.value as Language)}
+                        className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
+                        aria-label="Summary language"
+                      >
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="mr">मराठी</option>
+                      </select>
+                    </label>
                   </div>
                   <p className="max-w-2xl text-[15px] leading-7 text-[var(--ink-soft)]">{currentCase.summary[language]}</p>
                 </div>

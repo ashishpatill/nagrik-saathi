@@ -31,18 +31,24 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
   }, [pending]);
 
   return (
-    <div className="anim-fade fixed inset-0 z-50 flex items-end justify-center bg-[var(--ink)]/40 p-4 sm:items-center">
+    <div
+      className="anim-fade fixed inset-0 z-50 flex items-end justify-center bg-[var(--ink)]/40 p-4 sm:items-center"
+      onClick={() => pending.resolve(false)}
+      role="presentation"
+    >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="approval-title"
+        aria-describedby="approval-copy"
         className="anim-rise w-full max-w-md border border-[var(--line)] bg-[var(--panel)] p-6"
+        onClick={(event) => event.stopPropagation()}
       >
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--accent)]">Your approval</p>
         <h2 id="approval-title" className="font-display mt-2 text-2xl font-semibold tracking-tight text-[var(--ink)]">
           {pending.action}
         </h2>
-        <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+        <p id="approval-copy" className="mt-2 text-sm leading-6 text-[var(--muted)]">
           Deny cancels. Approve only prepares a file on this device—nothing is sent. Press Escape to deny.
         </p>
         <p className="mt-4 border-l-2 border-[var(--accent)] bg-[var(--wash)] px-3 py-2 text-sm leading-6 text-[var(--ink-soft)]">
@@ -60,7 +66,7 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
           <button
             type="button"
             onClick={() => pending.resolve(true)}
-            className="min-h-11 rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
+            className="min-h-11 rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-[#fafbfc] hover:brightness-110"
           >
             Approve
           </button>
