@@ -39,5 +39,5 @@ separate GOAL + LOOP prompts until design delight and E2E flows are solid.
 
 ```bash
 pnpm lint && pnpm test && pnpm build
-pnpm dev   # then exercise inspector like a real user
+pnpm dev   # exercise the citizen flow on localhost:3000
 ```

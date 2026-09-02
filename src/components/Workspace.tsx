@@ -109,6 +109,7 @@ export default function Workspace() {
   const [portalHighlightUrl, setPortalHighlightUrl] = useState<string | null>(null);
   const [runtimeMode, setRuntimeMode] = useState<WebMCPRuntimeMode>("unavailable");
   const [busy, setBusy] = useState(false);
+  // Dev/demo only — not part of the citizen UI. Open /?inspector=1 to use it.
   const [showInspector, setShowInspector] = useState(false);
 
   const caseRef = useRef(currentCase);
@@ -119,6 +120,11 @@ export default function Workspace() {
   useEffect(() => {
     caseRef.current = currentCase;
   }, [currentCase]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setShowInspector(params.get("inspector") === "1");
+  }, []);
 
   const setCase = useCallback((value: DocumentAnalysis) => {
     caseRef.current = value;
@@ -320,19 +326,14 @@ export default function Workspace() {
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <div className="text-[11px] font-semibold text-[var(--ink-soft)]">
-              <span
-                className={`mr-2 inline-block h-1.5 w-1.5 rounded-full ${status === "ready" ? "bg-[var(--signal)]" : "bg-[var(--muted)]"}`}
-              />
-              {status === "ready" ? `WebMCP ready · ${modeLabel(runtimeMode)}` : modeLabel(runtimeMode)}
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowInspector((value) => !value)}
-              className="text-xs font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
-            >
-              {showInspector ? "Hide inspector" : "Show inspector"}
-            </button>
+            {showInspector && (
+              <div className="text-[11px] font-semibold text-[var(--ink-soft)]">
+                <span
+                  className={`mr-2 inline-block h-1.5 w-1.5 rounded-full ${status === "ready" ? "bg-[var(--signal)]" : "bg-[var(--muted)]"}`}
+                />
+                {status === "ready" ? `WebMCP ready · ${modeLabel(runtimeMode)}` : modeLabel(runtimeMode)}
+              </div>
+            )}
           </div>
         </header>
 
@@ -512,7 +513,7 @@ export default function Workspace() {
               </div>
             )}
 
-            {toolLogs.length > 0 && (
+            {showInspector && toolLogs.length > 0 && (
               <div>
                 <h2 className="text-sm font-semibold">Activity</h2>
                 <ul className="mt-3 space-y-2">

@@ -34,4 +34,5 @@ data.
 
 Tool arguments and document text are untrusted. Schemas are narrow, outputs
 are short, and state-changing downloads/reminders require visible approval.
-Tool activity is shown in the inspector so a person can understand what ran.
+Tool activity stays off the default citizen UI. Open `/?inspector=1` only when
+debugging WebMCP tool calls.

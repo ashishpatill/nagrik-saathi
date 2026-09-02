@@ -11,7 +11,7 @@ must be served over HTTPS.
 4. Optional live extraction: set `OPENAI_API_KEY` in the Vercel project env.
 5. After deploy, open the HTTPS URL and confirm:
    - the page loads
-   - the inspector shows registered tools
+   - with `/?inspector=1`, the inspector lists registered tools
    - `find_official_portal` still returns only allowlisted HTTPS hosts
 
 ## Origin trial later

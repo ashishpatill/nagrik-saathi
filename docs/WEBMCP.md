@@ -33,7 +33,8 @@ provides it. Inputs are validated with Zod and JSON Schemas set
    `originAgentCluster === false` and reject polyfill access; in that case
    the page keeps a Local inspector fallback with the same eight tools.
 5. Inspect `await document.modelContext.getTools()` in DevTools when Native
-   or Polyfill mode is active, or use the built-in inspector on the right.
+   or Polyfill mode is active, or open `/?inspector=1` for the built-in manual
+   tool panel (hidden from the default citizen UI).
 6. Execute the Marathi summary, MSEDCL portal lookup, reminder denial, and
    reminder approval flows.
 
