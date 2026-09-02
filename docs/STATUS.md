@@ -1,27 +1,33 @@
 # Status — Nagrik Saathi
 
 **Updated:** 2026-09-02  
-**Authority:** this file + [GOAL_AND_LOOP.md](GOAL_AND_LOOP.md)  
-**Repo:** https://github.com/ashishpatill/nagrik-saathi (public · no Actions CI)
+**Authority:** this file + [GOAL_AND_LOOP.md](GOAL_AND_LOOP.md)
 
 ## Done
 
 - Scaffold, 8 WebMCP tools, allowlist, docs, local lint/test/build
-- Local inspector fallback + registration timeout when `originAgentCluster` blocks polyfill
-- I1: brand-first Literata/Figtree civic UI (minimal chrome, paper wash, soft motion)
-- I2: one-tap demo presets (Marathi / portal / reminder / brief); inspector secondary
-- I3 browser E2E: Marathi summary, portal, reminder deny+approve, family brief approve
-- I4: public GitHub repo created and pushed; no `.github/workflows`
+- Local inspector fallback when `originAgentCluster` blocks polyfill
+- **I1** Brand-first civic UI (Literata/Figtree, ash paper, hero product name)
+- **I2** Numbered demo presets, human approval copy, inspector secondary
+- **I3** Browser E2E on `localhost:3000` (sample, EN/HI/MR, portal HTTPS, reminder deny/approve, family brief, draft_only, 8 tools listed)
+- **I4** Public repo [ashishpatill/nagrik-saathi](https://github.com/ashishpatill/nagrik-saathi) — **no** `.github/workflows`
+- **I5** Escape-to-deny modal, larger touch targets, docs closed out
+- Fixed Strict Mode remount wiping `document.modelContext` tool registry
 
-## In progress
+## Remaining
 
-- I5 polish pass (a11y focus, mobile, residual nits) via local loop
-
-## Remaining (ordered)
-
-1. I5 polish + final STATUS closeout
+None for the current ship loop. Deferred items stay deferred.
 
 ## Deferred
 
 - ChatGPT Site-tools recording
-- Vercel HTTPS deploy
+- Vercel HTTPS deploy (optional)
+
+## I3 evidence (local browser)
+
+- Marathi + Hindi summaries switch correctly
+- Portal link `https://wss.mahadiscom.in/wss/wss`
+- `schedule_reminder` cancelled then success; `export_family_brief` success
+- Inspector shows `8 tools · Local`; `draft_citizen_letter` → `status: draft_only`
+- Safety line visible; no credential fields
+- After remount fix, `getTools()` returns all 8 tools

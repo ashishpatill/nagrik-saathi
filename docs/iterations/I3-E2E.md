@@ -28,4 +28,4 @@ Commit fixes. Stop when the full checklist passes once without errors.
 
 ## Done when
 
-- [ ] Checklist complete with evidence (notes in STATUS)
+- [x] Checklist complete with evidence (notes in STATUS)

@@ -376,7 +376,7 @@ export default function Workspace() {
                         type="button"
                         disabled={busy}
                         onClick={() => void runTool(preset.name, preset.input)}
-                        className="flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
+                        className="flex min-h-12 w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
                       >
                         <span className="flex items-baseline gap-3">
                           <span className="font-mono text-[11px] text-[var(--muted)]">{index + 1}</span>

@@ -23,12 +23,15 @@ export function createFallbackModelContext(): ModelContext & { __isWebMCPPolyfil
       if (!tool.name || !tool.description || typeof tool.execute !== "function") {
         throw new TypeError("Invalid WebMCP tool descriptor.");
       }
-      if (registry.has(tool.name) && !registry.get(tool.name)?.signal?.aborted) {
-        throw new DOMException(`Tool already registered: ${tool.name}`, "InvalidStateError");
-      }
-      registry.set(tool.name, { tool, signal: options?.signal });
-      options?.signal?.addEventListener("abort", () => {
-        registry.delete(tool.name);
+      const signal = options?.signal;
+      // Last writer wins so React Strict Mode remounts can re-register before the
+      // previous effect cleanup aborts the older signal.
+      registry.set(tool.name, { tool, signal });
+      signal?.addEventListener("abort", () => {
+        const current = registry.get(tool.name);
+        if (current?.signal === signal) {
+          registry.delete(tool.name);
+        }
       });
     },
     async getTools() {

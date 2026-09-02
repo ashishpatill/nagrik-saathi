@@ -24,6 +24,6 @@ brand test passes and chrome is minimal.
 
 ## Done when
 
-- [ ] Brand “Nagrik Saathi” dominates first viewport
-- [ ] No stacked marketing cards / pill clusters / icon rows in hero
-- [ ] Local screenshot review feels calm and specific to civic docs
+- [x] Brand “Nagrik Saathi” dominates first viewport
+- [x] No stacked marketing cards / pill clusters / icon rows in hero
+- [x] Local screenshot review feels calm and specific to civic docs

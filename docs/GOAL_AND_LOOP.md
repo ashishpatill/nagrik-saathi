@@ -29,11 +29,11 @@ separate GOAL + LOOP prompts until design delight and E2E flows are solid.
 
 ## Definition of done
 
-- [ ] UI passes brand test (product name is hero-level; not generic SaaS)
-- [ ] All eight tools + sample load + portal open + reminder deny/approve work in local browser
-- [ ] Public GitHub repo exists; iterative commits on `master`/`main`
-- [ ] No `.github/workflows` CI
-- [ ] `pnpm lint` · `pnpm test` · `pnpm build` green locally
+- [x] UI passes brand test (product name is hero-level; not generic SaaS)
+- [x] All eight tools + sample load + portal open + reminder deny/approve work in local browser
+- [x] Public GitHub repo exists; iterative commits on `master`/`main`
+- [x] No `.github/workflows` CI
+- [x] `pnpm lint` · `pnpm test` · `pnpm build` green locally
 
 ## Verify locally (every iteration)
 

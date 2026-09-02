@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 type PendingApproval = { action: string; payload: unknown; resolve: (value: boolean) => void };
 
 function humanPayload(payload: unknown): string {
@@ -18,6 +20,16 @@ function humanPayload(payload: unknown): string {
 }
 
 export default function ApprovalModal({ pending }: { pending: PendingApproval }) {
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        pending.resolve(false);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [pending]);
+
   return (
     <div className="anim-fade fixed inset-0 z-50 flex items-end justify-center bg-[var(--ink)]/40 p-4 sm:items-center">
       <div
@@ -31,7 +43,7 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
           {pending.action}
         </h2>
         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-          Deny cancels. Approve only prepares a file on this device—nothing is sent.
+          Deny cancels. Approve only prepares a file on this device—nothing is sent. Press Escape to deny.
         </p>
         <p className="mt-4 border-l-2 border-[var(--accent)] bg-[var(--wash)] px-3 py-2 text-sm leading-6 text-[var(--ink-soft)]">
           {humanPayload(pending.payload)}
@@ -41,14 +53,14 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
             type="button"
             autoFocus
             onClick={() => pending.resolve(false)}
-            className="rounded-[var(--radius)] border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:bg-[var(--wash)]"
+            className="min-h-11 rounded-[var(--radius)] border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:bg-[var(--wash)]"
           >
             Deny
           </button>
           <button
             type="button"
             onClick={() => pending.resolve(true)}
-            className="rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
+            className="min-h-11 rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
           >
             Approve
           </button>

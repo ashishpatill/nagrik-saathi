@@ -15,6 +15,6 @@ commit. Stop when STATUS shows I1–I5 done and no open product bugs.
 
 ## Done when
 
-- [ ] Mobile readable
-- [ ] Keyboard-reachable approve/deny
-- [ ] STATUS.md marks all iterations done
+- [x] Mobile readable
+- [x] Keyboard-reachable approve/deny (Escape denies; focus on Deny)
+- [x] STATUS.md marks all iterations done

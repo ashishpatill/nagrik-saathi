@@ -23,5 +23,5 @@ finish the demo in under two minutes.
 
 ## Done when
 
-- [ ] Demo prompt path needs no raw JSON
-- [ ] Inspector never blocks the left-rail reading flow
+- [x] Demo prompt path needs no raw JSON
+- [x] Inspector never blocks the left-rail reading flow

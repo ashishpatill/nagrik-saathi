@@ -26,5 +26,5 @@ are visible.
 
 ## Done when
 
-- [ ] Public repo URL live
-- [ ] No Actions workflows
+- [x] Public repo URL live
+- [x] No Actions workflows
