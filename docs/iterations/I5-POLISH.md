@@ -15,6 +15,8 @@ commit. Stop when STATUS shows I1–I5 done and no open product bugs.
 
 ## Done when
 
-- [x] Mobile readable
-- [x] Keyboard-reachable approve/deny (Escape denies; focus on Deny)
+- [x] Mobile readable (single-column stats / stacks under `sm`)
+- [x] Keyboard-reachable approve/deny (Escape + backdrop deny; focus on Deny)
+- [x] Labeled portal search/state filters and summary language control
 - [x] STATUS.md marks all iterations done
+- [x] Public push; no GitHub Actions

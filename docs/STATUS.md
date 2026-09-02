@@ -8,12 +8,13 @@
 - Scaffold, 8 WebMCP tools, allowlist, docs, local lint/test/build
 - Local inspector fallback when `originAgentCluster` blocks polyfill
 - **I1** Brand-first civic UI (Literata/Figtree, ash paper, hero product name)
-- **I2** Numbered presets, human approval copy, inspector secondary
+- **I2** Numbered action presets, human approval copy, inspector secondary
 - **I3** Browser E2E on `localhost:3000` (paste/analyze real notice, EN/HI/MR, portal HTTPS, reminder deny/approve, family brief, draft_only, 8 tools)
 - **I4** Public repo [ashishpatill/nagrik-saathi](https://github.com/ashishpatill/nagrik-saathi) — **no** `.github/workflows`
-- **I5** Escape-to-deny modal, larger touch targets, docs closed out
+- **I5** Mobile-friendly stacks, labeled controls, Escape/backdrop deny, portal browse directory, docs closed
 - Fixed Strict Mode remount wiping `document.modelContext` tool registry
-- **No mock preload** — empty start; paste/upload + Analyze only; sample files removed
+- **No mock preload** — empty start; paste/upload + Analyze only
+- Broader issuer matching + searchable reviewed-portal directory
 
 ## Remaining
 
