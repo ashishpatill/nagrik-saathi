@@ -421,6 +421,81 @@ function urgencyFromDeadline(deadlineDate: string | null): Urgency {
   return "low";
 }
 
+function amountPhrase(amountDue: number | null, language: Language): string {
+  if (amountDue == null) {
+    switch (language) {
+      case "hi":
+        return "अस्पष्ट राशि";
+      case "mr":
+        return "अस्पष्ट रक्कम";
+      case "en":
+        return "an unspecified amount";
+      default: {
+        const _exhaustive: never = language;
+        return _exhaustive;
+      }
+    }
+  }
+  const formatted = `₹${amountDue.toLocaleString("en-IN")}`;
+  switch (language) {
+    case "hi":
+      return `राशि ${formatted}`;
+    case "mr":
+      return `रक्कम ${formatted}`;
+    case "en":
+      return formatted;
+    default: {
+      const _exhaustive: never = language;
+      return _exhaustive;
+    }
+  }
+}
+
+function referencePhrase(referenceNumber: string, language: Language): string {
+  if (referenceNumber === "Not found") {
+    switch (language) {
+      case "hi":
+        return "कोई स्पष्ट संदर्भ संख्या नहीं";
+      case "mr":
+        return "स्पष्ट संदर्भ क्रमांक नाही";
+      case "en":
+        return "no clear reference number";
+      default: {
+        const _exhaustive: never = language;
+        return _exhaustive;
+      }
+    }
+  }
+  switch (language) {
+    case "hi":
+      return `संदर्भ ${referenceNumber}`;
+    case "mr":
+      return `संदर्भ ${referenceNumber}`;
+    case "en":
+      return `reference ${referenceNumber}`;
+    default: {
+      const _exhaustive: never = language;
+      return _exhaustive;
+    }
+  }
+}
+
+function datePhrase(date: string | null, language: Language, missingEn: string): string {
+  if (date) return date;
+  switch (language) {
+    case "hi":
+      return "तारीख स्पष्ट नहीं";
+    case "mr":
+      return "तारीख स्पष्ट नाही";
+    case "en":
+      return missingEn;
+    default: {
+      const _exhaustive: never = language;
+      return _exhaustive;
+    }
+  }
+}
+
 function buildSummaries(input: {
   issuer: string;
   amountDue: number | null;
@@ -428,26 +503,66 @@ function buildSummaries(input: {
   referenceNumber: string;
   paid: boolean;
 }): Record<Language, string> {
-  const amount =
-    input.amountDue == null ? "an unspecified amount" : `₹${input.amountDue.toLocaleString("en-IN")}`;
-  const reference =
-    input.referenceNumber === "Not found" ? "no clear reference number" : `reference ${input.referenceNumber}`;
-
   if (input.paid) {
-    const paidOn = input.deadlineDate ?? "a date not clearly stated";
     return {
-      en: `This appears to be a payment receipt from ${input.issuer} for ${amount}, paid on ${paidOn} (${reference}). Nothing in this text indicates a further amount due. Keep the receipt and transaction ID for queries; do not pay again from this page alone.`,
-      hi: `यह ${input.issuer} की भुगतान रसीद लगती है—${amount}, भुगतान तिथि ${paidOn} (${reference})। इस पाठ से कोई और देय राशि नहीं दिखती। रसीद और लेनदेन आईडी सुरक्षित रखें; केवल इसी पृष्ठ से दोबारा भुगतान न करें।`,
-      mr: `ही ${input.issuer} ची पेमेंट पावती दिसते—${amount}, भरल्याची तारीख ${paidOn} (${reference}). या मजकुरात आणखी देय रक्कम दिसत नाही. पावती व व्यवहार क्रमांक जपून ठेवा; फक्त या पृष्ठावरून पुन्हा पैसे भरू नका.`,
+      en: `This appears to be a payment receipt from ${input.issuer} for ${amountPhrase(input.amountDue, "en")}, paid on ${datePhrase(input.deadlineDate, "en", "a date not clearly stated")} (${referencePhrase(input.referenceNumber, "en")}). Nothing in this text indicates a further amount due. Keep the receipt and transaction ID for queries; do not pay again from this page alone.`,
+      hi: `यह ${input.issuer} की भुगतान रसीद लगती है—${amountPhrase(input.amountDue, "hi")}, भुगतान तिथि ${datePhrase(input.deadlineDate, "hi", "")}, (${referencePhrase(input.referenceNumber, "hi")})। इस पाठ से कोई और देय राशि नहीं दिखती। रसीद सुरक्षित रखें; केवल इसी पृष्ठ से दोबारा भुगतान न करें।`,
+      mr: `ही ${input.issuer} ची पेमेंट पावती आहे. ${amountPhrase(input.amountDue, "mr")}, भरलेली तारीख ${datePhrase(input.deadlineDate, "mr", "")} (${referencePhrase(input.referenceNumber, "mr")}). या पावतीनुसार आणखी काही देय दिसत नाही—इथे फारसे करण्यासारखे नाही. पावती व व्यवहार क्रमांक जपून ठेवा; पुन्हा पैसे भरू नका.`,
     };
   }
 
-  const deadline = input.deadlineDate ?? "a date not clearly stated";
   return {
-    en: `This notice appears to be from ${input.issuer}. It mentions ${amount}, deadline ${deadline}, and ${reference}. Verify details against your own records, then open only a reviewed official channel yourself.`,
-    hi: `यह सूचना संभवतः ${input.issuer} से संबंधित है। इसमें ${amount}, अंतिम तिथि ${deadline}, और ${reference} का उल्लेख है। अपनी पुरानी रिकॉर्ड से जाँच करें और केवल सत्यापित आधिकारिक चैनल स्वयं खोलें।`,
-    mr: `ही सूचना संभाव्यतः ${input.issuer} ची आहे. त्यात ${amount}, अंतिम तारीख ${deadline}, आणि ${reference} नमूद आहे. स्वतःच्या जुन्या नोंदींशी तपासा आणि फक्त सत्यापित अधिकृत मार्ग स्वतः उघडा.`,
+    en: `This notice appears to be from ${input.issuer}. It mentions ${amountPhrase(input.amountDue, "en")}, deadline ${datePhrase(input.deadlineDate, "en", "a date not clearly stated")}, and ${referencePhrase(input.referenceNumber, "en")}. Verify details against your own records, then open only a reviewed official channel yourself.`,
+    hi: `यह सूचना संभवतः ${input.issuer} से संबंधित है। इसमें ${amountPhrase(input.amountDue, "hi")}, अंतिम तिथि ${datePhrase(input.deadlineDate, "hi", "")}, और ${referencePhrase(input.referenceNumber, "hi")} का उल्लेख है। अपनी पुरानी रिकॉर्ड से जाँच करें और केवल सत्यापित आधिकारिक चैनल स्वयं खोलें।`,
+    mr: `ही सूचना संभाव्यतः ${input.issuer} ची आहे. त्यात ${amountPhrase(input.amountDue, "mr")}, अंतिम तारीख ${datePhrase(input.deadlineDate, "mr", "")}, आणि ${referencePhrase(input.referenceNumber, "mr")} नमूद आहे. स्वतःच्या जुन्या नोंदींशी तपासा आणि फक्त सत्यापित अधिकृत मार्ग स्वतः उघडा.`,
   };
+}
+
+const PAID_ACTIONS: Record<Language, string[]> = {
+  en: [
+    "Save this receipt and the transaction / receipt numbers for future queries.",
+    "Match the paid amount with your bank or UPI statement.",
+    "Do not pay again based on this receipt alone.",
+    "Open only a reviewed official portal yourself if you need a duplicate bill or complaint help.",
+  ],
+  hi: [
+    "भविष्य की पूछताछ के लिए यह रसीद और लेनदेन/रसीद संख्या सुरक्षित रखें।",
+    "भुगतान राशि को अपने बैंक या UPI स्टेटमेंट से मिलाएँ।",
+    "केवल इस रसीद के आधार पर दोबारा भुगतान न करें।",
+    "डुप्लिकेट बिल या शिकायत के लिए ही सत्यापित आधिकारिक पोर्टल स्वयं खोलें।",
+  ],
+  mr: [
+    "भविष्यातील चौकशीसाठी ही पावती व व्यवहार/पावती क्रमांक जपून ठेवा.",
+    "भरलेली रक्कम बँक किंवा UPI स्टेटमेंटशी जुळवा.",
+    "फक्त या पावतीवरून पुन्हा पैसे भरू नका.",
+    "डुप्लिकेट बिल किंवा तक्रारीसाठीच सत्यापित अधिकृत पोर्टल स्वतः उघडा.",
+  ],
+};
+
+const UNPAID_ACTIONS: Record<Language, string[]> = {
+  en: [
+    "Compare the reference number and amount with your own records.",
+    "Confirm the deadline before choosing any payment or response.",
+    "Open only a reviewed official portal yourself; this app never pays or submits.",
+    "Keep a copy of any official receipt or acknowledgement.",
+  ],
+  hi: [
+    "संदर्भ संख्या और राशि को अपने रिकॉर्ड से मिलाएँ।",
+    "कोई भुगतान या जवाब देने से पहले अंतिम तिथि की पुष्टि करें।",
+    "केवल सत्यापित आधिकारिक पोर्टल स्वयं खोलें; यह ऐप भुगतान या जमा नहीं करता।",
+    "किसी भी आधिकारिक रसीद की प्रति रखें।",
+  ],
+  mr: [
+    "संदर्भ क्रमांक व रक्कम स्वतःच्या नोंदींशी जुळवा.",
+    "पेमेंट किंवा उत्तर देण्यापूर्वी अंतिम तारीख खात्री करा.",
+    "फक्त सत्यापित अधिकृत पोर्टल स्वतः उघडा; हे अॅप पेमेंट किंवा सबमिट करत नाही.",
+    "अधिकृत पावतीची प्रत जपून ठेवा.",
+  ],
+};
+
+export function actionsForCase(doc: DocumentAnalysis, language: Language = "en"): string[] {
+  const paid = doc.documentType === "payment_receipt";
+  return paid ? PAID_ACTIONS[language] : UNPAID_ACTIONS[language];
 }
 
 export function analyzeText(sourceText: string, language: Language = "en"): DocumentAnalysis {
@@ -489,19 +604,7 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
       referenceNumber,
       paid,
     }),
-    requiredActionItems: paid
-      ? [
-          "Save this receipt and the transaction / receipt numbers for future queries.",
-          "Match the paid amount with your bank or UPI statement.",
-          "Do not pay again based on this receipt alone.",
-          "Open only a reviewed official portal yourself if you need a duplicate bill or complaint help.",
-        ]
-      : [
-          "Compare the reference number and amount with your own records.",
-          "Confirm the deadline before choosing any payment or response.",
-          "Open only a reviewed official portal yourself; this app never pays or submits.",
-          "Keep a copy of any official receipt or acknowledgement.",
-        ],
+    requiredActionItems: paid ? PAID_ACTIONS.en : UNPAID_ACTIONS.en,
     requiredDocuments: paid
       ? ["This payment receipt", "Bank or UPI confirmation if available"]
       : ["A previous bill or notice for comparison", "A copy of this notice"],

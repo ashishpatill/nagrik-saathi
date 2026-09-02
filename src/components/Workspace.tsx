@@ -5,7 +5,7 @@ import ApprovalModal from "@/components/ApprovalModal";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
 import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
-import { analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
+import { actionsForCase, analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
 import { extractFileText } from "@/lib/extract-file";
 import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
 import { initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
@@ -52,6 +52,7 @@ function offerDownload(result: unknown) {
 
 function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
   const portal = portalHintsForCase(doc);
+  const paid = doc.documentType === "payment_receipt";
   const reminderDate = doc.deadlineDate ?? new Date().toISOString().slice(0, 10);
   return [
     { label: "Explain in Marathi", name: "get_notice_summary", input: { language: "mr" } },
@@ -61,11 +62,16 @@ function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
       input: { department: portal.department, service: portal.service, state: portal.state },
     },
     {
-      label: "Add calendar reminder",
+      label: paid ? "Calendar note for receipt" : "Add calendar reminder",
       name: "schedule_reminder",
-      input: { title: `Review notice deadline · ${doc.issuer || "notice"}`, date: reminderDate },
+      input: {
+        title: paid
+          ? `Keep payment receipt · ${doc.issuer || "receipt"}`
+          : `Review notice deadline · ${doc.issuer || "notice"}`,
+        date: reminderDate,
+      },
     },
-    { label: "Export family brief", name: "export_family_brief", input: { language: "en" } },
+    { label: "Export family brief", name: "export_family_brief", input: { language: paid ? "mr" : "en" } },
   ];
 }
 
@@ -137,9 +143,12 @@ export default function Workspace() {
     initializeWebMCP();
     void getActiveCase().then((saved) => {
       if (!saved || !hasAnalyzedNotice(saved)) return;
-      caseRef.current = saved;
-      setCurrentCase(saved);
-      setNoticeText(saved.sourceText);
+      // Re-run extractors so older saved cases pick up receipt/date fixes.
+      const refreshed = { ...analyzeText(saved.sourceText), id: saved.id, fileName: saved.fileName };
+      caseRef.current = refreshed;
+      setCurrentCase(refreshed);
+      setNoticeText(refreshed.sourceText);
+      void saveCase(refreshed);
     });
 
     let cleanup: () => void = () => undefined;
@@ -349,7 +358,7 @@ export default function Workspace() {
                 onChange={(event) => setNoticeText(event.target.value)}
                 rows={8}
                 placeholder="Paste your electricity bill, property tax notice, challan, or other government notice here…"
-                className="w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+                className="w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
               />
             </div>
 
@@ -420,12 +429,11 @@ export default function Workspace() {
                   <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                     <h3 className="text-sm font-semibold">Plain-language brief</h3>
                     <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                      <span className="sr-only">Summary language</span>
+                      <span className="font-semibold uppercase tracking-[0.12em]">Language</span>
                       <select
                         value={language}
                         onChange={(event) => setLanguage(event.target.value as Language)}
                         className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
-                        aria-label="Summary language"
                       >
                         <option value="en">English</option>
                         <option value="hi">हिन्दी</option>
@@ -437,7 +445,7 @@ export default function Workspace() {
                 </div>
 
                 <div className="mt-8 grid gap-8 md:grid-cols-2">
-                  <Checklist title="What to do next" items={currentCase.requiredActionItems} />
+                  <Checklist title="What to do next" items={actionsForCase(currentCase, language)} />
                   <Checklist title="Keep nearby" items={currentCase.requiredDocuments} />
                 </div>
 

@@ -59,14 +59,14 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
             type="button"
             autoFocus
             onClick={() => pending.resolve(false)}
-            className="min-h-11 rounded-[var(--radius)] border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:bg-[var(--wash)]"
+            className="min-h-11 rounded-[var(--radius)] border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)] hover:bg-[var(--wash)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
             Deny
           </button>
           <button
             type="button"
             onClick={() => pending.resolve(true)}
-            className="min-h-11 rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-[#fafbfc] hover:brightness-110"
+            className="min-h-11 rounded-[var(--radius)] bg-[var(--signal)] px-4 py-2 text-sm font-semibold text-[#fafbfc] hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
             Approve
           </button>

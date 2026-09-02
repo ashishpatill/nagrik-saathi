@@ -2,7 +2,7 @@
 
 import { initializeWebMCPPolyfill } from "@mcp-b/webmcp-polyfill";
 import { buildIcs, calendarDataUrl } from "@/lib/calendar";
-import { analyzeText } from "@/lib/extract";
+import { actionsForCase, analyzeText } from "@/lib/extract";
 import { findOfficialPortal } from "@/lib/portals";
 import { redactSensitiveData, scamSignals, truncateForTool } from "@/lib/safety";
 import { installFallbackModelContext } from "@/lib/webmcp/fallback-context";
@@ -161,16 +161,30 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       async (input) => {
         const currentCase = getCase();
         const { language } = languageSchema.parse(input);
+        // Re-parse pasted text so Explain-* never echoes a stale/wrong saved case.
+        const refreshed =
+          currentCase.sourceText.trim().length > 0
+            ? { ...analyzeText(currentCase.sourceText, language), id: currentCase.id }
+            : currentCase;
+        if (refreshed.id === currentCase.id && refreshed.sourceText) {
+          setCase(refreshed);
+        }
         return {
-          issuer: currentCase.issuer,
-          referenceNumber: currentCase.referenceNumber,
-          deadline: currentCase.deadlineDate,
-          amountDue: currentCase.amountDue,
-          urgency: currentCase.urgency,
-          scamStatus: currentCase.scamRiskScore,
-          summary: currentCase.summary[language],
-          actions: currentCase.requiredActionItems,
-          disclaimer: "This is guidance, not an official government decision.",
+          documentType: refreshed.documentType,
+          issuer: refreshed.issuer,
+          referenceNumber: refreshed.referenceNumber,
+          deadline: refreshed.deadlineDate,
+          amountDue: refreshed.amountDue,
+          urgency: refreshed.urgency,
+          scamStatus: refreshed.scamRiskScore,
+          summary: refreshed.summary[language],
+          actions: actionsForCase(refreshed, language),
+          disclaimer:
+            language === "mr"
+              ? "हे मार्गदर्शन आहे; अधिकृत सरकारी निर्णय नाही."
+              : language === "hi"
+                ? "यह मार्गदर्शन है; आधिकारिक सरकारी निर्णय नहीं।"
+                : "This is guidance, not an official government decision.",
         };
       },
       true,
@@ -257,7 +271,7 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       async (input, client) => {
         const currentCase = getCase();
         const { language } = languageSchema.parse(input);
-        const brief = `${currentCase.summary[language]}\n\nWhat to do next:\n${currentCase.requiredActionItems.map((item) => `- ${item}`).join("\n")}`;
+        const brief = `${currentCase.summary[language]}\n\nWhat to do next:\n${actionsForCase(currentCase, language).map((item) => `- ${item}`).join("\n")}`;
         const redacted = redactSensitiveData(brief);
         const approved = await confirm(client, requestApproval, "Export redacted family brief", { language });
         if (!approved) return { status: "cancelled_by_user" };
@@ -284,11 +298,17 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
               ? "सेवा में,\nसंबंधित अधिकारी,"
               : "To,\nThe concerned officer,";
         const body =
-          language === "mr"
-            ? `माझ्या संदर्भ क्रमांक ${currentCase.referenceNumber} बाबत कृपया मार्गदर्शन करावे. अंतिम तारीख ${currentCase.deadlineDate ?? "नमूद नाही"} आहे.`
-            : language === "hi"
-              ? `संदर्भ संख्या ${currentCase.referenceNumber} के संबंध में कृपया मार्गदर्शन करें। अंतिम तिथि ${currentCase.deadlineDate ?? "उल्लेख नहीं है"} है।`
-              : `Please provide guidance regarding reference ${currentCase.referenceNumber}. The deadline is ${currentCase.deadlineDate ?? "not stated"}.`;
+          currentCase.documentType === "payment_receipt"
+            ? language === "mr"
+              ? `माझ्या व्यवहार/पावती क्रमांक ${currentCase.referenceNumber} बाबत ही पेमेंट पावती आहे (तारीख ${currentCase.deadlineDate ?? "नमूद नाही"}, रक्कम ${currentCase.amountDue ?? "—"}). कृपया नोंद घ्या; पुन्हा शुल्क आकारू नये.`
+              : language === "hi"
+                ? `मेरे लेनदेन/रसीद संख्या ${currentCase.referenceNumber} की यह भुगतान रसीद है (तिथि ${currentCase.deadlineDate ?? "उल्लेख नहीं"}, राशि ${currentCase.amountDue ?? "—"})। कृपया दर्ज करें; दोबारा शुल्क न लें।`
+                : `This is a payment receipt for transaction/receipt ${currentCase.referenceNumber} (date ${currentCase.deadlineDate ?? "not stated"}, amount ${currentCase.amountDue ?? "—"}). Please note it on record; do not charge again.`
+            : language === "mr"
+              ? `माझ्या संदर्भ क्रमांक ${currentCase.referenceNumber} बाबत कृपया मार्गदर्शन करावे. अंतिम तारीख ${currentCase.deadlineDate ?? "नमूद नाही"} आहे.`
+              : language === "hi"
+                ? `संदर्भ संख्या ${currentCase.referenceNumber} के संबंध में कृपया मार्गदर्शन करें। अंतिम तिथि ${currentCase.deadlineDate ?? "उल्लेख नहीं है"} है।`
+                : `Please provide guidance regarding reference ${currentCase.referenceNumber}. The deadline is ${currentCase.deadlineDate ?? "not stated"}.`;
         return {
           status: "draft_only",
           tone,

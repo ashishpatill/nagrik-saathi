@@ -37,7 +37,7 @@ export default function ReviewedPortalDirectory({ activeKey = "" }: { activeKey?
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Department or domain"
-            className="w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+            className="w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-sm focus:border-[var(--accent)]"
           />
         </label>
         <label className="text-xs text-[var(--muted)]">

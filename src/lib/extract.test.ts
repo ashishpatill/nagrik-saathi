@@ -64,6 +64,10 @@ Transaction Date & Times:	6/26/2026 6:33:30 PM
     expect(result.urgency).toBe("low");
     expect(result.summary.en).toMatch(/payment receipt/i);
     expect(result.summary.en).not.toMatch(/deadline/i);
+    expect(result.summary.mr).toMatch(/पेमेंट पावती/);
+    expect(result.summary.mr).toMatch(/180/);
+    expect(result.summary.mr).toMatch(/PP016177BX5TW1FJT889/);
+    expect(result.summary.mr).not.toMatch(/अंतिम तारीख|unspecified|no clear reference/i);
     expect(result.requiredActionItems.some((item) => /do not pay again/i.test(item))).toBe(true);
   });
 });
