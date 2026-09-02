@@ -6,7 +6,7 @@ import OfficialPortalCard from "@/components/OfficialPortalCard";
 import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
 import { actionsForCase, analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
-import { extractFileText } from "@/lib/extract-file";
+import { ACCEPTED_NOTICE_FILES, loadNoticeFile } from "@/lib/extract-file";
 import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
 import { initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
 import type { DocumentAnalysis, Language, ToolLog } from "@/lib/types";
@@ -111,15 +111,26 @@ export default function Workspace() {
   const [busy, setBusy] = useState(false);
   // Dev/demo only — not part of the citizen UI. Open /?inspector=1 to use it.
   const [showInspector, setShowInspector] = useState(false);
+  const [attachedName, setAttachedName] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [fileBusy, setFileBusy] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
 
   const caseRef = useRef(currentCase);
   const portalCardRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const analyzed = hasAnalyzedNotice(currentCase);
   const presets = useMemo(() => buildPresets(currentCase), [currentCase]);
 
   useEffect(() => {
     caseRef.current = currentCase;
   }, [currentCase]);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+    };
+  }, [imagePreviewUrl]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -252,18 +263,25 @@ export default function Workspace() {
 
   function analyzeNotice() {
     if (!noticeText.trim()) {
-      setActionMessage("Paste or upload a notice first, then analyze.");
+      setActionMessage(
+        imagePreviewUrl
+          ? "Photo is attached. Type or paste the readable text from the photo into the box, then Analyze."
+          : "Attach a file or paste the notice text, then Analyze.",
+      );
       return;
     }
     const result = analyzeText(noticeText, language);
     setCase(result);
     setPortalHighlightUrl(null);
-    setActionMessage("Notice analyzed. Use the actions on the right.");
+    setActionMessage("Notice analyzed. Use the actions on the right if you need Marathi, a portal link, or a reminder.");
     setLastResult({ status: "analyzed", caseId: result.id, issuer: result.issuer });
   }
 
   function clearWorkspace() {
+    if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
     setNoticeText("");
+    setAttachedName(null);
+    setImagePreviewUrl(null);
     setCase(EMPTY_CASE);
     setLanguage("en");
     setToolLogs([]);
@@ -273,59 +291,48 @@ export default function Workspace() {
     void clearActiveCase();
   }
 
+  async function ingestFile(file: File) {
+    setFileBusy(true);
+    try {
+      const loaded = await loadNoticeFile(file);
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+      setAttachedName(loaded.fileName);
+      setImagePreviewUrl(loaded.imageUrl);
+      if (loaded.kind === "image") {
+        setNoticeText("");
+        setActionMessage(
+          `Photo “${loaded.fileName}” attached. Type or paste the text you can read from it into the box, then Analyze. Files stay on this device.`,
+        );
+      } else {
+        setNoticeText(loaded.text);
+        setActionMessage(`Loaded “${loaded.fileName}”. Click Analyze.`);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not read file.";
+      setLastResult({ status: "error", message });
+      setActionMessage(message);
+    } finally {
+      setFileBusy(false);
+    }
+  }
+
   return (
     <main className="min-h-screen">
       <div className="mx-auto max-w-6xl px-5 pb-16 pt-8 md:px-8 md:pt-12">
-        <header className="anim-rise flex flex-wrap items-start justify-between gap-4 border-b border-[var(--line)] pb-8">
-          <div className="min-w-0 max-w-3xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
-              Safe public-document copilot
-            </p>
-            <h1 className="font-display mt-3 text-[clamp(2.4rem,6vw,4.25rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-[var(--ink)]">
-              Nagrik Saathi
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-7 text-[var(--ink-soft)] md:text-lg">
-              Paste or upload your notice. Understand it in plain language, then open only a reviewed official
-              channel—yourself.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <label className="cursor-pointer rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)]">
-                Upload PDF or text
-                <input
-                  type="file"
-                  accept=".txt,.md,.pdf,application/pdf,text/plain"
-                  className="hidden"
-                  onChange={async (event) => {
-                    const file = event.target.files?.[0];
-                    if (!file) return;
-                    try {
-                      const text = await extractFileText(file);
-                      setNoticeText(text);
-                      setActionMessage(`Loaded “${file.name}”. Click Analyze.`);
-                    } catch (error) {
-                      const message = error instanceof Error ? error.message : "Could not read file.";
-                      setLastResult({ status: "error", message });
-                      setActionMessage(message);
-                    }
-                    event.target.value = "";
-                  }}
-                />
-              </label>
-              {analyzed && (
-                <button
-                  type="button"
-                  onClick={clearWorkspace}
-                  className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
-                >
-                  Clear notice
-                </button>
-              )}
+        <header className="anim-rise border-b border-[var(--line)] pb-8">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0 max-w-3xl">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+                Government notice helper
+              </p>
+              <h1 className="font-display mt-3 text-[clamp(2.4rem,6vw,4.25rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-[var(--ink)]">
+                Nagrik Saathi
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--ink-soft)] md:text-lg">
+                Confused by an electricity bill, tax notice, challan, or payment receipt? Bring the document here.
+                We explain it in plain language and point you to a reviewed official website—you act there yourself.
+              </p>
             </div>
-            <p className="mt-4 text-xs leading-5 text-[var(--muted)]">
-              No payments or submissions. Nothing is preloaded—only the notice you provide.
-            </p>
-          </div>
-          <div className="flex flex-col items-end gap-2">
             {showInspector && (
               <div className="text-[11px] font-semibold text-[var(--ink-soft)]">
                 <span
@@ -335,42 +342,149 @@ export default function Workspace() {
               </div>
             )}
           </div>
+
+          <ol className="mt-8 grid gap-3 sm:grid-cols-3">
+            <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
+              <p className="font-mono text-[11px] text-[var(--muted)]">1</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Attach or paste</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">PDF, text, or a photo of the notice.</p>
+            </li>
+            <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
+              <p className="font-mono text-[11px] text-[var(--muted)]">2</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Analyze</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">See amount, date, and what it means.</p>
+            </li>
+            <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
+              <p className="font-mono text-[11px] text-[var(--muted)]">3</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Open official site</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">We never pay, log in, or submit for you.</p>
+            </li>
+          </ol>
         </header>
 
         <div className="mt-10 grid gap-12 lg:grid-cols-[1.25fr_0.75fr]">
           <section className="anim-rise-delay space-y-10">
             <div>
-              <div className="mb-3 flex items-end justify-between gap-3">
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--ink)]">Your notice</h2>
-                  <p className="text-xs text-[var(--muted)]">Paste the full notice, then analyze.</p>
+                  <p className="text-xs text-[var(--muted)]">
+                    Attach a file or paste text. Stays on this device.
+                    {attachedName ? (
+                      <>
+                        {" "}
+                        · Attached <span className="font-medium text-[var(--ink-soft)]">{attachedName}</span>
+                      </>
+                    ) : null}
+                  </p>
                 </div>
                 <button
                   type="button"
                   onClick={analyzeNotice}
-                  disabled={!noticeText.trim()}
+                  disabled={!noticeText.trim() || fileBusy}
                   className="rounded-[var(--radius)] bg-[var(--ink)] px-3 py-1.5 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Analyze
                 </button>
               </div>
-              <textarea
-                value={noticeText}
-                onChange={(event) => setNoticeText(event.target.value)}
-                rows={8}
-                placeholder="Paste your electricity bill, property tax notice, challan, or other government notice here…"
-                className="w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
-              />
+
+              <div
+                className={`rounded-[var(--radius)] border border-dashed p-3 transition ${
+                  dragOver ? "border-[var(--accent)] bg-[var(--accent-soft)]" : "border-[var(--line)] bg-[var(--panel)]"
+                }`}
+                onDragEnter={(event) => {
+                  event.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={(event) => {
+                  event.preventDefault();
+                  setDragOver(false);
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  setDragOver(false);
+                  const file = event.dataTransfer.files?.[0];
+                  if (file) void ingestFile(file);
+                }}
+              >
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={fileBusy}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)] disabled:opacity-40"
+                  >
+                    {fileBusy ? "Reading file…" : "Attach PDF, text, or photo"}
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept={ACCEPTED_NOTICE_FILES}
+                    className="sr-only"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) void ingestFile(file);
+                      event.target.value = "";
+                    }}
+                  />
+                  {analyzed && (
+                    <button
+                      type="button"
+                      onClick={clearWorkspace}
+                      className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+                    >
+                      Clear notice
+                    </button>
+                  )}
+                </div>
+                <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
+                  Or drop a file here · PDF · TXT · JPG · PNG · WebP
+                </p>
+
+                {imagePreviewUrl && (
+                  <figure className="mt-3 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--wash)]">
+                    <img
+                      src={imagePreviewUrl}
+                      alt={`Attached notice photo ${attachedName ?? ""}`}
+                      className="max-h-56 w-full object-contain"
+                    />
+                    <figcaption className="border-t border-[var(--line)] px-3 py-2 text-xs text-[var(--muted)]">
+                      Photo preview — type the text from this image into the box below, then Analyze.
+                    </figcaption>
+                  </figure>
+                )}
+
+                <textarea
+                  value={noticeText}
+                  onChange={(event) => setNoticeText(event.target.value)}
+                  rows={imagePreviewUrl ? 6 : 8}
+                  placeholder={
+                    imagePreviewUrl
+                      ? "Type or paste the text visible in the photo (amount, consumer number, date)…"
+                      : "Paste your electricity bill, property tax notice, challan, payment receipt, or other government notice here…"
+                  }
+                  className="mt-3 w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+                />
+              </div>
             </div>
 
             {!analyzed ? (
               <div className="border-t border-[var(--line)] pt-8">
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-[var(--ink)]">
-                  Waiting for your notice
+                  What you get after Analyze
                 </h2>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--ink-soft)]">
-                  Upload a PDF/text file or paste the notice above, then press Analyze. Actions unlock only after
-                  that—no demo content is shipped with the site.
+                <ul className="mt-4 max-w-xl space-y-2 text-sm leading-7 text-[var(--ink-soft)]">
+                  <li>A plain-language brief (English, Hindi, or Marathi)</li>
+                  <li>Deadline or paid-on date, amount, and reference if found</li>
+                  <li>A reviewed official portal link—you open and act yourself</li>
+                </ul>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)]">
+                  This is not a government website and does not replace one. No OTP, Aadhaar, PAN, or banking details
+                  are collected here.
                 </p>
               </div>
             ) : (
@@ -463,38 +577,58 @@ export default function Workspace() {
           </section>
 
           <aside className="anim-rise-delay space-y-8 lg:sticky lg:top-8 lg:self-start">
-            <div>
-              <h2 className="text-sm font-semibold text-[var(--ink)]">Actions</h2>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                {analyzed
-                  ? "Runs on your analyzed notice. Results show below."
-                  : "Analyze a notice first to unlock these steps."}
-              </p>
-              {tools.length === 0 ? (
-                <p className="mt-4 text-xs font-medium text-[var(--muted)]" aria-live="polite">
-                  Preparing tools…
-                </p>
-              ) : (
-                <ol className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
-                  {presets.map((preset, index) => (
-                    <li key={preset.label}>
-                      <button
-                        type="button"
-                        disabled={busy || !analyzed || tools.length === 0}
-                        onClick={() => void runTool(preset.name, preset.input)}
-                        className="flex min-h-12 w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
-                      >
-                        <span className="flex items-baseline gap-3">
-                          <span className="font-mono text-[11px] text-[var(--muted)]">{index + 1}</span>
-                          <span>{preset.label}</span>
-                        </span>
-                        <span className="text-[11px] text-[var(--muted)]">{busy ? "…" : "Run"}</span>
-                      </button>
-                    </li>
-                  ))}
+            {!analyzed ? (
+              <div>
+                <h2 className="text-sm font-semibold text-[var(--ink)]">How to use</h2>
+                <ol className="mt-4 space-y-3 text-sm leading-6 text-[var(--ink-soft)]">
+                  <li>
+                    <span className="font-semibold text-[var(--ink)]">Attach</span> a PDF, .txt, or photo—or paste
+                    the notice text in the box.
+                  </li>
+                  <li>
+                    Click <span className="font-semibold text-[var(--ink)]">Analyze</span> to get a plain-language
+                    brief.
+                  </li>
+                  <li>
+                    Use the official portal link we show—log in and act only on that site.
+                  </li>
                 </ol>
-              )}
-            </div>
+                <p className="mt-5 text-xs leading-5 text-[var(--muted)]">
+                  Extra steps (Marathi explain, reminder, family brief) appear here after Analyze.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <h2 className="text-sm font-semibold text-[var(--ink)]">Next steps</h2>
+                <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                  Optional helpers for this notice. Results show below.
+                </p>
+                {tools.length === 0 ? (
+                  <p className="mt-4 text-xs font-medium text-[var(--muted)]" aria-live="polite">
+                    Preparing tools…
+                  </p>
+                ) : (
+                  <ol className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+                    {presets.map((preset, index) => (
+                      <li key={preset.label}>
+                        <button
+                          type="button"
+                          disabled={busy || tools.length === 0}
+                          onClick={() => void runTool(preset.name, preset.input)}
+                          className="flex min-h-12 w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
+                        >
+                          <span className="flex items-baseline gap-3">
+                            <span className="font-mono text-[11px] text-[var(--muted)]">{index + 1}</span>
+                            <span>{preset.label}</span>
+                          </span>
+                          <span className="text-[11px] text-[var(--muted)]">{busy ? "…" : "Run"}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            )}
 
             {actionMessage && (
               <div className="border border-[var(--line)] bg-[var(--panel)] p-4" aria-live="polite">

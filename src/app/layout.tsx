@@ -15,8 +15,9 @@ const literata = Literata({
 });
 
 export const metadata: Metadata = {
-  title: "Nagrik Saathi | Safe Public-Document Copilot",
-  description: "Understand public documents, verify official channels, and plan your next safe step.",
+  title: "Nagrik Saathi | Understand your government notice",
+  description:
+    "Attach or paste an electricity bill, tax notice, challan, or receipt. Get a plain-language brief and a reviewed official portal—you act there yourself.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
