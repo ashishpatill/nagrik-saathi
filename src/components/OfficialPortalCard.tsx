@@ -26,7 +26,7 @@ export default function OfficialPortalCard({ departmentKey }: { departmentKey: s
         href={portal.portalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 inline-flex rounded-[calc(var(--radius)-2px)] bg-[var(--ink)] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[var(--accent)]"
+        className="mt-4 inline-flex rounded-[calc(var(--radius)-2px)] bg-[var(--ink)] px-3.5 py-2 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] hover:text-[#fafbfc]"
       >
         Open official portal
       </a>
