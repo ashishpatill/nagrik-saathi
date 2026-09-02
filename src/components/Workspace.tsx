@@ -3,12 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ApprovalModal from "@/components/ApprovalModal";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
-import { SAMPLE_CASE } from "@/data/sample-case";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
 import { analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
 import { extractFileText } from "@/lib/extract-file";
 import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
-import { getModelContext, initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
+import { initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
 import type { DocumentAnalysis, Language, ToolLog } from "@/lib/types";
 import type { WebMCPTool } from "@/types/webmcp";
 
@@ -69,6 +68,25 @@ function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
   ];
 }
 
+function describeActionResult(name: string, result: unknown): string {
+  if (!result || typeof result !== "object") return "Done.";
+  const data = result as Record<string, unknown>;
+  if (name === "get_notice_summary" && typeof data.summary === "string") return data.summary;
+  if (name === "find_official_portal") {
+    if (data.verified === true && typeof data.officialUrl === "string") {
+      return `${String(data.department ?? "Official portal")}\n${data.officialUrl}${
+        typeof data.helpline === "string" ? `\nHelpline ${data.helpline}` : ""
+      }`;
+    }
+    return typeof data.reason === "string" ? data.reason : "No reviewed portal matched.";
+  }
+  if (data.status === "cancelled_by_user") return "Cancelled — nothing was downloaded.";
+  if (data.status === "success") return "Prepared a download on this device.";
+  if (data.status === "draft_only" && typeof data.content === "string") return data.content;
+  if (typeof data.message === "string") return data.message;
+  return stringify(data);
+}
+
 export default function Workspace() {
   const [currentCase, setCurrentCase] = useState<DocumentAnalysis>(EMPTY_CASE);
   const [language, setLanguage] = useState<Language>("en");
@@ -80,11 +98,14 @@ export default function Workspace() {
   const [noticeText, setNoticeText] = useState("");
   const [status, setStatus] = useState("starting");
   const [lastResult, setLastResult] = useState<unknown>(null);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [portalHighlightUrl, setPortalHighlightUrl] = useState<string | null>(null);
   const [runtimeMode, setRuntimeMode] = useState<WebMCPRuntimeMode>("unavailable");
   const [busy, setBusy] = useState(false);
   const [showInspector, setShowInspector] = useState(false);
 
   const caseRef = useRef(currentCase);
+  const portalCardRef = useRef<HTMLDivElement | null>(null);
   const analyzed = hasAnalyzedNotice(currentCase);
   const presets = useMemo(() => buildPresets(currentCase), [currentCase]);
 
@@ -156,31 +177,46 @@ export default function Workspace() {
   async function runTool(name: string, input: Record<string, unknown>) {
     const target = tools.find((item) => item.name === name);
     if (!target) {
-      setLastResult({ status: "error", message: `Tool ${name} is not registered.` });
+      const message = "Tools are still preparing. Wait a moment, then try again.";
+      setLastResult({ status: "error", message });
+      setActionMessage(message);
       return;
     }
+
+    if (!analyzed && name !== "analyze_notice") {
+      const message = "Analyze a notice first, then run this action.";
+      setActionMessage(message);
+      return;
+    }
+
+    if (name === "get_notice_summary" && typeof input.language === "string") {
+      setLanguage(input.language as Language);
+    }
+
     setSelectedTool(name);
     setToolInput(stringify(input));
     setBusy(true);
+    setActionMessage(null);
     try {
-      const context = getModelContext();
-      const result =
-        runtimeMode !== "local" && context?.executeTool
-          ? await context.executeTool(target, stringify(input))
-          : await target.execute(input);
+      // Always execute the registered tool directly so the Result panel updates even
+      // when polyfill executeTool is unavailable or Origin-Agent-Cluster is false.
+      const result = await target.execute(input);
       setLastResult(result);
-      if (name === "get_notice_summary" && typeof input.language === "string") {
-        setLanguage(input.language as Language);
-      }
-      if (name === "analyze_notice") {
-        const next = caseRef.current;
-        if (hasAnalyzedNotice(next)) setNoticeText(next.sourceText);
+      setActionMessage(describeActionResult(name, result));
+
+      if (name === "find_official_portal" && result && typeof result === "object") {
+        const portal = result as { verified?: boolean; officialUrl?: string };
+        if (portal.verified && typeof portal.officialUrl === "string") {
+          setPortalHighlightUrl(portal.officialUrl);
+          window.setTimeout(() => {
+            portalCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 50);
+        }
       }
     } catch (error) {
-      setLastResult({
-        status: "error",
-        message: error instanceof Error ? error.message : "Tool failed.",
-      });
+      const message = error instanceof Error ? error.message : "Tool failed.";
+      setLastResult({ status: "error", message });
+      setActionMessage(message);
     } finally {
       setBusy(false);
     }
@@ -192,6 +228,7 @@ export default function Workspace() {
       input = JSON.parse(toolInput) as Record<string, unknown>;
     } catch {
       setLastResult({ status: "error", message: "Input must be valid JSON." });
+      setActionMessage("Input must be valid JSON.");
       return;
     }
     await runTool(selectedTool, input);
@@ -199,11 +236,13 @@ export default function Workspace() {
 
   function analyzeNotice() {
     if (!noticeText.trim()) {
-      setLastResult({ status: "error", message: "Paste or upload a notice first." });
+      setActionMessage("Paste or upload a notice first, then analyze.");
       return;
     }
     const result = analyzeText(noticeText, language);
     setCase(result);
+    setPortalHighlightUrl(null);
+    setActionMessage("Notice analyzed. Use the actions on the right.");
     setLastResult({ status: "analyzed", caseId: result.id, issuer: result.issuer });
   }
 
@@ -213,14 +252,9 @@ export default function Workspace() {
     setLanguage("en");
     setToolLogs([]);
     setLastResult(null);
+    setActionMessage(null);
+    setPortalHighlightUrl(null);
     void clearActiveCase();
-  }
-
-  function loadSample() {
-    setNoticeText(SAMPLE_CASE.sourceText);
-    setCase(SAMPLE_CASE);
-    setLanguage("en");
-    setLastResult({ status: "loaded", message: "Sample MSEDCL notice is ready. Run the demo steps." });
   }
 
   return (
@@ -239,14 +273,7 @@ export default function Workspace() {
               channel—yourself.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={loadSample}
-                className="rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)]"
-              >
-                Load sample notice
-              </button>
-              <label className="cursor-pointer rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]">
+              <label className="cursor-pointer rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)]">
                 Upload PDF or text
                 <input
                   type="file"
@@ -258,12 +285,11 @@ export default function Workspace() {
                     try {
                       const text = await extractFileText(file);
                       setNoticeText(text);
-                      setLastResult({ status: "loaded", message: `Loaded ${file.name}. Click Analyze.` });
+                      setActionMessage(`Loaded “${file.name}”. Click Analyze.`);
                     } catch (error) {
-                      setLastResult({
-                        status: "error",
-                        message: error instanceof Error ? error.message : "Could not read file.",
-                      });
+                      const message = error instanceof Error ? error.message : "Could not read file.";
+                      setLastResult({ status: "error", message });
+                      setActionMessage(message);
                     }
                     event.target.value = "";
                   }}
@@ -280,7 +306,7 @@ export default function Workspace() {
               )}
             </div>
             <p className="mt-4 text-xs leading-5 text-[var(--muted)]">
-              No payments or submissions are performed by this app. Notices stay in this browser by default.
+              No payments or submissions. Nothing is preloaded—only the notice you provide.
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
@@ -305,14 +331,14 @@ export default function Workspace() {
             <div>
               <div className="mb-3 flex items-end justify-between gap-3">
                 <div>
-                  <h2 className="text-sm font-semibold text-[var(--ink)]">Notice text</h2>
+                  <h2 className="text-sm font-semibold text-[var(--ink)]">Your notice</h2>
                   <p className="text-xs text-[var(--muted)]">Paste the full notice, then analyze.</p>
                 </div>
                 <button
                   type="button"
                   onClick={analyzeNotice}
                   disabled={!noticeText.trim()}
-                  className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--ink)] px-3 py-1.5 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-[var(--radius)] bg-[var(--ink)] px-3 py-1.5 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Analyze
                 </button>
@@ -332,8 +358,8 @@ export default function Workspace() {
                   Waiting for your notice
                 </h2>
                 <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--ink-soft)]">
-                  Upload a PDF/text file or paste the notice above, then press Analyze. Results, portals, and tools
-                  appear only from what you provide—nothing is preloaded.
+                  Upload a PDF/text file or paste the notice above, then press Analyze. Actions unlock only after
+                  that—no demo content is shipped with the site.
                 </p>
               </div>
             ) : (
@@ -372,9 +398,11 @@ export default function Workspace() {
                   <div>
                     <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Source</dt>
                     <dd
-                      className={`mt-1 text-lg font-semibold ${currentCase.scamRiskScore === "safe" ? "text-[var(--signal)]" : "text-[var(--warn)]"}`}
+                      className={`mt-1 text-lg font-semibold ${
+                        currentCase.scamRiskScore === "safe" ? "text-[var(--signal)]" : "text-[var(--warn)]"
+                      }`}
                     >
-                      {currentCase.scamRiskScore === "safe" ? "Reviewed" : "Check"}
+                      {currentCase.scamRiskScore === "safe" ? "Reviewed cues" : "Check carefully"}
                     </dd>
                   </div>
                 </dl>
@@ -400,8 +428,11 @@ export default function Workspace() {
                   <Checklist title="Keep nearby" items={currentCase.requiredDocuments} />
                 </div>
 
-                <div className="mt-8 space-y-5">
-                  <OfficialPortalCard departmentKey={currentCase.officialDepartmentKey} />
+                <div ref={portalCardRef} className="mt-8 space-y-5">
+                  <OfficialPortalCard
+                    departmentKey={currentCase.officialDepartmentKey}
+                    highlightUrl={portalHighlightUrl}
+                  />
                   <p className="text-sm leading-6 text-[var(--muted)]">{currentCase.riskReason}</p>
                 </div>
               </article>
@@ -410,10 +441,10 @@ export default function Workspace() {
 
           <aside className="anim-rise-delay space-y-8 lg:sticky lg:top-8 lg:self-start">
             <div>
-              <h2 className="text-sm font-semibold text-[var(--ink)]">Next actions</h2>
+              <h2 className="text-sm font-semibold text-[var(--ink)]">Actions</h2>
               <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
                 {analyzed
-                  ? "Run against the notice you analyzed. No mock data."
+                  ? "Runs on your analyzed notice. Results show below."
                   : "Analyze a notice first to unlock these steps."}
               </p>
               {tools.length === 0 ? (
@@ -426,7 +457,7 @@ export default function Workspace() {
                     <li key={preset.label}>
                       <button
                         type="button"
-                        disabled={busy || !analyzed}
+                        disabled={busy || !analyzed || tools.length === 0}
                         onClick={() => void runTool(preset.name, preset.input)}
                         className="flex min-h-12 w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
                       >
@@ -441,6 +472,23 @@ export default function Workspace() {
                 </ol>
               )}
             </div>
+
+            {actionMessage && (
+              <div className="border border-[var(--line)] bg-[var(--panel)] p-4" aria-live="polite">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]">Result</p>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[var(--ink-soft)]">{actionMessage}</p>
+                {portalHighlightUrl && (
+                  <a
+                    href={portalHighlightUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex rounded-[var(--radius)] bg-[var(--ink)] px-3.5 py-2 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)]"
+                  >
+                    Open official portal
+                  </a>
+                )}
+              </div>
+            )}
 
             {toolLogs.length > 0 && (
               <div>
