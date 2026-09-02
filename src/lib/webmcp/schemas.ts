@@ -11,7 +11,7 @@ export const portalSchema = z.object({
 });
 
 export const analyzeSchema = z.object({
-  sourceText: z.string().trim().min(1).max(50_000).optional(),
+  sourceText: z.string().trim().min(1).max(50_000),
   language: z.enum(["en", "hi", "mr"]).default("en"),
 });
 
@@ -44,9 +44,10 @@ export const jsonSchemas = {
   analyze: {
     type: "object",
     properties: {
-      sourceText: { type: "string", maxLength: 50000, description: "Optional notice text to analyze." },
+      sourceText: { type: "string", minLength: 1, maxLength: 50000, description: "Notice text to analyze." },
       language: { type: "string", enum: ["en", "hi", "mr"], default: "en" },
     },
+    required: ["sourceText"],
     additionalProperties: false,
   },
   reminder: {

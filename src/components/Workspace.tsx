@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ApprovalModal from "@/components/ApprovalModal";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
 import { SAMPLE_CASE } from "@/data/sample-case";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
-import { analyzeText } from "@/lib/extract";
+import { analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
 import { extractFileText } from "@/lib/extract-file";
-import { getCase, saveCase } from "@/lib/storage";
+import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
 import { getModelContext, initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
 import type { DocumentAnalysis, Language, ToolLog } from "@/lib/types";
 import type { WebMCPTool } from "@/types/webmcp";
@@ -15,24 +15,6 @@ import type { WebMCPTool } from "@/types/webmcp";
 type PendingApproval = { action: string; payload: unknown; resolve: (value: boolean) => void };
 
 type ToolPreset = { label: string; name: string; input: Record<string, unknown> };
-
-const PRESETS: ToolPreset[] = [
-  { label: "Explain in Marathi", name: "get_notice_summary", input: { language: "mr" } },
-  {
-    label: "Show official portal",
-    name: "find_official_portal",
-    input: { department: "MSEDCL", service: "bill_payment", state: "Maharashtra" },
-  },
-  {
-    label: "Add calendar reminder",
-    name: "schedule_reminder",
-    input: { title: "Review MSEDCL notice deadline", date: "2026-09-02" },
-  },
-  { label: "Export family brief", name: "export_family_brief", input: { language: "en" } },
-];
-
-const PRESET_HINT =
-  "Sample is already loaded. Run the four steps in order—tools stay local to this page.";
 
 function modeLabel(mode: WebMCPRuntimeMode): string {
   switch (mode) {
@@ -68,15 +50,34 @@ function offerDownload(result: unknown) {
   }
 }
 
+function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
+  const portal = portalHintsForCase(doc);
+  const reminderDate = doc.deadlineDate ?? new Date().toISOString().slice(0, 10);
+  return [
+    { label: "Explain in Marathi", name: "get_notice_summary", input: { language: "mr" } },
+    {
+      label: "Show official portal",
+      name: "find_official_portal",
+      input: { department: portal.department, service: portal.service, state: portal.state },
+    },
+    {
+      label: "Add calendar reminder",
+      name: "schedule_reminder",
+      input: { title: `Review notice deadline · ${doc.issuer || "notice"}`, date: reminderDate },
+    },
+    { label: "Export family brief", name: "export_family_brief", input: { language: "en" } },
+  ];
+}
+
 export default function Workspace() {
-  const [currentCase, setCurrentCase] = useState<DocumentAnalysis>(SAMPLE_CASE);
+  const [currentCase, setCurrentCase] = useState<DocumentAnalysis>(EMPTY_CASE);
   const [language, setLanguage] = useState<Language>("en");
   const [toolLogs, setToolLogs] = useState<ToolLog[]>([]);
   const [tools, setTools] = useState<WebMCPTool[]>([]);
   const [selectedTool, setSelectedTool] = useState("");
   const [toolInput, setToolInput] = useState('{"language":"mr"}');
   const [pendingApproval, setPendingApproval] = useState<PendingApproval | null>(null);
-  const [noticeText, setNoticeText] = useState(SAMPLE_CASE.sourceText);
+  const [noticeText, setNoticeText] = useState("");
   const [status, setStatus] = useState("starting");
   const [lastResult, setLastResult] = useState<unknown>(null);
   const [runtimeMode, setRuntimeMode] = useState<WebMCPRuntimeMode>("unavailable");
@@ -84,6 +85,8 @@ export default function Workspace() {
   const [showInspector, setShowInspector] = useState(false);
 
   const caseRef = useRef(currentCase);
+  const analyzed = hasAnalyzedNotice(currentCase);
+  const presets = useMemo(() => buildPresets(currentCase), [currentCase]);
 
   useEffect(() => {
     caseRef.current = currentCase;
@@ -110,11 +113,11 @@ export default function Workspace() {
 
   useEffect(() => {
     initializeWebMCP();
-    void getCase(SAMPLE_CASE.id).then((saved) => {
-      if (saved) {
-        caseRef.current = saved;
-        setCurrentCase(saved);
-      }
+    void getActiveCase().then((saved) => {
+      if (!saved || !hasAnalyzedNotice(saved)) return;
+      caseRef.current = saved;
+      setCurrentCase(saved);
+      setNoticeText(saved.sourceText);
     });
 
     let cleanup: () => void = () => undefined;
@@ -166,9 +169,12 @@ export default function Workspace() {
           ? await context.executeTool(target, stringify(input))
           : await target.execute(input);
       setLastResult(result);
-      // Downloads are offered once via onLog when the tool execute wrapper succeeds.
       if (name === "get_notice_summary" && typeof input.language === "string") {
         setLanguage(input.language as Language);
+      }
+      if (name === "analyze_notice") {
+        const next = caseRef.current;
+        if (hasAnalyzedNotice(next)) setNoticeText(next.sourceText);
       }
     } catch (error) {
       setLastResult({
@@ -191,17 +197,30 @@ export default function Workspace() {
     await runTool(selectedTool, input);
   }
 
+  function analyzeNotice() {
+    if (!noticeText.trim()) {
+      setLastResult({ status: "error", message: "Paste or upload a notice first." });
+      return;
+    }
+    const result = analyzeText(noticeText, language);
+    setCase(result);
+    setLastResult({ status: "analyzed", caseId: result.id, issuer: result.issuer });
+  }
+
+  function clearWorkspace() {
+    setNoticeText("");
+    setCase(EMPTY_CASE);
+    setLanguage("en");
+    setToolLogs([]);
+    setLastResult(null);
+    void clearActiveCase();
+  }
+
   function loadSample() {
     setNoticeText(SAMPLE_CASE.sourceText);
     setCase(SAMPLE_CASE);
     setLanguage("en");
-    setLastResult({ status: "loaded", message: "Sample MSEDCL notice is ready." });
-  }
-
-  function analyzeNotice() {
-    const result = analyzeText(noticeText, language);
-    setCase(result);
-    setLastResult({ status: "analyzed", caseId: result.id });
+    setLastResult({ status: "loaded", message: "Sample MSEDCL notice is ready. Run the demo steps." });
   }
 
   return (
@@ -216,18 +235,19 @@ export default function Workspace() {
               Nagrik Saathi
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-[var(--ink-soft)] md:text-lg">
-              Understand a government notice in plain language, then open only a reviewed official channel—yourself.
+              Paste or upload your notice. Understand it in plain language, then open only a reviewed official
+              channel—yourself.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={loadSample}
-                className="rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]"
+                className="rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)]"
               >
                 Load sample notice
               </button>
-              <label className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]">
-                Add text or PDF
+              <label className="cursor-pointer rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]">
+                Upload PDF or text
                 <input
                   type="file"
                   accept=".txt,.md,.pdf,application/pdf,text/plain"
@@ -236,19 +256,31 @@ export default function Workspace() {
                     const file = event.target.files?.[0];
                     if (!file) return;
                     try {
-                      setNoticeText(await extractFileText(file));
+                      const text = await extractFileText(file);
+                      setNoticeText(text);
+                      setLastResult({ status: "loaded", message: `Loaded ${file.name}. Click Analyze.` });
                     } catch (error) {
                       setLastResult({
                         status: "error",
                         message: error instanceof Error ? error.message : "Could not read file.",
                       });
                     }
+                    event.target.value = "";
                   }}
                 />
               </label>
+              {analyzed && (
+                <button
+                  type="button"
+                  onClick={clearWorkspace}
+                  className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+                >
+                  Clear notice
+                </button>
+              )}
             </div>
             <p className="mt-4 text-xs leading-5 text-[var(--muted)]">
-              No payments or submissions are performed by this app.
+              No payments or submissions are performed by this app. Notices stay in this browser by default.
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
@@ -274,12 +306,13 @@ export default function Workspace() {
               <div className="mb-3 flex items-end justify-between gap-3">
                 <div>
                   <h2 className="text-sm font-semibold text-[var(--ink)]">Notice text</h2>
-                  <p className="text-xs text-[var(--muted)]">Stays in this browser by default.</p>
+                  <p className="text-xs text-[var(--muted)]">Paste the full notice, then analyze.</p>
                 </div>
                 <button
                   type="button"
                   onClick={analyzeNotice}
-                  className="rounded-[var(--radius)] border border-[var(--line)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-soft)] hover:bg-[var(--wash)]"
+                  disabled={!noticeText.trim()}
+                  className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--ink)] px-3 py-1.5 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Analyze
                 </button>
@@ -287,94 +320,113 @@ export default function Workspace() {
               <textarea
                 value={noticeText}
                 onChange={(event) => setNoticeText(event.target.value)}
-                rows={4}
-                className="w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] outline-none focus:border-[var(--accent)]"
+                rows={8}
+                placeholder="Paste your electricity bill, property tax notice, challan, or other government notice here…"
+                className="w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
               />
             </div>
 
-            <article className="border-t border-[var(--line)] pt-8">
-              <div className="flex flex-wrap items-start justify-between gap-6">
-                <div className="min-w-0">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-                    {currentCase.documentType.replaceAll("_", " ")}
-                  </p>
-                  <h2 className="font-display mt-2 text-2xl font-semibold tracking-tight text-[var(--ink)] md:text-[1.85rem]">
-                    {currentCase.issuer}
-                  </h2>
-                  <p className="mt-2 text-sm text-[var(--muted)]">
-                    Reference <span className="font-mono text-[var(--ink)]">{currentCase.referenceNumber}</span>
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--warn)]">Deadline</p>
-                  <p className="mt-1 font-mono text-2xl font-semibold text-[var(--ink)]">
-                    {currentCase.deadlineDate ?? "—"}
-                  </p>
-                </div>
+            {!analyzed ? (
+              <div className="border-t border-[var(--line)] pt-8">
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-[var(--ink)]">
+                  Waiting for your notice
+                </h2>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--ink-soft)]">
+                  Upload a PDF/text file or paste the notice above, then press Analyze. Results, portals, and tools
+                  appear only from what you provide—nothing is preloaded.
+                </p>
               </div>
-
-              <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-[var(--line)] py-5">
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Amount</dt>
-                  <dd className="mt-1 text-lg font-semibold text-[var(--ink)]">
-                    {currentCase.amountDue == null ? "—" : `₹${currentCase.amountDue.toLocaleString("en-IN")}`}
-                  </dd>
+            ) : (
+              <article className="border-t border-[var(--line)] pt-8">
+                <div className="flex flex-wrap items-start justify-between gap-6">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                      {currentCase.documentType.replaceAll("_", " ")}
+                    </p>
+                    <h2 className="font-display mt-2 text-2xl font-semibold tracking-tight text-[var(--ink)] md:text-[1.85rem]">
+                      {currentCase.issuer}
+                    </h2>
+                    <p className="mt-2 text-sm text-[var(--muted)]">
+                      Reference <span className="font-mono text-[var(--ink)]">{currentCase.referenceNumber}</span>
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--warn)]">Deadline</p>
+                    <p className="mt-1 font-mono text-2xl font-semibold text-[var(--ink)]">
+                      {currentCase.deadlineDate ?? "—"}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Urgency</dt>
-                  <dd className="mt-1 text-lg font-semibold capitalize text-[var(--ink)]">{currentCase.urgency}</dd>
-                </div>
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Source</dt>
-                  <dd className="mt-1 text-lg font-semibold text-[var(--signal)]">
-                    {currentCase.scamRiskScore === "safe" ? "Reviewed" : "Check"}
-                  </dd>
-                </div>
-              </dl>
 
-              <div className="mt-8">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-semibold">Plain-language brief</h3>
-                  <select
-                    value={language}
-                    onChange={(event) => setLanguage(event.target.value as Language)}
-                    className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
-                  >
-                    <option value="en">English</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="mr">मराठी</option>
-                  </select>
+                <dl className="mt-8 grid grid-cols-3 gap-4 border-y border-[var(--line)] py-5">
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Amount</dt>
+                    <dd className="mt-1 text-lg font-semibold text-[var(--ink)]">
+                      {currentCase.amountDue == null ? "—" : `₹${currentCase.amountDue.toLocaleString("en-IN")}`}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Urgency</dt>
+                    <dd className="mt-1 text-lg font-semibold capitalize text-[var(--ink)]">{currentCase.urgency}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Source</dt>
+                    <dd
+                      className={`mt-1 text-lg font-semibold ${currentCase.scamRiskScore === "safe" ? "text-[var(--signal)]" : "text-[var(--warn)]"}`}
+                    >
+                      {currentCase.scamRiskScore === "safe" ? "Reviewed" : "Check"}
+                    </dd>
+                  </div>
+                </dl>
+
+                <div className="mt-8">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="text-sm font-semibold">Plain-language brief</h3>
+                    <select
+                      value={language}
+                      onChange={(event) => setLanguage(event.target.value as Language)}
+                      className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
+                    >
+                      <option value="en">English</option>
+                      <option value="hi">हिन्दी</option>
+                      <option value="mr">मराठी</option>
+                    </select>
+                  </div>
+                  <p className="max-w-2xl text-[15px] leading-7 text-[var(--ink-soft)]">{currentCase.summary[language]}</p>
                 </div>
-                <p className="max-w-2xl text-[15px] leading-7 text-[var(--ink-soft)]">{currentCase.summary[language]}</p>
-              </div>
 
-              <div className="mt-8 grid gap-8 md:grid-cols-2">
-                <Checklist title="What to do next" items={currentCase.requiredActionItems} />
-                <Checklist title="Keep nearby" items={currentCase.requiredDocuments} />
-              </div>
+                <div className="mt-8 grid gap-8 md:grid-cols-2">
+                  <Checklist title="What to do next" items={currentCase.requiredActionItems} />
+                  <Checklist title="Keep nearby" items={currentCase.requiredDocuments} />
+                </div>
 
-              <div className="mt-8 space-y-5">
-                <OfficialPortalCard departmentKey={currentCase.officialDepartmentKey} />
-                <p className="text-sm leading-6 text-[var(--muted)]">{currentCase.riskReason}</p>
-              </div>
-            </article>
+                <div className="mt-8 space-y-5">
+                  <OfficialPortalCard departmentKey={currentCase.officialDepartmentKey} />
+                  <p className="text-sm leading-6 text-[var(--muted)]">{currentCase.riskReason}</p>
+                </div>
+              </article>
+            )}
           </section>
 
           <aside className="anim-rise-delay space-y-8 lg:sticky lg:top-8 lg:self-start">
             <div>
-              <h2 className="text-sm font-semibold text-[var(--ink)]">Try the demo path</h2>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{PRESET_HINT}</p>
+              <h2 className="text-sm font-semibold text-[var(--ink)]">Next actions</h2>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                {analyzed
+                  ? "Run against the notice you analyzed. No mock data."
+                  : "Analyze a notice first to unlock these steps."}
+              </p>
               {tools.length === 0 ? (
                 <p className="mt-4 text-xs font-medium text-[var(--muted)]" aria-live="polite">
                   Preparing tools…
                 </p>
               ) : (
                 <ol className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
-                  {PRESETS.map((preset, index) => (
+                  {presets.map((preset, index) => (
                     <li key={preset.label}>
                       <button
                         type="button"
-                        disabled={busy}
+                        disabled={busy || !analyzed}
                         onClick={() => void runTool(preset.name, preset.input)}
                         className="flex min-h-12 w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
                       >
@@ -439,7 +491,7 @@ export default function Workspace() {
                   type="button"
                   disabled={!selectedTool || busy}
                   onClick={() => void invokeSelectedTool()}
-                  className="mt-2 w-full rounded-[var(--radius)] bg-[var(--ink)] px-3 py-2 text-xs font-semibold text-white disabled:opacity-40"
+                  className="mt-2 w-full rounded-[var(--radius)] bg-[var(--ink)] px-3 py-2 text-xs font-semibold text-[#fafbfc] disabled:opacity-40"
                 >
                   Execute
                 </button>

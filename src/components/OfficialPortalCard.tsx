@@ -1,7 +1,13 @@
 import { getPortalByKey } from "@/lib/portals";
 import { validateOfficialPortal } from "@/lib/safety";
 
-export default function OfficialPortalCard({ departmentKey }: { departmentKey: string }) {
+export default function OfficialPortalCard({
+  departmentKey,
+  highlightUrl = null,
+}: {
+  departmentKey: string;
+  highlightUrl?: string | null;
+}) {
   const portal = getPortalByKey(departmentKey);
   if (!portal || !validateOfficialPortal(portal)) {
     return (
@@ -14,8 +20,12 @@ export default function OfficialPortalCard({ departmentKey }: { departmentKey: s
     );
   }
 
+  const emphasized = Boolean(highlightUrl && highlightUrl === portal.portalUrl);
+
   return (
-    <div className="border-t border-[var(--line)] pt-5">
+    <div
+      className={`border-t border-[var(--line)] pt-5 ${emphasized ? "rounded-[var(--radius)] bg-[var(--accent-soft)] px-4 pb-4" : ""}`}
+    >
       <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--signal)]">Reviewed official channel</p>
       <h3 className="mt-2 text-base font-semibold text-[var(--ink)]">{portal.departmentName}</h3>
       <p className="mt-1 font-mono text-xs text-[var(--muted)]">{portal.verifiedDomain}</p>

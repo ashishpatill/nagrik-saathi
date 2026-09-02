@@ -3,7 +3,8 @@ import { VERIFIED_PORTALS } from "@/data/official-portals";
 import { buildIcs } from "@/lib/calendar";
 import { findOfficialPortal, getPortalByKey } from "@/lib/portals";
 import { redactSensitiveData, validateOfficialPortal } from "@/lib/safety";
-import { languageSchema, portalSchema } from "@/lib/webmcp/schemas";
+import { languageSchema, portalSchema, analyzeSchema } from "@/lib/webmcp/schemas";
+import { analyzeText } from "@/lib/extract";
 
 describe("safe public-document boundaries", () => {
   it("redacts Aadhaar, PAN, and long account-like values", () => {
@@ -37,7 +38,7 @@ describe("safe public-document boundaries", () => {
     }
   });
 
-  it("resolves the sample MSEDCL portal key", () => {
+  it("resolves the curated MSEDCL portal key", () => {
     const portal = getPortalByKey("msedcl_power");
     expect(portal?.verifiedDomain).toBe("wss.mahadiscom.in");
     expect(portal && validateOfficialPortal(portal)).toBe(true);
@@ -47,5 +48,22 @@ describe("safe public-document boundaries", () => {
     expect(languageSchema.parse({})).toEqual({ language: "en" });
     expect(portalSchema.parse({ department: "MSEDCL", service: "bill_payment", state: "Maharashtra" }).department).toBe("MSEDCL");
     expect(() => portalSchema.parse({ department: "MSEDCL", service: "bill_payment" })).toThrow();
+    expect(analyzeSchema.parse({ sourceText: "MSEDCL bill ₹100 due 2026-09-02" }).sourceText).toContain("MSEDCL");
+    expect(() => analyzeSchema.parse({})).toThrow();
+  });
+
+  it("extracts MSEDCL fields from free-form notice text", () => {
+    const result = analyzeText(
+      "MSEDCL Pune Urban Circle. Consumer number BU-411038-9921. Amount due ₹2,430. Please pay by 02 September 2026.",
+    );
+    expect(result.officialDepartmentKey).toBe("msedcl_power");
+    expect(result.amountDue).toBe(2430);
+    expect(result.deadlineDate).toBe("2026-09-02");
+    expect(result.referenceNumber).toBe("BU-411038-9921");
+    expect(result.summary.en).not.toMatch(/sample/i);
+  });
+
+  it("returns an empty case for blank input", () => {
+    expect(analyzeText("").id).toBe("empty");
   });
 });

@@ -11,8 +11,8 @@ pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`. The preloaded sample is deliberately fake:
-`SAMPLE-BU-411038-9921`, MSEDCL Pune Urban, ₹2,430 due on 2 September 2026.
+Open `http://localhost:3000`. Paste or upload a real notice, then click
+**Analyze**. Nothing is preloaded.
 
 ## Test and build
 

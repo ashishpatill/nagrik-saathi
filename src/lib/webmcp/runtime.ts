@@ -2,7 +2,7 @@
 
 import { initializeWebMCPPolyfill } from "@mcp-b/webmcp-polyfill";
 import { buildIcs, calendarDataUrl } from "@/lib/calendar";
-import { analyzeText, getSampleText } from "@/lib/extract";
+import { analyzeText } from "@/lib/extract";
 import { findOfficialPortal } from "@/lib/portals";
 import { redactSensitiveData, scamSignals, truncateForTool } from "@/lib/safety";
 import { installFallbackModelContext } from "@/lib/webmcp/fallback-context";
@@ -200,7 +200,10 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       jsonSchemas.analyze,
       async (input) => {
         const args = analyzeSchema.parse(input);
-        const next = analyzeText(args.sourceText ?? getSampleText(), args.language);
+        if (!args.sourceText?.trim()) {
+          throw new Error("Provide notice text in sourceText. This app does not use sample notices.");
+        }
+        const next = analyzeText(args.sourceText, args.language);
         setCase(next);
         return {
           status: "analyzed",

@@ -27,5 +27,5 @@ export async function extractFileText(file: File): Promise<string> {
     }
     return pages.join("\n").trim();
   }
-  throw new Error("For image notices, paste the text here after OCR. PDF and text files are supported in this demo.");
+  throw new Error("For image notices, paste the text after OCR. PDF and plain-text files are supported.");
 }
