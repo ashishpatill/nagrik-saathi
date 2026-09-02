@@ -27,4 +27,19 @@ describe("analyzeText", () => {
   it("returns empty analysis for blank input", () => {
     expect(hasAnalyzedNotice(analyzeText("   "))).toBe(false);
   });
+
+  it("matches traffic challan notices to the traffic portal", () => {
+    const result = analyzeText(
+      "Maharashtra Traffic Police e-challan notice. Challan number MH-TR-998812. Amount due ₹500. Pay by 2026-11-01.",
+      "en",
+    );
+    expect(result.officialDepartmentKey).toBe("mahatraffic");
+    expect(result.documentType).toBe("traffic_challan");
+    expect(portalHintsForCase(result).service).toBe("traffic_challan");
+  });
+
+  it("matches DigiLocker notices to the DigiLocker portal", () => {
+    const result = analyzeText("Your DigiLocker document request is pending. Reference DL-778821.", "en");
+    expect(result.officialDepartmentKey).toBe("digilocker");
+  });
 });

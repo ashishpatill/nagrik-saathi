@@ -32,7 +32,7 @@ type IssuerMatch = {
 
 const ISSUER_RULES: Array<{ test: RegExp; match: IssuerMatch }> = [
   {
-    test: /\b(msedcl|mahadiscom|mahavitaran|electricity|वीज|बिजली)\b/i,
+    test: /\b(msedcl|mahadiscom|mahavitaran|electricity\s+bill|power\s+bill|वीज\s*बिल|बिजली\s*बिल)\b/i,
     match: {
       documentType: "electricity_bill",
       issuer: "Maharashtra State Electricity Distribution Co. (MSEDCL)",
@@ -42,12 +42,12 @@ const ISSUER_RULES: Array<{ test: RegExp; match: IssuerMatch }> = [
     },
   },
   {
-    test: /\b(property\s*tax|मालमत्ता कर|pmc|pune municipal)\b/i,
+    test: /\b(merc|electricity\s+regulatory)\b/i,
     match: {
-      documentType: "property_tax",
-      issuer: "Pune Municipal Corporation",
-      departmentKey: "pune_municipal",
-      service: "property_tax",
+      documentType: "other",
+      issuer: "Maharashtra Electricity Regulatory Commission",
+      departmentKey: "merc",
+      service: "electricity_regulation",
       state: "Maharashtra",
     },
   },
@@ -62,7 +62,17 @@ const ISSUER_RULES: Array<{ test: RegExp; match: IssuerMatch }> = [
     },
   },
   {
-    test: /\b(traffic|challan|echallan|परिवहन|ट्रॅफिक)\b/i,
+    test: /\b(property\s*tax|मालमत्ता\s*कर|pmc|pune\s+municipal)\b/i,
+    match: {
+      documentType: "property_tax",
+      issuer: "Pune Municipal Corporation",
+      departmentKey: "pune_municipal",
+      service: "property_tax",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(mahatraffic|traffic\s*police|e-?challan|echallan|ट्रॅफिक|ट्रैफिक)\b/i,
     match: {
       documentType: "traffic_challan",
       issuer: "Maharashtra Traffic Police",
@@ -72,12 +82,182 @@ const ISSUER_RULES: Array<{ test: RegExp; match: IssuerMatch }> = [
     },
   },
   {
-    test: /\b(grievance|तक्रार|cpgrams|aaple\s*sarkar)\b/i,
+    test: /\b(parivahan|driving\s*licen[cs]e|vehicle\s*registr)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Parivahan Sewa",
+      departmentKey: "parivahan",
+      service: "vehicle_services",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(rto|transport\s+department|परिवहन\s*विभाग)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Transport Department",
+      departmentKey: "maha_rto",
+      service: "transport_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(msrtc|st\s*bus|state\s+transport)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra State Road Transport",
+      departmentKey: "mahatranscom",
+      service: "bus_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(cyber\s*crime|cybercrime|mahacyber|साइबर)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "National Cyber Crime Reporting Portal",
+      departmentKey: "cybercrime",
+      service: "cyber_complaint",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(maha\s*police|महाराष्ट्र\s*पोलीस|police\s+station)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Police",
+      departmentKey: "mahapolice",
+      service: "police_information",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(cpgrams|pgportal|central(?:ized)?\s+public\s+grievance)\b/i,
+    match: {
+      documentType: "grievance_notice",
+      issuer: "Centralized Public Grievance Redress",
+      departmentKey: "cpgrams",
+      service: "grievance",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(grievance|तक्रार|aaple\s*sarkar\s*grievance|grievances\.maharashtra)\b/i,
     match: {
       documentType: "grievance_notice",
       issuer: "Aaple Sarkar grievance redressal",
       departmentKey: "maha_grievances",
       service: "grievance",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(aaple\s*sarkar|mahaonline|right\s+to\s+services)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Aaple Sarkar citizen services",
+      departmentKey: "aaple_sarkar",
+      service: "state_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(mahadbt|dbt|benefit\s+scheme)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "MahaDBT benefit services",
+      departmentKey: "mahadbt",
+      service: "benefits",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(digilocker|डिजी\s*लॉकर)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "DigiLocker",
+      departmentKey: "digilocker",
+      service: "document_services",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(income\s*tax|incometax|आयकर|e-?filing)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Income Tax e-Filing",
+      departmentKey: "incometax",
+      service: "tax_information",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(consumer\s*helpline|consumer\s*complaint|उपभोक्ता)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "National Consumer Helpline",
+      departmentKey: "consumer_helpline",
+      service: "consumer_complaint",
+      state: "India",
+    },
+  },
+  {
+    test: /\b(jeevan\s*pradhikaran|\bmjp\b|water\s+(?:bill|supply)|पाणी\s*बिल)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Jeevan Pradhikaran",
+      departmentKey: "maha_jal",
+      service: "water_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(agriculture|कृषि|krishi)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Agriculture Department",
+      departmentKey: "maha_agri",
+      service: "agriculture_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(school\s+education|शिक्षण|education\s+department)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra School Education Department",
+      departmentKey: "maha_education",
+      service: "education_information",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(public\s+health|आरोग्य|arogya)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Public Health Department",
+      departmentKey: "maha_health",
+      service: "health_information",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(labour|labor|कामगार|mahakamgar)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Labour Department",
+      departmentKey: "maha_labor",
+      service: "labour_services",
+      state: "Maharashtra",
+    },
+  },
+  {
+    test: /\b(revenue\s+department|महसूल|7\/12|saat\s*bara)\b/i,
+    match: {
+      documentType: "other",
+      issuer: "Maharashtra Revenue Department",
+      departmentKey: "maha_revenue",
+      service: "revenue_information",
       state: "Maharashtra",
     },
   },

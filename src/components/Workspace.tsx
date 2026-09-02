@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ApprovalModal from "@/components/ApprovalModal";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
+import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
 import { analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
 import { extractFileText } from "@/lib/extract-file";
@@ -434,6 +435,7 @@ export default function Workspace() {
                     highlightUrl={portalHighlightUrl}
                   />
                   <p className="text-sm leading-6 text-[var(--muted)]">{currentCase.riskReason}</p>
+                  <ReviewedPortalDirectory activeKey={currentCase.officialDepartmentKey} />
                 </div>
               </article>
             )}
