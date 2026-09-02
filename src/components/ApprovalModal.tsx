@@ -2,6 +2,21 @@
 
 type PendingApproval = { action: string; payload: unknown; resolve: (value: boolean) => void };
 
+function humanPayload(payload: unknown): string {
+  if (!payload || typeof payload !== "object") {
+    return "Review this request before continuing.";
+  }
+  const data = payload as Record<string, unknown>;
+  if (typeof data.title === "string" && typeof data.date === "string") {
+    return `Reminder “${data.title}” for ${data.date}.`;
+  }
+  if (typeof data.language === "string") {
+    const labels: Record<string, string> = { en: "English", hi: "Hindi", mr: "Marathi" };
+    return `Family brief in ${labels[data.language] ?? data.language}, with sensitive numbers redacted.`;
+  }
+  return "Review this request before continuing.";
+}
+
 export default function ApprovalModal({ pending }: { pending: PendingApproval }) {
   return (
     <div className="anim-fade fixed inset-0 z-50 flex items-end justify-center bg-[var(--ink)]/40 p-4 sm:items-center">
@@ -16,11 +31,11 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
           {pending.action}
         </h2>
         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-          Deny cancels the agent action. Approve only prepares a download.
+          Deny cancels. Approve only prepares a file on this device—nothing is sent.
         </p>
-        <pre className="mt-4 max-h-32 overflow-auto bg-[var(--wash)] p-3 text-xs text-[var(--ink-soft)]">
-          {JSON.stringify(pending.payload, null, 2)}
-        </pre>
+        <p className="mt-4 border-l-2 border-[var(--accent)] bg-[var(--wash)] px-3 py-2 text-sm leading-6 text-[var(--ink-soft)]">
+          {humanPayload(pending.payload)}
+        </p>
         <div className="mt-5 flex justify-end gap-2">
           <button
             type="button"

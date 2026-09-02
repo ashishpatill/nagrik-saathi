@@ -31,6 +31,9 @@ const PRESETS: ToolPreset[] = [
   { label: "Export family brief", name: "export_family_brief", input: { language: "en" } },
 ];
 
+const PRESET_HINT =
+  "Sample is already loaded. Run the four steps in order—tools stay local to this page.";
+
 function modeLabel(mode: WebMCPRuntimeMode): string {
   switch (mode) {
     case "native":
@@ -163,7 +166,7 @@ export default function Workspace() {
           ? await context.executeTool(target, stringify(input))
           : await target.execute(input);
       setLastResult(result);
-      offerDownload(result);
+      // Downloads are offered once via onLog when the tool execute wrapper succeeds.
       if (name === "get_notice_summary" && typeof input.language === "string") {
         setLanguage(input.language as Language);
       }
@@ -360,21 +363,31 @@ export default function Workspace() {
           <aside className="anim-rise-delay space-y-8 lg:sticky lg:top-8 lg:self-start">
             <div>
               <h2 className="text-sm font-semibold text-[var(--ink)]">Try the demo path</h2>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">Four steps. No JSON required.</p>
-              <div className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
-                {PRESETS.map((preset) => (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    disabled={busy || tools.length === 0}
-                    onClick={() => void runTool(preset.name, preset.input)}
-                    className="flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
-                  >
-                    <span>{preset.label}</span>
-                    <span className="text-[11px] text-[var(--muted)]">Run</span>
-                  </button>
-                ))}
-              </div>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{PRESET_HINT}</p>
+              {tools.length === 0 ? (
+                <p className="mt-4 text-xs font-medium text-[var(--muted)]" aria-live="polite">
+                  Preparing tools…
+                </p>
+              ) : (
+                <ol className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+                  {PRESETS.map((preset, index) => (
+                    <li key={preset.label}>
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void runTool(preset.name, preset.input)}
+                        className="flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)] disabled:opacity-40"
+                      >
+                        <span className="flex items-baseline gap-3">
+                          <span className="font-mono text-[11px] text-[var(--muted)]">{index + 1}</span>
+                          <span>{preset.label}</span>
+                        </span>
+                        <span className="text-[11px] text-[var(--muted)]">{busy ? "…" : "Run"}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </div>
 
             {toolLogs.length > 0 && (
