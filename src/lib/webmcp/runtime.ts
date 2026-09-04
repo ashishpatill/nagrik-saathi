@@ -204,7 +204,10 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       "check_scam_signals",
       "Check the current notice for common scam signals and safe next steps.",
       jsonSchemas.language,
-      async () => scamSignals(getCase()),
+      async (input) => {
+        languageSchema.parse(input);
+        return scamSignals(getCase());
+      },
       true,
       true,
     ),
@@ -234,11 +237,13 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       "create_action_plan",
       "Create a safe checklist and required-document list for the current notice.",
       jsonSchemas.language,
-      async () => {
+      async (input) => {
         const currentCase = getCase();
+        const { language } = languageSchema.parse(input);
         return {
           status: "ready",
-          checklist: currentCase.requiredActionItems,
+          language,
+          checklist: actionsForCase(currentCase, language),
           requiredDocuments: currentCase.requiredDocuments,
           boundary: "The app does not make payments, submit forms, or contact officials.",
         };

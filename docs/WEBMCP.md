@@ -2,7 +2,9 @@
 
 ## What is implemented
 
-The top-level home page registers:
+The top-level home page registers eight tools for agents and mirrors them in
+the citizen “Next steps” list after Analyze (Analyze itself covers
+`analyze_notice`):
 
 - `get_notice_summary`
 - `find_official_portal`
@@ -12,6 +14,9 @@ The top-level home page registers:
 - `schedule_reminder`
 - `export_family_brief`
 - `draft_citizen_letter`
+
+Photo notices use on-device OCR (`tesseract.js`); files are not uploaded to a
+server.
 
 The implementation uses the current `document.modelContext` API and falls
 back to `navigator.modelContext` for older experimental runtimes. Registration

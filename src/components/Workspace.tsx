@@ -6,7 +6,7 @@ import OfficialPortalCard from "@/components/OfficialPortalCard";
 import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
 import { actionsForCase, analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
-import { ACCEPTED_NOTICE_FILES, loadNoticeFile } from "@/lib/extract-file";
+import { ACCEPTED_NOTICE_FILES, isImageFile, loadNoticeFile } from "@/lib/extract-file";
 import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
 import { initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
 import type { DocumentAnalysis, Language, ToolLog } from "@/lib/types";
@@ -61,6 +61,8 @@ function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
       name: "find_official_portal",
       input: { department: portal.department, service: portal.service, state: portal.state },
     },
+    { label: "Check scam signals", name: "check_scam_signals", input: { language: "en" } },
+    { label: "Create action plan", name: "create_action_plan", input: { language: paid ? "mr" : "en" } },
     {
       label: paid ? "Calendar note for receipt" : "Add calendar reminder",
       name: "schedule_reminder",
@@ -72,6 +74,11 @@ function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
       },
     },
     { label: "Export family brief", name: "export_family_brief", input: { language: paid ? "mr" : "en" } },
+    {
+      label: "Draft citizen letter",
+      name: "draft_citizen_letter",
+      input: { tone: "simple", language: paid ? "mr" : "en" },
+    },
   ];
 }
 
@@ -86,6 +93,29 @@ function describeActionResult(name: string, result: unknown): string {
       }`;
     }
     return typeof data.reason === "string" ? data.reason : "No reviewed portal matched.";
+  }
+  if (name === "check_scam_signals") {
+    const flags = Array.isArray(data.flags) ? data.flags.map(String) : [];
+    const risk = typeof data.risk === "string" ? data.risk : "unknown";
+    const advice = typeof data.advice === "string" ? data.advice : "";
+    return [`Risk: ${risk}`, ...flags.map((flag) => `• ${flag}`), advice].filter(Boolean).join("\n");
+  }
+  if (name === "create_action_plan") {
+    const checklist = Array.isArray(data.checklist) ? data.checklist.map(String) : [];
+    const docs = Array.isArray(data.requiredDocuments) ? data.requiredDocuments.map(String) : [];
+    const boundary = typeof data.boundary === "string" ? data.boundary : "";
+    return [
+      "Checklist:",
+      ...checklist.map((item) => `• ${item}`),
+      docs.length ? "\nKeep nearby:" : "",
+      ...docs.map((item) => `• ${item}`),
+      boundary ? `\n${boundary}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }
+  if (name === "analyze_notice") {
+    return `Analyzed${typeof data.issuer === "string" ? ` · ${data.issuer}` : ""}. Review the brief on the left.`;
   }
   if (data.status === "cancelled_by_user") return "Cancelled — nothing was downloaded.";
   if (data.status === "success") return "Prepared a download on this device.";
@@ -140,6 +170,9 @@ export default function Workspace() {
   const setCase = useCallback((value: DocumentAnalysis) => {
     caseRef.current = value;
     setCurrentCase(value);
+    if (hasAnalyzedNotice(value) && value.sourceText.trim()) {
+      setNoticeText(value.sourceText);
+    }
     void saveCase(value);
   }, []);
 
@@ -293,18 +326,22 @@ export default function Workspace() {
 
   async function ingestFile(file: File) {
     setFileBusy(true);
+    setActionMessage(isImageFile(file) ? "Reading photo with on-device OCR…" : "Reading file…");
     try {
       const loaded = await loadNoticeFile(file);
       if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
       setAttachedName(loaded.fileName);
       setImagePreviewUrl(loaded.imageUrl);
-      if (loaded.kind === "image") {
-        setNoticeText("");
+      setNoticeText(loaded.text);
+      if (loaded.kind === "image" && loaded.ocrUsed && loaded.text.trim()) {
         setActionMessage(
-          `Photo “${loaded.fileName}” attached. Type or paste the text you can read from it into the box, then Analyze. Files stay on this device.`,
+          `Photo “${loaded.fileName}” read on this device. Review the text, then Analyze.`,
+        );
+      } else if (loaded.kind === "image" && !loaded.text.trim()) {
+        setActionMessage(
+          `Photo “${loaded.fileName}” attached, but OCR found little text. Type what you can read, then Analyze.`,
         );
       } else {
-        setNoticeText(loaded.text);
         setActionMessage(`Loaded “${loaded.fileName}”. Click Analyze.`);
       }
     } catch (error) {
@@ -347,7 +384,7 @@ export default function Workspace() {
             <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
               <p className="font-mono text-[11px] text-[var(--muted)]">1</p>
               <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Attach or paste</p>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">PDF, text, or a photo of the notice.</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">PDF, text, or a photo (auto-read on device).</p>
             </li>
             <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
               <p className="font-mono text-[11px] text-[var(--muted)]">2</p>
@@ -453,7 +490,8 @@ export default function Workspace() {
                       className="max-h-56 w-full object-contain"
                     />
                     <figcaption className="border-t border-[var(--line)] px-3 py-2 text-xs text-[var(--muted)]">
-                      Photo preview — type the text from this image into the box below, then Analyze.
+                      Photo preview — text was read on this device. Edit the box if OCR missed anything, then
+                      Analyze.
                     </figcaption>
                   </figure>
                 )}
@@ -582,8 +620,8 @@ export default function Workspace() {
                 <h2 className="text-sm font-semibold text-[var(--ink)]">How to use</h2>
                 <ol className="mt-4 space-y-3 text-sm leading-6 text-[var(--ink-soft)]">
                   <li>
-                    <span className="font-semibold text-[var(--ink)]">Attach</span> a PDF, .txt, or photo—or paste
-                    the notice text in the box.
+                    <span className="font-semibold text-[var(--ink)]">Attach</span> a PDF, .txt, or photo (OCR runs
+                    on this device)—or paste the notice text.
                   </li>
                   <li>
                     Click <span className="font-semibold text-[var(--ink)]">Analyze</span> to get a plain-language
@@ -594,7 +632,8 @@ export default function Workspace() {
                   </li>
                 </ol>
                 <p className="mt-5 text-xs leading-5 text-[var(--muted)]">
-                  Extra steps (Marathi explain, reminder, family brief) appear here after Analyze.
+                  Extra steps (Marathi, scam check, action plan, portal, reminder, brief, letter) appear here after
+                  Analyze.
                 </p>
               </div>
             ) : (
