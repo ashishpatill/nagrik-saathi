@@ -7,9 +7,11 @@ import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
 import { actionsForCase, analyzeText, EMPTY_CASE, hasAnalyzedNotice, portalHintsForCase } from "@/lib/extract";
 import { ACCEPTED_NOTICE_FILES, isImageFile, loadNoticeFile } from "@/lib/extract-file";
+import { siteCopy } from "@/lib/i18n/site";
+import { isLanguage, LANGUAGES, languageOptionLabel, type Language } from "@/lib/languages";
 import { clearActiveCase, getActiveCase, saveCase } from "@/lib/storage";
 import { initializeWebMCP, registerWebMCPTools, type WebMCPRuntimeMode } from "@/lib/webmcp/runtime";
-import type { DocumentAnalysis, Language, ToolLog } from "@/lib/types";
+import type { DocumentAnalysis, ToolLog } from "@/lib/types";
 import type { WebMCPTool } from "@/types/webmcp";
 
 type PendingApproval = { action: string; payload: unknown; resolve: (value: boolean) => void };
@@ -50,19 +52,23 @@ function offerDownload(result: unknown) {
   }
 }
 
-function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
+function buildPresets(doc: DocumentAnalysis, explainLanguage: Language): ToolPreset[] {
   const portal = portalHintsForCase(doc);
   const paid = doc.documentType === "payment_receipt";
   const reminderDate = doc.deadlineDate ?? new Date().toISOString().slice(0, 10);
   return [
-    { label: "Explain in Marathi", name: "get_notice_summary", input: { language: "mr" } },
+    {
+      label: `Explain in ${languageOptionLabel(explainLanguage)}`,
+      name: "get_notice_summary",
+      input: { language: explainLanguage },
+    },
     {
       label: "Show official portal",
       name: "find_official_portal",
       input: { department: portal.department, service: portal.service, state: portal.state },
     },
-    { label: "Check scam signals", name: "check_scam_signals", input: { language: "en" } },
-    { label: "Create action plan", name: "create_action_plan", input: { language: paid ? "mr" : "en" } },
+    { label: "Check scam signals", name: "check_scam_signals", input: { language: explainLanguage } },
+    { label: "Create action plan", name: "create_action_plan", input: { language: explainLanguage } },
     {
       label: paid ? "Calendar note for receipt" : "Add calendar reminder",
       name: "schedule_reminder",
@@ -73,11 +79,11 @@ function buildPresets(doc: DocumentAnalysis): ToolPreset[] {
         date: reminderDate,
       },
     },
-    { label: "Export family brief", name: "export_family_brief", input: { language: paid ? "mr" : "en" } },
+    { label: "Export family brief", name: "export_family_brief", input: { language: explainLanguage } },
     {
       label: "Draft citizen letter",
       name: "draft_citizen_letter",
-      input: { tone: "simple", language: paid ? "mr" : "en" },
+      input: { tone: "simple", language: explainLanguage },
     },
   ];
 }
@@ -126,11 +132,12 @@ function describeActionResult(name: string, result: unknown): string {
 
 export default function Workspace() {
   const [currentCase, setCurrentCase] = useState<DocumentAnalysis>(EMPTY_CASE);
-  const [language, setLanguage] = useState<Language>("en");
+  const [siteLanguage, setSiteLanguage] = useState<Language>("en");
+  const [explainLanguage, setExplainLanguage] = useState<Language>("en");
   const [toolLogs, setToolLogs] = useState<ToolLog[]>([]);
   const [tools, setTools] = useState<WebMCPTool[]>([]);
   const [selectedTool, setSelectedTool] = useState("");
-  const [toolInput, setToolInput] = useState('{"language":"mr"}');
+  const [toolInput, setToolInput] = useState('{"language":"en"}');
   const [pendingApproval, setPendingApproval] = useState<PendingApproval | null>(null);
   const [noticeText, setNoticeText] = useState("");
   const [status, setStatus] = useState("starting");
@@ -150,7 +157,8 @@ export default function Workspace() {
   const portalCardRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const analyzed = hasAnalyzedNotice(currentCase);
-  const presets = useMemo(() => buildPresets(currentCase), [currentCase]);
+  const presets = useMemo(() => buildPresets(currentCase, explainLanguage), [currentCase, explainLanguage]);
+  const t = useMemo(() => siteCopy(siteLanguage), [siteLanguage]);
 
   useEffect(() => {
     caseRef.current = currentCase;
@@ -165,7 +173,20 @@ export default function Workspace() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setShowInspector(params.get("inspector") === "1");
+    const savedSite = window.localStorage.getItem("nagrik-site-language");
+    const savedExplain = window.localStorage.getItem("nagrik-explain-language");
+    if (savedSite && isLanguage(savedSite)) setSiteLanguage(savedSite);
+    if (savedExplain && isLanguage(savedExplain)) setExplainLanguage(savedExplain);
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("nagrik-site-language", siteLanguage);
+    document.documentElement.lang = siteLanguage;
+  }, [siteLanguage]);
+
+  useEffect(() => {
+    window.localStorage.setItem("nagrik-explain-language", explainLanguage);
+  }, [explainLanguage]);
 
   const setCase = useCallback((value: DocumentAnalysis) => {
     caseRef.current = value;
@@ -249,8 +270,8 @@ export default function Workspace() {
       return;
     }
 
-    if (name === "get_notice_summary" && typeof input.language === "string") {
-      setLanguage(input.language as Language);
+    if (name === "get_notice_summary" && typeof input.language === "string" && isLanguage(input.language)) {
+      setExplainLanguage(input.language);
     }
 
     setSelectedTool(name);
@@ -303,7 +324,7 @@ export default function Workspace() {
       );
       return;
     }
-    const result = analyzeText(noticeText, language);
+    const result = analyzeText(noticeText, explainLanguage);
     setCase(result);
     setPortalHighlightUrl(null);
     setActionMessage("Notice analyzed. Use the actions on the right if you need Marathi, a portal link, or a reminder.");
@@ -316,7 +337,7 @@ export default function Workspace() {
     setAttachedName(null);
     setImagePreviewUrl(null);
     setCase(EMPTY_CASE);
-    setLanguage("en");
+    setExplainLanguage("en");
     setToolLogs([]);
     setLastResult(null);
     setActionMessage(null);
@@ -326,7 +347,7 @@ export default function Workspace() {
 
   async function ingestFile(file: File) {
     setFileBusy(true);
-    setActionMessage(isImageFile(file) ? "Reading photo with on-device OCR…" : "Reading file…");
+    setActionMessage(isImageFile(file) ? t.readingOcr : t.readingFile);
     try {
       const loaded = await loadNoticeFile(file);
       if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
@@ -359,42 +380,75 @@ export default function Workspace() {
         <header className="anim-rise border-b border-[var(--line)] pb-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0 max-w-3xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
-                Government notice helper
-              </p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">{t.eyebrow}</p>
               <h1 className="font-display mt-3 text-[clamp(2.4rem,6vw,4.25rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-[var(--ink)]">
                 Nagrik Saathi
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--ink-soft)] md:text-lg">
-                Confused by an electricity bill, tax notice, challan, or payment receipt? Bring the document here.
-                We explain it in plain language and point you to a reviewed official website—you act there yourself.
-              </p>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--ink-soft)] md:text-lg">{t.tagline}</p>
             </div>
-            {showInspector && (
-              <div className="text-[11px] font-semibold text-[var(--ink-soft)]">
-                <span
-                  className={`mr-2 inline-block h-1.5 w-1.5 rounded-full ${status === "ready" ? "bg-[var(--signal)]" : "bg-[var(--muted)]"}`}
-                />
-                {status === "ready" ? `WebMCP ready · ${modeLabel(runtimeMode)}` : modeLabel(runtimeMode)}
+            <div className="flex w-full max-w-md flex-col gap-3 sm:w-auto">
+              {showInspector && (
+                <div className="text-right text-[11px] font-semibold text-[var(--ink-soft)]">
+                  <span
+                    className={`mr-2 inline-block h-1.5 w-1.5 rounded-full ${status === "ready" ? "bg-[var(--signal)]" : "bg-[var(--muted)]"}`}
+                  />
+                  {status === "ready" ? `WebMCP ready · ${modeLabel(runtimeMode)}` : modeLabel(runtimeMode)}
+                </div>
+              )}
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="block text-xs text-[var(--muted)]">
+                  <span className="font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]">
+                    {t.siteLanguage}
+                  </span>
+                  <span className="mt-0.5 block text-[10px]">{t.siteLanguageHint}</span>
+                  <select
+                    value={siteLanguage}
+                    onChange={(event) => setSiteLanguage(event.target.value as Language)}
+                    className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-sm text-[var(--ink)]"
+                  >
+                    {LANGUAGES.map((code) => (
+                      <option key={`site-${code}`} value={code}>
+                        {languageOptionLabel(code)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-xs text-[var(--muted)]">
+                  <span className="font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]">
+                    {t.explainLanguage}
+                  </span>
+                  <span className="mt-0.5 block text-[10px]">{t.explainLanguageHint}</span>
+                  <select
+                    value={explainLanguage}
+                    onChange={(event) => setExplainLanguage(event.target.value as Language)}
+                    className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-sm text-[var(--ink)]"
+                  >
+                    {LANGUAGES.map((code) => (
+                      <option key={`explain-${code}`} value={code}>
+                        {languageOptionLabel(code)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
-            )}
+            </div>
           </div>
 
           <ol className="mt-8 grid gap-3 sm:grid-cols-3">
             <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
               <p className="font-mono text-[11px] text-[var(--muted)]">1</p>
-              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Attach or paste</p>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">PDF, text, or a photo (auto-read on device).</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">{t.stepAttachTitle}</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{t.stepAttachBody}</p>
             </li>
             <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
               <p className="font-mono text-[11px] text-[var(--muted)]">2</p>
-              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Analyze</p>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">See amount, date, and what it means.</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">{t.stepAnalyzeTitle}</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{t.stepAnalyzeBody}</p>
             </li>
             <li className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
               <p className="font-mono text-[11px] text-[var(--muted)]">3</p>
-              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">Open official site</p>
-              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">We never pay, log in, or submit for you.</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--ink)]">{t.stepPortalTitle}</p>
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{t.stepPortalBody}</p>
             </li>
           </ol>
         </header>
@@ -404,13 +458,13 @@ export default function Workspace() {
             <div>
               <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
                 <div>
-                  <h2 className="text-sm font-semibold text-[var(--ink)]">Your notice</h2>
+                  <h2 className="text-sm font-semibold text-[var(--ink)]">{t.yourNotice}</h2>
                   <p className="text-xs text-[var(--muted)]">
-                    Attach a file or paste text. Stays on this device.
+                    {t.noticeHint}
                     {attachedName ? (
                       <>
                         {" "}
-                        · Attached <span className="font-medium text-[var(--ink-soft)]">{attachedName}</span>
+                        · <span className="font-medium text-[var(--ink-soft)]">{attachedName}</span>
                       </>
                     ) : null}
                   </p>
@@ -421,7 +475,7 @@ export default function Workspace() {
                   disabled={!noticeText.trim() || fileBusy}
                   className="rounded-[var(--radius)] bg-[var(--ink)] px-3 py-1.5 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  Analyze
+                  {t.analyze}
                 </button>
               </div>
 
@@ -455,7 +509,7 @@ export default function Workspace() {
                     onClick={() => fileInputRef.current?.click()}
                     className="rounded-[var(--radius)] bg-[var(--ink)] px-4 py-2.5 text-sm font-semibold text-[#fafbfc] transition hover:bg-[var(--accent)] disabled:opacity-40"
                   >
-                    {fileBusy ? "Reading file…" : "Attach PDF, text, or photo"}
+                    {fileBusy ? t.readingFile : t.attach}
                   </button>
                   <input
                     ref={fileInputRef}
@@ -474,13 +528,11 @@ export default function Workspace() {
                       onClick={clearWorkspace}
                       className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2.5 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
                     >
-                      Clear notice
+                      {t.clearNotice}
                     </button>
                   )}
                 </div>
-                <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
-                  Or drop a file here · PDF · TXT · JPG · PNG · WebP
-                </p>
+                <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{t.dropHint}</p>
 
                 {imagePreviewUrl && (
                   <figure className="mt-3 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--wash)]">
@@ -490,8 +542,7 @@ export default function Workspace() {
                       className="max-h-56 w-full object-contain"
                     />
                     <figcaption className="border-t border-[var(--line)] px-3 py-2 text-xs text-[var(--muted)]">
-                      Photo preview — text was read on this device. Edit the box if OCR missed anything, then
-                      Analyze.
+                      {t.photoCaption}
                     </figcaption>
                   </figure>
                 )}
@@ -500,11 +551,7 @@ export default function Workspace() {
                   value={noticeText}
                   onChange={(event) => setNoticeText(event.target.value)}
                   rows={imagePreviewUrl ? 6 : 8}
-                  placeholder={
-                    imagePreviewUrl
-                      ? "Type or paste the text visible in the photo (amount, consumer number, date)…"
-                      : "Paste your electricity bill, property tax notice, challan, payment receipt, or other government notice here…"
-                  }
+                  placeholder={imagePreviewUrl ? t.photoPlaceholder : t.pastePlaceholder}
                   className="mt-3 w-full resize-y rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] p-4 text-sm leading-6 text-[var(--ink)] placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
                 />
               </div>
@@ -513,17 +560,14 @@ export default function Workspace() {
             {!analyzed ? (
               <div className="border-t border-[var(--line)] pt-8">
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-[var(--ink)]">
-                  What you get after Analyze
+                  {t.whatYouGet}
                 </h2>
                 <ul className="mt-4 max-w-xl space-y-2 text-sm leading-7 text-[var(--ink-soft)]">
-                  <li>A plain-language brief (English, Hindi, or Marathi)</li>
-                  <li>Deadline or paid-on date, amount, and reference if found</li>
-                  <li>A reviewed official portal link—you open and act yourself</li>
+                  <li>{t.getBrief}</li>
+                  <li>{t.getFields}</li>
+                  <li>{t.getPortal}</li>
                 </ul>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)]">
-                  This is not a government website and does not replace one. No OTP, Aadhaar, PAN, or banking details
-                  are collected here.
-                </p>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-[var(--muted)]">{t.notGov}</p>
               </div>
             ) : (
               <article className="border-t border-[var(--line)] pt-8">
@@ -545,7 +589,7 @@ export default function Workspace() {
                         currentCase.documentType === "payment_receipt" ? "text-[var(--muted)]" : "text-[var(--warn)]"
                       }`}
                     >
-                      {currentCase.documentType === "payment_receipt" ? "Paid on" : "Deadline"}
+                      {currentCase.documentType === "payment_receipt" ? t.paidOn : t.deadline}
                     </p>
                     <p className="mt-1 font-mono text-2xl font-semibold text-[var(--ink)]">
                       {currentCase.deadlineDate ?? "—"}
@@ -556,50 +600,43 @@ export default function Workspace() {
                 <dl className="mt-8 grid grid-cols-1 gap-4 border-y border-[var(--line)] py-5 sm:grid-cols-3">
                   <div>
                     <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">
-                      {currentCase.documentType === "payment_receipt" ? "Amount paid" : "Amount"}
+                      {currentCase.documentType === "payment_receipt" ? t.amountPaid : t.amount}
                     </dt>
                     <dd className="mt-1 text-lg font-semibold text-[var(--ink)]">
                       {currentCase.amountDue == null ? "—" : `₹${currentCase.amountDue.toLocaleString("en-IN")}`}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Urgency</dt>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">{t.urgency}</dt>
                     <dd className="mt-1 text-lg font-semibold capitalize text-[var(--ink)]">{currentCase.urgency}</dd>
                   </div>
                   <div>
-                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">Source</dt>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-[var(--muted)]">{t.source}</dt>
                     <dd
                       className={`mt-1 text-lg font-semibold ${
                         currentCase.scamRiskScore === "safe" ? "text-[var(--signal)]" : "text-[var(--warn)]"
                       }`}
                     >
-                      {currentCase.scamRiskScore === "safe" ? "Reviewed cues" : "Check carefully"}
+                      {currentCase.scamRiskScore === "safe" ? t.reviewedCues : t.checkCarefully}
                     </dd>
                   </div>
                 </dl>
 
                 <div className="mt-8">
                   <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                    <h3 className="text-sm font-semibold">Plain-language brief</h3>
-                    <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
-                      <span className="font-semibold uppercase tracking-[0.12em]">Language</span>
-                      <select
-                        value={language}
-                        onChange={(event) => setLanguage(event.target.value as Language)}
-                        className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-1 text-xs"
-                      >
-                        <option value="en">English</option>
-                        <option value="hi">हिन्दी</option>
-                        <option value="mr">मराठी</option>
-                      </select>
-                    </label>
+                    <h3 className="text-sm font-semibold">{t.plainBrief}</h3>
+                    <p className="text-xs text-[var(--muted)]">
+                      {t.explainLanguage}: {languageOptionLabel(explainLanguage)}
+                    </p>
                   </div>
-                  <p className="max-w-2xl text-[15px] leading-7 text-[var(--ink-soft)]">{currentCase.summary[language]}</p>
+                  <p className="max-w-2xl text-[15px] leading-7 text-[var(--ink-soft)]">
+                    {currentCase.summary[explainLanguage]}
+                  </p>
                 </div>
 
                 <div className="mt-8 grid gap-8 md:grid-cols-2">
-                  <Checklist title="What to do next" items={actionsForCase(currentCase, language)} />
-                  <Checklist title="Keep nearby" items={currentCase.requiredDocuments} />
+                  <Checklist title={t.whatNext} items={actionsForCase(currentCase, explainLanguage)} />
+                  <Checklist title={t.keepNearby} items={currentCase.requiredDocuments} />
                 </div>
 
                 <div ref={portalCardRef} className="mt-8 space-y-5">
@@ -617,34 +654,21 @@ export default function Workspace() {
           <aside className="anim-rise-delay space-y-8 lg:sticky lg:top-8 lg:self-start">
             {!analyzed ? (
               <div>
-                <h2 className="text-sm font-semibold text-[var(--ink)]">How to use</h2>
+                <h2 className="text-sm font-semibold text-[var(--ink)]">{t.howToUse}</h2>
                 <ol className="mt-4 space-y-3 text-sm leading-6 text-[var(--ink-soft)]">
-                  <li>
-                    <span className="font-semibold text-[var(--ink)]">Attach</span> a PDF, .txt, or photo (OCR runs
-                    on this device)—or paste the notice text.
-                  </li>
-                  <li>
-                    Click <span className="font-semibold text-[var(--ink)]">Analyze</span> to get a plain-language
-                    brief.
-                  </li>
-                  <li>
-                    Use the official portal link we show—log in and act only on that site.
-                  </li>
+                  <li>{t.howAttach}</li>
+                  <li>{t.howAnalyze}</li>
+                  <li>{t.howPortal}</li>
                 </ol>
-                <p className="mt-5 text-xs leading-5 text-[var(--muted)]">
-                  Extra steps (Marathi, scam check, action plan, portal, reminder, brief, letter) appear here after
-                  Analyze.
-                </p>
+                <p className="mt-5 text-xs leading-5 text-[var(--muted)]">{t.howExtras}</p>
               </div>
             ) : (
               <div>
-                <h2 className="text-sm font-semibold text-[var(--ink)]">Next steps</h2>
-                <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-                  Optional helpers for this notice. Results show below.
-                </p>
+                <h2 className="text-sm font-semibold text-[var(--ink)]">{t.nextSteps}</h2>
+                <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{t.nextStepsHint}</p>
                 {tools.length === 0 ? (
                   <p className="mt-4 text-xs font-medium text-[var(--muted)]" aria-live="polite">
-                    Preparing tools…
+                    {t.preparingTools}
                   </p>
                 ) : (
                   <ol className="mt-4 divide-y divide-[var(--line)] border-y border-[var(--line)]">
@@ -671,7 +695,7 @@ export default function Workspace() {
 
             {actionMessage && (
               <div className="border border-[var(--line)] bg-[var(--panel)] p-4" aria-live="polite">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]">Result</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]">{t.result}</p>
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[var(--ink-soft)]">{actionMessage}</p>
                 {portalHighlightUrl && (
                   <a
@@ -680,7 +704,7 @@ export default function Workspace() {
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex rounded-[var(--radius)] bg-[var(--ink)] px-3.5 py-2 text-xs font-semibold text-[#fafbfc] hover:bg-[var(--accent)]"
                   >
-                    Open official portal
+                    {t.openPortal}
                   </a>
                 )}
               </div>
@@ -747,10 +771,7 @@ export default function Workspace() {
               </div>
             )}
 
-            <p className="text-sm leading-6 text-[var(--muted)]">
-              Human control is intentional. This app can explain, plan, draft, and prepare a reminder—never log into
-              an official portal or send a letter.
-            </p>
+            <p className="text-sm leading-6 text-[var(--muted)]">{t.boundary}</p>
           </aside>
         </div>
       </div>

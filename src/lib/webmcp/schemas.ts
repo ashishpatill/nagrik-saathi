@@ -1,7 +1,10 @@
 import { z } from "zod";
+import { LANGUAGES } from "@/lib/languages";
+
+const languageEnum = z.enum(LANGUAGES);
 
 export const languageSchema = z.object({
-  language: z.enum(["en", "hi", "mr"]).default("en"),
+  language: languageEnum.default("en"),
 });
 
 export const portalSchema = z.object({
@@ -12,7 +15,7 @@ export const portalSchema = z.object({
 
 export const analyzeSchema = z.object({
   sourceText: z.string().trim().min(1).max(50_000),
-  language: z.enum(["en", "hi", "mr"]).default("en"),
+  language: languageEnum.default("en"),
 });
 
 export const reminderSchema = z.object({
@@ -22,13 +25,19 @@ export const reminderSchema = z.object({
 
 export const letterSchema = z.object({
   tone: z.enum(["formal", "simple"]).default("formal"),
-  language: z.enum(["en", "hi", "mr"]).default("en"),
+  language: languageEnum.default("en"),
 });
+
+const languageJson = {
+  type: "string" as const,
+  enum: [...LANGUAGES],
+  default: "en",
+};
 
 export const jsonSchemas = {
   language: {
     type: "object",
-    properties: { language: { type: "string", enum: ["en", "hi", "mr"], default: "en" } },
+    properties: { language: languageJson },
     additionalProperties: false,
   },
   portal: {
@@ -45,7 +54,7 @@ export const jsonSchemas = {
     type: "object",
     properties: {
       sourceText: { type: "string", minLength: 1, maxLength: 50000, description: "Notice text to analyze." },
-      language: { type: "string", enum: ["en", "hi", "mr"], default: "en" },
+      language: languageJson,
     },
     required: ["sourceText"],
     additionalProperties: false,
@@ -63,7 +72,7 @@ export const jsonSchemas = {
     type: "object",
     properties: {
       tone: { type: "string", enum: ["formal", "simple"], default: "formal" },
-      language: { type: "string", enum: ["en", "hi", "mr"], default: "en" },
+      language: languageJson,
     },
     additionalProperties: false,
   },

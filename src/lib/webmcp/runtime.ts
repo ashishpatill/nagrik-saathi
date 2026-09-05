@@ -3,6 +3,8 @@
 import { initializeWebMCPPolyfill } from "@mcp-b/webmcp-polyfill";
 import { buildIcs, calendarDataUrl } from "@/lib/calendar";
 import { actionsForCase, analyzeText } from "@/lib/extract";
+import { draftCitizenLetter } from "@/lib/i18n/letter";
+import type { Language } from "@/lib/languages";
 import { findOfficialPortal } from "@/lib/portals";
 import { redactSensitiveData, scamSignals, truncateForTool } from "@/lib/safety";
 import { installFallbackModelContext } from "@/lib/webmcp/fallback-context";
@@ -179,12 +181,7 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
           scamStatus: refreshed.scamRiskScore,
           summary: refreshed.summary[language],
           actions: actionsForCase(refreshed, language),
-          disclaimer:
-            language === "mr"
-              ? "हे मार्गदर्शन आहे; अधिकृत सरकारी निर्णय नाही."
-              : language === "hi"
-                ? "यह मार्गदर्शन है; आधिकारिक सरकारी निर्णय नहीं।"
-                : "This is guidance, not an official government decision.",
+          disclaimer: noticeDisclaimer(language),
         };
       },
       true,
@@ -296,28 +293,11 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
       async (input) => {
         const currentCase = getCase();
         const { language, tone } = letterSchema.parse(input);
-        const opening =
-          language === "mr"
-            ? "प्रति,\nसंबंधित अधिकारी,"
-            : language === "hi"
-              ? "सेवा में,\nसंबंधित अधिकारी,"
-              : "To,\nThe concerned officer,";
-        const body =
-          currentCase.documentType === "payment_receipt"
-            ? language === "mr"
-              ? `माझ्या व्यवहार/पावती क्रमांक ${currentCase.referenceNumber} बाबत ही पेमेंट पावती आहे (तारीख ${currentCase.deadlineDate ?? "नमूद नाही"}, रक्कम ${currentCase.amountDue ?? "—"}). कृपया नोंद घ्या; पुन्हा शुल्क आकारू नये.`
-              : language === "hi"
-                ? `मेरे लेनदेन/रसीद संख्या ${currentCase.referenceNumber} की यह भुगतान रसीद है (तिथि ${currentCase.deadlineDate ?? "उल्लेख नहीं"}, राशि ${currentCase.amountDue ?? "—"})। कृपया दर्ज करें; दोबारा शुल्क न लें।`
-                : `This is a payment receipt for transaction/receipt ${currentCase.referenceNumber} (date ${currentCase.deadlineDate ?? "not stated"}, amount ${currentCase.amountDue ?? "—"}). Please note it on record; do not charge again.`
-            : language === "mr"
-              ? `माझ्या संदर्भ क्रमांक ${currentCase.referenceNumber} बाबत कृपया मार्गदर्शन करावे. अंतिम तारीख ${currentCase.deadlineDate ?? "नमूद नाही"} आहे.`
-              : language === "hi"
-                ? `संदर्भ संख्या ${currentCase.referenceNumber} के संबंध में कृपया मार्गदर्शन करें। अंतिम तिथि ${currentCase.deadlineDate ?? "उल्लेख नहीं है"} है।`
-                : `Please provide guidance regarding reference ${currentCase.referenceNumber}. The deadline is ${currentCase.deadlineDate ?? "not stated"}.`;
         return {
           status: "draft_only",
           tone,
-          content: `${opening}\n\n${body}\n\nRegards,\n[Your name]\n\nDo not send automatically. Review and submit through the official channel yourself.`,
+          language,
+          content: draftCitizenLetter(currentCase, language, tone),
         };
       },
       false,
@@ -345,4 +325,29 @@ export async function registerWebMCPTools(options: RegisterOptions): Promise<Reg
     mode: describeRuntimeMode(registeredViaContext),
     dispose: () => controller.abort(),
   };
+}
+
+function noticeDisclaimer(language: Language): string {
+  switch (language) {
+    case "hi":
+      return "यह मार्गदर्शन है; आधिकारिक सरकारी निर्णय नहीं।";
+    case "mr":
+      return "हे मार्गदर्शन आहे; अधिकृत सरकारी निर्णय नाही.";
+    case "ta":
+      return "இது வழிகாட்டல் மட்டும்; அதிகாரப்பூர்வ அரசு முடிவல்ல.";
+    case "kn":
+      return "ಇದು ಮಾರ್ಗದರ್ಶನ ಮಾತ್ರ; ಅಧಿಕೃತ ಸರ್ಕಾರಿ ನಿರ್ಧಾರವಲ್ಲ.";
+    case "gu":
+      return "આ માર્ગદર્શન છે; અધિકૃત સરકારી નિર્ણય નથી.";
+    case "te":
+      return "ఇది మార్గదర్శకం మాత్రమే; అధికారిక ప్రభుత్వ నిర్ణయం కాదు.";
+    case "bn":
+      return "এটি শুধু নির্দেশনা; সরকারি সিদ্ধান্ত নয়।";
+    case "en":
+      return "This is guidance, not an official government decision.";
+    default: {
+      const _exhaustive: never = language;
+      return _exhaustive;
+    }
+  }
 }

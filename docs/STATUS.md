@@ -1,6 +1,6 @@
 # Status — Nagrik Saathi
 
-**Updated:** 2026-09-02  
+**Updated:** 2026-09-05  
 **Authority:** this file + [GOAL_AND_LOOP.md](GOAL_AND_LOOP.md)
 
 ## Done
@@ -15,15 +15,17 @@
 - Fixed Strict Mode remount wiping `document.modelContext` tool registry
 - **No mock preload** — empty start; paste/upload + Analyze only
 - Broader issuer matching + searchable reviewed-portal directory
+- On-device photo OCR; dual **site language** vs **explain language** (en/hi/mr/ta/kn/gu/te/bn)
 
 ## Remaining
 
-None for the current ship loop. Deferred items stay deferred.
+- Expand reviewed portal coverage beyond Maharashtra + national seeds (WebMCP-friendly mapping of cumbersome state portals)
 
 ## Deferred
 
 - ChatGPT Site-tools recording
 - Vercel HTTPS deploy (optional)
+- Hindi/Tamil OCR language packs beyond English Tesseract
 
 ## I3 evidence (local browser)
 

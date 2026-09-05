@@ -1,4 +1,7 @@
-export type Language = "en" | "hi" | "mr";
+import type { Language } from "@/lib/languages";
+
+export type { Language } from "@/lib/languages";
+
 export type DocumentType =
   | "electricity_bill"
   | "payment_receipt"
