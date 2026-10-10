@@ -50,6 +50,8 @@ government portals. Live discovery adds current search results on top of
 that registry — without weakening the project's rule that only a reviewed
 official source is ever presented as official.
 
+![Live discovery results for a traffic e-challan query: three verified official results shown, six non-official results filtered out](docs/live-discovery.png)
+
 How it works:
 
 1. The user asks for a document or service.
