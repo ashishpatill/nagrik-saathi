@@ -33,6 +33,18 @@ interface SerpApiOrganicResult {
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const cache = new Map<string, { at: number; result: DiscoveryResult }>();
 
+// Key resolution for live discovery: a visitor-supplied key (BYOK, sent
+// per request) wins over the server's own SERPAPI_API_KEY. Public
+// deployments can therefore run with no server key at all — no shared
+// key to abuse and no search charges for the operator.
+export function resolveSerpApiKey(headerKey: string | null, envKey: string | undefined): string | null {
+  const fromHeader = headerKey?.trim();
+  if (fromHeader) return fromHeader;
+  const fromEnv = envKey?.trim();
+  if (fromEnv) return fromEnv;
+  return null;
+}
+
 export function matchVerifiedPortal(rawUrl: string) {
   let hostname: string;
   try {

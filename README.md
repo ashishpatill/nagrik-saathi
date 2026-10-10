@@ -79,6 +79,12 @@ Error behaviour, plainly:
 Setup: copy `.env.example` to `.env` and set `SERPAPI_API_KEY` to a key
 from a free SerpApi account, then run `pnpm install` and `pnpm dev`.
 
+Public deployments (BYOK): the server key is optional. A deployment can
+run with no `SERPAPI_API_KEY` at all — visitors who want live discovery
+paste their own free SerpApi key into the field above the search box.
+The key is stored only in their browser and sent per request; the
+operator carries no key and cannot be charged for anyone's searches.
+
 Built for the SerpApi India Hackathon 2026 as a feature on top of the
 pre-existing Nagrik Saathi project.
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { discoverOfficialPortals } from "@/lib/discovery";
+import { discoverOfficialPortals, resolveSerpApiKey } from "@/lib/discovery";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -15,10 +15,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid discovery query." }, { status: 400 });
   }
 
-  const apiKey = process.env.SERPAPI_API_KEY;
+  const apiKey = resolveSerpApiKey(request.headers.get("x-serpapi-key"), process.env.SERPAPI_API_KEY);
   if (!apiKey) {
     return NextResponse.json(
-      { error: "Live discovery is not configured on this server." },
+      {
+        error:
+          "Live discovery needs a SerpApi key. Add your own free key in the field above (it stays in your browser), or configure SERPAPI_API_KEY on the server.",
+      },
       { status: 503 },
     );
   }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { VERIFIED_PORTALS } from "@/data/official-portals";
-import { filterSerpResults, matchVerifiedPortal } from "@/lib/discovery";
+import { filterSerpResults, matchVerifiedPortal, resolveSerpApiKey } from "@/lib/discovery";
 
 // The registry in @/data/official-portals is the source of truth; these tests
 // assert behaviour against whatever domains it actually contains, plus one
@@ -27,5 +27,21 @@ describe("filterSerpResults", () => {
 
   it("rejects malformed URLs instead of throwing", () => {
     expect(matchVerifiedPortal("not a url")).toBeNull();
+  });
+});
+
+describe("resolveSerpApiKey", () => {
+  it("prefers the visitor-supplied key (BYOK) over the server key", () => {
+    expect(resolveSerpApiKey("visitor-key", "server-key")).toBe("visitor-key");
+  });
+
+  it("falls back to the server key when no visitor key is sent", () => {
+    expect(resolveSerpApiKey(null, "server-key")).toBe("server-key");
+    expect(resolveSerpApiKey("   ", "server-key")).toBe("server-key");
+  });
+
+  it("returns null when neither key exists", () => {
+    expect(resolveSerpApiKey(null, undefined)).toBeNull();
+    expect(resolveSerpApiKey("", "  ")).toBeNull();
   });
 });

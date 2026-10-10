@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { DiscoveryResult } from "@/lib/discovery";
+
+const KEY_STORAGE = "nagrik-serpapi-key";
 
 export default function LiveDiscovery() {
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<DiscoveryResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const keyRef = useRef<HTMLInputElement | null>(null);
 
   async function runDiscovery() {
     const q = query.trim();
@@ -16,7 +19,10 @@ export default function LiveDiscovery() {
     setError(null);
     setResult(null);
     try {
-      const response = await fetch(`/api/discover?q=${encodeURIComponent(q)}`);
+      const ownKey = keyRef.current?.value.trim();
+      const response = await fetch(`/api/discover?q=${encodeURIComponent(q)}`, {
+        headers: ownKey ? { "x-serpapi-key": ownKey } : undefined,
+      });
       const data = (await response.json()) as DiscoveryResult & { error?: string };
       if (!response.ok) {
         setError(data.error ?? "Live discovery failed. Try the reviewed portal directory instead.");
@@ -55,6 +61,25 @@ export default function LiveDiscovery() {
         >
           {busy ? "Searching…" : "Find the official page"}
         </button>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <input
+          ref={(el) => {
+            keyRef.current = el;
+            if (el && !el.value) {
+              el.value = window.localStorage.getItem(KEY_STORAGE) ?? "";
+            }
+          }}
+          onChange={(event) => window.localStorage.setItem(KEY_STORAGE, event.target.value)}
+          type="password"
+          autoComplete="off"
+          placeholder="Your SerpApi key (optional — the public site carries no key)"
+          className="min-w-64 flex-1 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 text-xs text-[var(--ink)] placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+        />
+        <p className="text-xs leading-5 text-[var(--muted)]">
+          Bring your own key: stored only in this browser, used only for your searches. Free at serpapi.com
+          (250 searches/month). Deployments can instead set a server key.
+        </p>
       </div>
 
       {error && (
