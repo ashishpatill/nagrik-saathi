@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ApprovalModal from "@/components/ApprovalModal";
+import LiveDiscovery from "@/components/LiveDiscovery";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
 import ReviewedPortalDirectory from "@/components/ReviewedPortalDirectory";
 import { downloadFromDataUrl, downloadTextFile } from "@/lib/download";
@@ -556,6 +557,8 @@ export default function Workspace() {
                 />
               </div>
             </div>
+
+            <LiveDiscovery />
 
             {!analyzed ? (
               <div className="border-t border-[var(--line)] pt-8">

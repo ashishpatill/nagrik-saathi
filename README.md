@@ -43,6 +43,43 @@ Chrome local testing uses `chrome://flags/#enable-webmcp-testing` and the
 Model Context Tool Inspector. ChatGPT Site tools require its desktop built-in
 browser and an eligible model/account rollout.
 
+## Live official-portal discovery (SerpApi)
+
+Nagrik Saathi normally answers from a static, reviewed registry of official
+government portals. Live discovery adds current search results on top of
+that registry — without weakening the project's rule that only a reviewed
+official source is ever presented as official.
+
+How it works:
+
+1. The user asks for a document or service.
+2. The app calls `GET /api/discover?q=<query>`, which queries SerpApi
+   (Google engine, India location) server-side. The API key is read from
+   the `SERPAPI_API_KEY` environment variable and is never committed.
+3. Every result is filtered against the verified portal registry: a result
+   is shown only if its hostname matches a reviewed portal's verified
+   domain or allowed hostnames. Everything else is counted and dropped —
+   never shown as a link.
+4. Responses are cached per query for 10 minutes, so repeated questions
+   do not burn search credits.
+
+Error behaviour, plainly:
+
+- Invalid query → `400`
+- `SERPAPI_API_KEY` not configured → `503` ("Live discovery is not
+  configured on this server.")
+- SerpApi request fails → `502`, with a fallback message pointing to the
+  reviewed portal directory
+- No live result matches a reviewed portal → the app says so plainly and
+  points the user to the printed helpline or the department office,
+  instead of guessing a link.
+
+Setup: copy `.env.example` to `.env` and set `SERPAPI_API_KEY` to a key
+from a free SerpApi account, then run `pnpm install` and `pnpm dev`.
+
+Built for the SerpApi India Hackathon 2026 as a feature on top of the
+pre-existing Nagrik Saathi project.
+
 ## Safety
 
 This app does not collect credentials, OTPs, Aadhaar, PAN, or banking details.
