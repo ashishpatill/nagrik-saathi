@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import ApprovalModal from "@/components/ApprovalModal";
 import LiveDiscovery from "@/components/LiveDiscovery";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
@@ -131,10 +131,46 @@ function describeActionResult(name: string, result: unknown): string {
   return stringify(data);
 }
 
+const STORED_LANGUAGE_EVENT = "nagrik-stored-language-change";
+
+function readStoredLanguage(key: string): Language {
+  const saved = window.localStorage.getItem(key);
+  return saved && isLanguage(saved) ? saved : "en";
+}
+
+function subscribeStoredLanguage(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(STORED_LANGUAGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(STORED_LANGUAGE_EVENT, callback);
+  };
+}
+
+function useStoredLanguage(key: string): readonly [Language, (next: Language) => void] {
+  const value = useSyncExternalStore(subscribeStoredLanguage, () => readStoredLanguage(key), () => "en" as Language);
+  const setValue = useCallback(
+    (next: Language) => {
+      window.localStorage.setItem(key, next);
+      window.dispatchEvent(new Event(STORED_LANGUAGE_EVENT));
+    },
+    [key],
+  );
+  return [value, setValue] as const;
+}
+
+function useInspectorFlag(): boolean {
+  return useSyncExternalStore(
+    () => () => {},
+    () => new URLSearchParams(window.location.search).get("inspector") === "1",
+    () => false,
+  );
+}
+
 export default function Workspace() {
   const [currentCase, setCurrentCase] = useState<DocumentAnalysis>(EMPTY_CASE);
-  const [siteLanguage, setSiteLanguage] = useState<Language>("en");
-  const [explainLanguage, setExplainLanguage] = useState<Language>("en");
+  const [siteLanguage, setSiteLanguage] = useStoredLanguage("nagrik-site-language");
+  const [explainLanguage, setExplainLanguage] = useStoredLanguage("nagrik-explain-language");
   const [toolLogs, setToolLogs] = useState<ToolLog[]>([]);
   const [tools, setTools] = useState<WebMCPTool[]>([]);
   const [selectedTool, setSelectedTool] = useState("");
@@ -148,7 +184,7 @@ export default function Workspace() {
   const [runtimeMode, setRuntimeMode] = useState<WebMCPRuntimeMode>("unavailable");
   const [busy, setBusy] = useState(false);
   // Dev/demo only — not part of the citizen UI. Open /?inspector=1 to use it.
-  const [showInspector, setShowInspector] = useState(false);
+  const showInspector = useInspectorFlag();
   const [attachedName, setAttachedName] = useState<string | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [fileBusy, setFileBusy] = useState(false);
@@ -172,22 +208,8 @@ export default function Workspace() {
   }, [imagePreviewUrl]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setShowInspector(params.get("inspector") === "1");
-    const savedSite = window.localStorage.getItem("nagrik-site-language");
-    const savedExplain = window.localStorage.getItem("nagrik-explain-language");
-    if (savedSite && isLanguage(savedSite)) setSiteLanguage(savedSite);
-    if (savedExplain && isLanguage(savedExplain)) setExplainLanguage(savedExplain);
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem("nagrik-site-language", siteLanguage);
     document.documentElement.lang = siteLanguage;
   }, [siteLanguage]);
-
-  useEffect(() => {
-    window.localStorage.setItem("nagrik-explain-language", explainLanguage);
-  }, [explainLanguage]);
 
   const setCase = useCallback((value: DocumentAnalysis) => {
     caseRef.current = value;
