@@ -1,0 +1,29 @@
+{
+  "version": "nagrik-95adee1f88",
+  "urls": [
+    "/",
+    "/offline",
+    "/playbooks",
+    "/playground",
+    "/status",
+    "/llms.txt",
+    "/sitemap.xml",
+    "/manifest.webmanifest",
+    "/playbooks/e-visa",
+    "/playbooks/passport",
+    "/playbooks/pan",
+    "/playbooks/driving-licence",
+    "/playbooks/gst-registration",
+    "/playbooks/income-tax-filing",
+    "/playbooks/rti",
+    "/playbooks/labour-complaint",
+    "/playbooks/property-registration",
+    "/playbooks/birth-certificate",
+    "/playbooks/death-certificate",
+    "/playbooks/electricity-connection",
+    "/playbooks/ration-card",
+    "/playbooks/consumer-complaint",
+    "/playbooks/municipal-grievance",
+    "/playbooks/aadhaar-update"
+  ]
+}

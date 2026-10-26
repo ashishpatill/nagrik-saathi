@@ -220,7 +220,7 @@
     <li>At v1 close, still missing: CI audit/SBOM gate, auth, encrypted cloud case store, MCP server,
       process playbooks, portal-health fleet, offline PWA, and A2A. The current working tree has since
       added the CI/SBOM gate, the twelve-tool registry, the playground, a local MCP server, and the
-      sixteen process playbooks; see §9.2–§9.4.</li>
+      sixteen process playbooks; see §9.2–§9.5.</li>
   </ul>
 </div>
 
@@ -1056,6 +1056,87 @@ CI can enforce.</p>
 <p>The Aadhaar page is the only <code>guidanceOnly</code> playbook. It explains the update process and never
 asks for, stores, or verifies a number. No playbook adds a button or tool that files, pays, or submits
 anything; every action stays on the official portal the citizen opens.</p>
+
+<h3>9.5 Stage 4 ships its on-demand resilience core; the scheduled fleet is not built</h3>
+
+<p>Verified on 26 October 2026. The resilience work that does not need a durable store is live: a public
+portal-health dashboard and an offline-first PWA. The plan's scheduled probe fleet, server-side snapshots,
+and persistent history stay open because the repository still has no store or scheduler.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">What was measured</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Live status for every registry domain</td>
+      <td><span class="status done">Present</span></td>
+      <td>39 portals (38 unique URLs), one request each, four-second timeout, bounded concurrency</td>
+    </tr>
+    <tr>
+      <td>Honest state classification</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>up</code> / <code>restricted</code> / <code>down</code>; 401, 403, 405, and 429 are
+        <em>restricted</em> because the portal answered but refused an automated client</td>
+    </tr>
+    <tr>
+      <td>Public dashboard</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>/status</code> with HTTP status, latency, helpline, filter, recheck, and a plain note on
+        what the check can and cannot prove; Lighthouse accessibility, best practices, and SEO 100</td>
+    </tr>
+    <tr>
+      <td>Last-known-good result</td>
+      <td><span class="status partial">Browser-local</span></td>
+      <td>Stored in <code>localStorage</code> with a visible timestamp and a "saved in this browser"
+        label; there is no server-side snapshot yet</td>
+    </tr>
+    <tr>
+      <td>Offline PWA</td>
+      <td><span class="status done">Present</span></td>
+      <td>24 precached URLs, explicit <code>nagrik-static-&lt;hash&gt;</code> cache, <code>/offline</code>
+        fallback, and a connection banner; <code>/api/*</code> is never cached</td>
+    </tr>
+    <tr>
+      <td>Offline flow verification</td>
+      <td><span class="status done">Present</span></td>
+      <td>With the origin stopped, a real navigation rendered the cached passport playbook,
+        <code>/status</code> showed saved rows plus the live-check failure alert, and an uncached route
+        returned <code>/offline</code>. The host had no bandwidth-throttle control, so the pass used a
+        stopped origin and a disconnected event rather than a throttled profile.</td>
+    </tr>
+    <tr>
+      <td>Scheduled probes, persistent history, latency percentiles</td>
+      <td><span class="status open">Not built</span></td>
+      <td>Needs a durable store and a scheduler; today the dashboard measures on demand and the edge
+        caches the response for two minutes</td>
+    </tr>
+    <tr>
+      <td>Cached text and structured metadata per domain</td>
+      <td><span class="status open">Not built</span></td>
+      <td>The browser keeps only the last health result; fee, document, and helpline snapshots are not
+        served from a server cache</td>
+    </tr>
+    <tr>
+      <td>Durable, encrypted case store</td>
+      <td><span class="status partial">Stage 5</span></td>
+      <td>Still local IndexedDB; cross-device sync and passkey identity are untouched</td>
+    </tr>
+    <tr>
+      <td><code>lookup_process_playbook</code> agent tool</td>
+      <td><span class="status partial">Still deferred</span></td>
+      <td>A 13th tool changes the documented 12-tool contract, the MCP surface, and their tests; it was
+        not added in this pass</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The Stage 4 exit target — live status for every registry domain and an offline flow that still serves
+the playbooks — is met for the on-demand implementation. It is not the full plan. Without a scheduler,
+the dashboard reports what a visitor measured now, not a 24/7 fleet, and the page says so in plain
+language. A stale result is always labelled as saved, never presented as current.</p>
 
 <!-- ==================== 10 ==================== -->
 <div class="page-break"></div>

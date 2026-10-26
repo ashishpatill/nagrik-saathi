@@ -463,6 +463,9 @@ export default function Workspace() {
                 <Link href="/playbooks" className="underline-offset-4 hover:underline">
                   Process playbooks →
                 </Link>
+                <Link href="/status" className="underline-offset-4 hover:underline">
+                  Portal status →
+                </Link>
                 <Link href="/playground" className="underline-offset-4 hover:underline">
                   Agent tool playground →
                 </Link>

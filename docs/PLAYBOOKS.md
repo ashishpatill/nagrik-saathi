@@ -9,13 +9,17 @@ citizen's behalf.
 ## Source of truth
 
 YAML files in [`content/playbooks/`](../content/playbooks) are the source of
-truth. `src/data/playbooks.generated.json` is generated; never edit it by hand.
+truth. `pnpm playbooks:build` generates three files; never edit them by hand:
+
+- `src/data/playbooks.generated.json` — the registry the UI imports
+- `public/precache-manifest.json` — the PWA precache list
+- `public/sw.js` — the service worker, from `scripts/sw-template.js`
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm playbooks:build` | Validate every YAML file and regenerate the JSON registry |
-| `pnpm playbooks:check` | Validate and fail if the generated file is stale (CI) |
-| `pnpm test` | Schema, registry, portal-reference, and localization tests |
+| `pnpm playbooks:build` | Validate every YAML file and regenerate all three artifacts |
+| `pnpm playbooks:check` | Validate and fail if any generated file is stale (CI) |
+| `pnpm test` | Schema, registry, portal-reference, localization, precache, and worker tests |
 
 The build script also checks that all 15 planned workflows plus the Aadhaar
 guidance page are present, that every portal key exists in
@@ -124,6 +128,10 @@ the citizen opens the official portal and acts there.
    pnpm test
    pnpm build
    ```
+
+   Commit the YAML change together with all three regenerated artifacts:
+   `src/data/playbooks.generated.json`, `public/precache-manifest.json`, and
+   `public/sw.js`.
 
 4. Open a pull request. Include the official source, the reason for the change,
    and whether the Hindi/Marathi overview changed.

@@ -37,6 +37,12 @@ export default function PlaybooksPage() {
             >
               Back to workspace
             </Link>
+            <Link
+              href="/status"
+              className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+            >
+              Portal status
+            </Link>
           </div>
 
           <div className="mt-6 border border-[var(--line)] bg-[var(--warn-soft)] px-4 py-3 text-xs leading-5 text-[var(--warn)]">
