@@ -1,11 +1,12 @@
 {
-  "version": "nagrik-95adee1f88",
+  "version": "nagrik-997f67b0c4",
   "urls": [
     "/",
     "/offline",
     "/playbooks",
     "/playground",
     "/status",
+    "/privacy",
     "/llms.txt",
     "/sitemap.xml",
     "/manifest.webmanifest",

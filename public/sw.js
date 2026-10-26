@@ -4,7 +4,7 @@
 // The build injects BUILD_HASH, so every playbook, worker, or precache-list
 // change produces a byte-different script and the browser installs the new
 // precache instead of silently keeping the old one.
-const BUILD_HASH = "95adee1f88";
+const BUILD_HASH = "997f67b0c4";
 const CACHE_PREFIX = "nagrik-static-";
 const CACHE_NAME = `${CACHE_PREFIX}${BUILD_HASH}`;
 const CORE_FALLBACK = {

@@ -125,6 +125,7 @@ describe("process playbook sources", () => {
         "/playbooks",
         "/playground",
         "/status",
+        "/privacy",
         "/manifest.webmanifest",
       ]),
     );

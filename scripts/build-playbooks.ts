@@ -109,6 +109,7 @@ const CORE_PRECACHE_URLS = [
   "/playbooks",
   "/playground",
   "/status",
+  "/privacy",
   "/llms.txt",
   "/sitemap.xml",
   "/manifest.webmanifest",
