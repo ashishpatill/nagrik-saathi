@@ -8,4 +8,5 @@ coverage
 .cursor/handoff.md
 PENDING_MEMORY.md
 tsconfig.tsbuildinfo
+sbom.json
 .DS_Store

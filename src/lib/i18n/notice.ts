@@ -1,4 +1,4 @@
-import type { Language } from "@/lib/languages";
+import type { DocumentType, Language } from "@/lib/types";
 import { LANGUAGES } from "@/lib/languages";
 
 const AMOUNT_MISSING: Record<Language, string> = {
@@ -72,6 +72,35 @@ export function datePhrase(date: string | null, language: Language, missingFallb
   if (date) return date;
   if (language === "en" && missingFallbackEn) return missingFallbackEn;
   return DATE_MISSING[language];
+}
+
+const PAID_DOCUMENTS: Record<Language, string[]> = {
+  en: ["This payment receipt", "Bank or UPI confirmation if available"],
+  hi: ["यह भुगतान रसीद", "उपलब्ध हो तो बैंक या UPI पुष्टि"],
+  mr: ["ही पेमेंट पावती", "उपलब्ध असल्यास बँक किंवा UPI पुष्टी"],
+  ta: ["இந்த கட்டண ரசீது", "இருந்தால் வங்கி அல்லது UPI உறுதிப்படுத்தல்"],
+  kn: ["ಈ ಪಾವತಿ ರಸೀದಿ", "ಲಭ್ಯವಿದ್ದರೆ ಬ್ಯಾಂಕ್ ಅಥವಾ UPI ದೃಢೀಕರಣ"],
+  gu: ["આ ચુકવણી રસીદ", "ઉપલબ્ધ હોય તો બેંક અથવા UPI પુષ્ટિ"],
+  te: ["ఈ చెల్లింపు రసీదు", "అందుబాటులో ఉంటే బ్యాంక్ లేదా UPI నిర్ధారణ"],
+  bn: ["এই পেমেন্ট রসিদ", "থাকলে ব্যাংক বা UPI নিশ্চিতকরণ"],
+};
+
+const UNPAID_DOCUMENTS: Record<Language, string[]> = {
+  en: ["A previous bill or notice for comparison", "A copy of this notice"],
+  hi: ["तुलना के लिए पिछला बिल या नोटिस", "इस नोटिस की एक प्रति"],
+  mr: ["तुलनेसाठी मागील बिल किंवा नोटिस", "या नोटिसची एक प्रत"],
+  ta: ["ஒப்பிடுவதற்கு முந்தைய பில் அல்லது அறிவிப்பு", "இந்த அறிவிப்பின் நகல்"],
+  kn: ["ಹೋಲಿಸಲು ಹಿಂದಿನ ಬಿಲ್ ಅಥವಾ ಅಧಿಸೂಚನೆ", "ಈ ಅಧಿಸೂಚನೆಯ ಪ್ರತಿ"],
+  gu: ["તુલના માટે અગાઉનું બિલ અથવા નોટિસ", "આ નોટિસની નકલ"],
+  te: ["పోల్చడానికి మునుపటి బిల్లు లేదా నోటీసు", "ఈ నోటీసు ప్రతి"],
+  bn: ["তুলনার জন্য আগের বিল বা নোটিশ", "এই নোটিশের একটি কপি"],
+};
+
+export function requiredDocumentsForCase(
+  documentType: DocumentType,
+  language: Language,
+): string[] {
+  return [...(documentType === "payment_receipt" ? PAID_DOCUMENTS[language] : UNPAID_DOCUMENTS[language])];
 }
 
 export function buildSummaries(input: {

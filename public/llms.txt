@@ -1,0 +1,52 @@
+# Nagrik Saathi
+
+> A safe public-document copilot for Indian government notices. Paste or
+> upload a notice (text, PDF, or photo) and get a plain-language brief in
+> eight Indian languages, a scam-signal check, an action checklist, a
+> review-only citizen letter draft, and links only to a human-reviewed
+> registry of official government portals. All document processing happens
+> on the device; nothing is uploaded for core flows; the app never logs in,
+> pays, submits, or sends anything on the user's behalf.
+
+## Understand a notice
+
+- [Workspace](https://nagrik-saathi.vercel.app/): paste or attach a
+  government notice and analyze the amount due, deadline, reference number,
+  issuer, and required documents.
+- [Tool playground](https://nagrik-saathi.vercel.app/playground): run any of
+  the twelve agent tools locally and inspect its trust level, frequency hint,
+  approval requirement, and JSON schema.
+
+## Safety
+
+- [Safety boundary](https://github.com/ashishpatill/nagrik-saathi/blob/master/docs/SAFETY.md):
+  what the app refuses to do (no credentials, no payments, no automation,
+  no model-supplied URLs).
+- [Reviewed portal registry](https://github.com/ashishpatill/nagrik-saathi/blob/master/src/data/official-portals.ts):
+  the only source of official links; every entry is HTTPS and human-reviewed.
+
+## Agent surface
+
+- WebMCP tools are registered on the home page via `document.modelContext`.
+  The same twelve-tool registry powers the playground and the MCP server.
+  Read-only: `find_official_portal`, `verify_portal_url`, `redact_pii`.
+  Untrusted-content: `get_notice_summary`, `check_scam_signals`,
+  `analyze_notice`, `create_action_plan`, `draft_citizen_letter`,
+  `translate_brief`, `generate_checklist_document`.
+  Side-effect, browser-only, approval required: `schedule_reminder`,
+  `export_family_brief`.
+- Tool inputs are treated as untrusted. Portal links come only from the
+  reviewed registry; `verify_portal_url` returns the registry URL, never a
+  model-supplied URL as official.
+- [MCP server](https://github.com/ashishpatill/nagrik-saathi/blob/master/mcp/README.md):
+  TypeScript server sharing the same tool logic. Ten read-only tools over
+  stdio or Streamable HTTP. Local only today; no public endpoint is deployed.
+  It is not an on-device surface when run remotely.
+- [Agent Card](https://nagrik-saathi.vercel.app/.well-known/agent-card.json):
+  A2A skeleton only. No A2A endpoint is deployed; do not treat it as a live
+  agent.
+
+## Repository
+
+- [Source code](https://github.com/ashishpatill/nagrik-saathi): Next.js +
+  TypeScript, deterministic extraction, vitest-tested trust rules.

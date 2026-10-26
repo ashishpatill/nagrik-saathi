@@ -45,6 +45,9 @@ export default function LiveDiscovery() {
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <input
+          id="discovery-query"
+          name="discoveryQuery"
+          aria-label="Search the live web for an official page"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onKeyDown={(event) => {
@@ -70,6 +73,9 @@ export default function LiveDiscovery() {
               el.value = window.localStorage.getItem(KEY_STORAGE) ?? "";
             }
           }}
+          id="serpapi-key"
+          name="serpApiKey"
+          aria-label="SerpApi key (optional)"
           onChange={(event) => window.localStorage.setItem(KEY_STORAGE, event.target.value)}
           type="password"
           autoComplete="off"

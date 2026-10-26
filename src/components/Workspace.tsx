@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import ApprovalModal from "@/components/ApprovalModal";
 import LiveDiscovery from "@/components/LiveDiscovery";
 import OfficialPortalCard from "@/components/OfficialPortalCard";
@@ -425,6 +426,8 @@ export default function Workspace() {
                   </span>
                   <span className="mt-0.5 block text-[10px]">{t.siteLanguageHint}</span>
                   <select
+                    id="site-language"
+                    name="siteLanguage"
                     value={siteLanguage}
                     onChange={(event) => setSiteLanguage(event.target.value as Language)}
                     className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-sm text-[var(--ink)]"
@@ -442,6 +445,8 @@ export default function Workspace() {
                   </span>
                   <span className="mt-0.5 block text-[10px]">{t.explainLanguageHint}</span>
                   <select
+                    id="explain-language"
+                    name="explainLanguage"
                     value={explainLanguage}
                     onChange={(event) => setExplainLanguage(event.target.value as Language)}
                     className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-sm text-[var(--ink)]"
@@ -454,6 +459,12 @@ export default function Workspace() {
                   </select>
                 </label>
               </div>
+              <Link
+                href="/playground"
+                className="text-right text-[11px] font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+              >
+                Agent tool playground →
+              </Link>
             </div>
           </div>
 
@@ -536,8 +547,11 @@ export default function Workspace() {
                   </button>
                   <input
                     ref={fileInputRef}
+                    id="notice-file"
+                    name="noticeFile"
                     type="file"
                     accept={ACCEPTED_NOTICE_FILES}
+                    aria-label="Attach a notice file"
                     className="sr-only"
                     onChange={(event) => {
                       const file = event.target.files?.[0];
@@ -571,6 +585,9 @@ export default function Workspace() {
                 )}
 
                 <textarea
+                  id="notice-text"
+                  name="noticeText"
+                  aria-label="Notice text"
                   value={noticeText}
                   onChange={(event) => setNoticeText(event.target.value)}
                   rows={imagePreviewUrl ? 6 : 8}

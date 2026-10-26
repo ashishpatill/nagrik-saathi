@@ -1,0 +1,32 @@
+# Nagrik Saathi — allow AI answer engines, block training crawlers.
+# Guidance (Route Fifty, Oct 2026): do not accidentally block assistants
+# that help citizens; training crawlers are a separate decision.
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+Sitemap: https://nagrik-saathi.vercel.app/sitemap.xml

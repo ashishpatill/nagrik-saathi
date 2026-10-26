@@ -1,6 +1,11 @@
 # Goal and Loop — Nagrik Saathi
 
-**Updated:** 2026-09-02  
+**Updated:** 2026-09-02
+
+**Status:** superseded by [nagrik-saathi-improvement-plan.html](nagrik-saathi-improvement-plan.html) (v2, 2026-10-26).
+
+This file is kept as v1 history. The eight-tool count and the "no GitHub Actions CI" rule below describe v1, not the current tree.
+
 **Mode:** local browser verify · public GitHub commits · **no GitHub Actions CI**
 
 ## Overall goal

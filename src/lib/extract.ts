@@ -1,5 +1,5 @@
 import type { DocumentAnalysis, DocumentType, Language, Urgency } from "@/lib/types";
-import { buildSummaries, PAID_ACTIONS, UNPAID_ACTIONS } from "@/lib/i18n/notice";
+import { buildSummaries, PAID_ACTIONS, requiredDocumentsForCase, UNPAID_ACTIONS } from "@/lib/i18n/notice";
 
 export const EMPTY_CASE: DocumentAnalysis = {
   id: "empty",
@@ -476,9 +476,7 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
       paid,
     }),
     requiredActionItems: paid ? PAID_ACTIONS.en : UNPAID_ACTIONS.en,
-    requiredDocuments: paid
-      ? ["This payment receipt", "Bank or UPI confirmation if available"]
-      : ["A previous bill or notice for comparison", "A copy of this notice"],
+    requiredDocuments: requiredDocumentsForCase(documentType, "en"),
     officialDepartmentKey: issuer.departmentKey,
     sourceText: text,
   };

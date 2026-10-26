@@ -1,3 +1,4 @@
+import type { MaxFrequency, TrustLevel } from "@/lib/agent/types";
 import type { Language } from "@/lib/types";
 
 export interface WebMCPClient {
@@ -7,12 +8,19 @@ export interface WebMCPClient {
 
 export interface WebMCPTool {
   name: string;
+  title?: string;
   description: string;
   inputSchema: Record<string, unknown>;
   outputSchema?: Record<string, unknown>;
+  /** Local registry metadata. Native WebMCP may drop unknown fields. */
+  trustLevel?: TrustLevel;
+  maxFrequency?: MaxFrequency;
   annotations?: {
     readOnlyHint?: boolean;
     untrustedContentHint?: boolean;
+    /** Present in the current polyfill's known annotation set. */
+    consequentialHint?: boolean;
+    debugging?: boolean;
   };
   execute: (input: Record<string, unknown>, client?: WebMCPClient) => Promise<unknown>;
 }

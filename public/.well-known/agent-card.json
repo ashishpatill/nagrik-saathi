@@ -1,0 +1,68 @@
+{
+  "$schema": "https://a2a-protocol.org/schemas/agent-card.json",
+  "protocolVersion": "0.3.0",
+  "name": "Nagrik Saathi",
+  "description": "Guidance for Indian public government notices: summary, deadlines, scam signals, action checklists, and links to a human-reviewed portal registry. Guidance only, not an official government decision. The agent never pays, submits forms, or contacts officials.",
+  "url": "http://127.0.0.1:8787/a2a",
+  "preferredTransport": "JSONRPC",
+  "version": "0.1.0-skeleton",
+  "provider": {
+    "organization": "Nagrik Saathi",
+    "url": "https://nagrik-saathi.vercel.app/"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["text/plain", "application/json"],
+  "skills": [
+    {
+      "id": "notice-summary",
+      "name": "Explain a notice",
+      "description": "Summarize a public notice in one of eight Indian languages, including issuer, amount due, deadline, reference number, and required documents.",
+      "tags": ["civic", "notice", "translation"],
+      "examples": ["Explain this electricity bill notice in Marathi."],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"]
+    },
+    {
+      "id": "portal-verification",
+      "name": "Verify an official portal",
+      "description": "Check a URL against a human-reviewed registry of official government portals. Returns the registry URL, never the supplied URL as an official destination.",
+      "tags": ["civic", "safety", "verification"],
+      "examples": ["Is https://wss.mahadiscom.in/wss/wss an official portal?"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"]
+    },
+    {
+      "id": "pii-redaction",
+      "name": "Redact personal identifiers",
+      "description": "Redact Aadhaar-like, PAN, payment-card, and long account-like numbers locally. Pattern-based, not a guarantee.",
+      "tags": ["privacy", "redaction"],
+      "examples": ["Remove personal numbers from this notice before I share it."],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"]
+    },
+    {
+      "id": "action-plan",
+      "name": "Create an action plan",
+      "description": "Produce a safe checklist and required-document list. The agent does not make payments, submit forms, or contact officials.",
+      "tags": ["civic", "checklist"],
+      "examples": ["What should I do next for this notice?"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json", "text/html"]
+    }
+  ],
+  "securitySchemes": {},
+  "security": [],
+  "x-nagrik-saathi": {
+    "status": "skeleton",
+    "note": "No A2A endpoint is deployed. This file records intended identity only and must not be treated as a live agent. The implemented surface is the MCP server in mcp/, which exposes ten read-only tools over stdio or Streamable HTTP.",
+    "implementedSurface": "mcp",
+    "mcpEndpoint": "stdio, or http://127.0.0.1:8787/mcp when MCP_TRANSPORT=http",
+    "toolSource": "src/lib/agent/tools.ts",
+    "approvalGatedToolsExcluded": ["schedule_reminder", "export_family_brief"]
+  }
+}

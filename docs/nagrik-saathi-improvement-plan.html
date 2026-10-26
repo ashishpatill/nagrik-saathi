@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Nagrik Saathi v2 — the unconstrained master plan for a public-web civic operating system: security-first architecture, protocol layer, resilience engine, identity, and a phased roadmap to government integration.">
+<meta name="color-scheme" content="dark light">
+<title>Nagrik Saathi v2 — Unconstrained Master Plan</title>
+<style>
+  :root {
+    --bg: #0b1220;
+    --surface: #151d2e;
+    --surface2: #1e2a40;
+    --text: #e9eef6;
+    --muted: #8fa0b8;
+    --accent: #4da3ff;
+    --accent2: #3dd68c;
+    --warn: #f5a524;
+    --danger: #f04455;
+    --border: #2a3a55;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 52px 28px 100px;
+  }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--accent2); }
+
+  h1 { font-size: 2.45rem; letter-spacing: -0.6px; margin-bottom: 8px; line-height: 1.15; }
+  h2 {
+    font-size: 1.6rem;
+    margin: 68px 0 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--accent);
+    color: var(--accent);
+    scroll-margin-top: 24px;
+  }
+  h3 { font-size: 1.22rem; margin: 34px 0 12px; color: var(--accent2); }
+  h4 { font-size: 1.05rem; margin: 24px 0 8px; color: var(--warn); }
+  p { margin-bottom: 15px; }
+
+  .eyebrow {
+    color: var(--accent2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .subtitle { color: var(--muted); font-size: 1.08rem; margin-bottom: 40px; }
+  .page-break { page-break-before: always; border-top: 1px dashed var(--border); margin-top: 72px; padding-top: 48px; }
+
+  ul, ol { margin: 0 0 18px 26px; }
+  li { margin-bottom: 9px; }
+  li > ul, li > ol { margin-top: 8px; }
+
+  code, .mono {
+    font-family: "Cascadia Code", "Fira Code", ui-monospace, monospace;
+    font-size: 0.9em;
+    background: var(--surface2);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    overflow-x: auto;
+    font-size: 0.83rem;
+    margin: 16px 0 24px;
+    line-height: 1.6;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  .callout {
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .callout > :last-child { margin-bottom: 0; }
+  .callout ul, .callout ol { margin-bottom: 0; }
+  .callout.danger { border-left-color: var(--danger); }
+  .callout.success { border-left-color: var(--accent2); }
+  .callout.warn { border-left-color: var(--warn); }
+
+  .table-wrap { overflow-x: auto; margin: 18px 0 26px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+  .table-wrap table { margin: 0; min-width: 640px; }
+  th, td { border: 1px solid var(--border); padding: 11px 13px; text-align: left; vertical-align: top; }
+  th { background: var(--surface2); color: var(--accent); }
+  tr:nth-child(even) td { background: var(--surface); }
+  td code { white-space: nowrap; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    padding: 2px 9px;
+    border-radius: 12px;
+    background: var(--surface2);
+    color: var(--accent2);
+    margin-right: 4px;
+  }
+
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; margin: 36px 0 20px; }
+  .toc h2 { margin: 0 0 12px; padding: 0; border: 0; color: var(--accent); font-size: 1.05rem; }
+  .toc ol { margin: 0 0 0 22px; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; }
+
+  .phase-label {
+    display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 8px;
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .status.done { color: var(--accent2); background: rgba(61, 214, 140, 0.12); border: 1px solid rgba(61, 214, 140, 0.35); }
+  .status.partial { color: var(--warn); background: rgba(245, 165, 36, 0.12); border: 1px solid rgba(245, 165, 36, 0.35); }
+  .status.open { color: #ff9aa2; background: rgba(240, 68, 85, 0.16); border: 1px solid rgba(240, 68, 85, 0.45); }
+
+  .small { color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 640px) {
+    body { padding: 36px 18px 72px; }
+    h1 { font-size: 1.95rem; }
+    h2 { font-size: 1.35rem; margin-top: 52px; }
+    h3 { font-size: 1.12rem; }
+    .toc { padding: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  @media print {
+    body { background: white; color: black; max-width: 100%; padding: 0; }
+    h1, h2, h3, h4 { color: black; }
+    h2 { border-bottom-color: #999; page-break-after: avoid; }
+    h3, h4 { page-break-after: avoid; }
+    a { color: black; text-decoration: underline; }
+    .page-break { page-break-before: always; border-top: 0; margin: 0; padding: 0; }
+    .toc { page-break-after: always; background: white; border-color: #ccc; }
+    pre, table, .callout, .toc { background: #f7f7f7; border-color: #ccc; color: black; }
+    .callout { border-left-color: #666; }
+    code { background: #e8e8e8; color: black; }
+    th { background: #eeeeee; color: black; }
+    td { background: white; }
+    tr:nth-child(even) td { background: #fafafa; }
+    thead { display: table-header-group; }
+    tr { page-break-inside: avoid; }
+    .status, .tag { border: 1px solid #999; color: black; background: white; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Master plan · 26 October 2026</p>
+  <h1>Nagrik Saathi v2</h1>
+  <p class="subtitle">
+    The unconstrained plan — maximum citizen value without government API access.<br>
+    Phase 1: everything achievable from the public web. Phase 2: direct government integration.<br>
+    Supersedes the hackathon-scoped v1 plan.
+  </p>
+</header>
+
+<div class="callout success">
+  <strong>Framing shift:</strong> v1 was a hackathon artifact — small scope, BYOK SerpApi, no automation,
+  no auth, stateless. Those were time and rules constraints, not product decisions. v2 removes them.
+  The only real constraint that remains is the one that matters:
+  <em>we do not have government internal APIs, server access, or proprietary data.</em>
+  Everything below is what is possible inside that boundary, done properly.
+</div>
+
+<div class="callout">
+  <strong>Where v1 actually ended (verified against the repo):</strong>
+  <ul>
+    <li>Eight WebMCP tools registered through <code>document.modelContext</code>, with
+      <code>readOnlyHint</code> / <code>untrustedContentHint</code> annotations, a polyfill and local fallback,
+      and an inspector mode at <code>/?inspector=1</code>.</li>
+    <li>Eight languages, deterministic regex extraction, in-browser PDF and OCR processing, scam signals,
+      a review-only letter drafter, and a human-reviewed portal registry.</li>
+    <li>Cases persisted locally in IndexedDB; approval gates already guard reminder and family-brief export;
+      vitest covers the trust rules. A refresh already keeps the workspace — the v2 gap is encryption,
+      cross-device durability, and a portable exit.</li>
+    <li>Stage 0 hardening is largely present in the working tree: CSP/HSTS/frame-ancestors/Referrer-Policy,
+      per-IP rate limiting, checksum-aware redaction, pinned dependencies, <code>public/robots.txt</code>,
+      <code>llms.txt</code>, <code>sitemap.xml</code>, and the eight-language API enum.</li>
+    <li>At v1 close, still missing: CI audit/SBOM gate, auth, encrypted cloud case store, MCP server,
+      process playbooks, portal-health fleet, offline PWA, and A2A. The current working tree has since
+      added the CI/SBOM gate, the twelve-tool registry, the playground, and a local MCP server; see §9.2
+      and §9.3.</li>
+  </ul>
+</div>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">What maximum value without government access actually means</a></li>
+    <li><a href="#s2">The full product vision — nine capability domains</a></li>
+    <li><a href="#s3">Security-first architecture</a></li>
+    <li><a href="#s4">Protocol layer — MCP, WebMCP, A2A, llms.txt</a></li>
+    <li><a href="#s5">Resilience and state-preservation engine</a></li>
+    <li><a href="#s6">Identity, encryption, and the DPDP posture</a></li>
+    <li><a href="#s7">The agent-native surface and the moat</a></li>
+    <li><a href="#s8">Phase 2 — the government integration pitch</a></li>
+    <li><a href="#s9">Implementation roadmap, stages, and exit criteria</a></li>
+    <li><a href="#s10">Risks and honest limitations</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ==================== 1 ==================== -->
+<div class="page-break"></div>
+<h2 id="s1">1. What maximum value without government access actually means</h2>
+
+<p>The public web already exposes enormous amounts of what citizens need. Forms, notices, helplines,
+office addresses, required-document lists, fee schedules, status-check pages, grievance portals, RTI
+formats, and the logic of nearly every government workflow are all publicly visible. What is
+<em>not</em> public is: authenticated session state, internal databases, payment rails, and the right to
+write to government systems.</p>
+
+<p>So the honest ceiling for Phase 1 is this: <strong>Nagrik Saathi becomes the most capable public-web
+civic operating system in India</strong> — an agent-driven layer that understands government processes,
+monitors them continuously, preserves citizen state across failures, guides users through every step,
+and hands them a verified path to the official action. It cannot click submit on a government server.
+It can make sure that when the citizen does, everything is ready, correct, and recoverable.</p>
+
+<div class="callout">
+  <strong>The value proposition in one sentence:</strong> When any Indian government portal fails,
+  Nagrik Saathi is where the citizen goes — because it already knows their case, their documents, their
+  deadlines, and the exact official step they need, and it never loses any of it.
+</div>
+
+<h3>1.1 The boundary, drawn precisely</h3>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Layer</th><th scope="col">Phase 1 access</th><th scope="col">What it enables</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Public web pages</td>
+      <td>Read-only: notices, fee tables, playbooks, helplines, status pages, grievance formats</td>
+      <td>Guidance, monitoring, validation, last-known-good snapshots</td>
+    </tr>
+    <tr>
+      <td>Citizen's device</td>
+      <td>Local processing with explicit consent</td>
+      <td>OCR, extraction, drafts, scam checks, IndexedDB cases</td>
+    </tr>
+    <tr>
+      <td>Opt-in encrypted store</td>
+      <td>Only after passkey identity and consent</td>
+      <td>Cross-device cases, reminders, export and delete</td>
+    </tr>
+    <tr>
+      <td>Government internal systems</td>
+      <td>None in Phase 1</td>
+      <td>No login, no form submission, no payment, no write access</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The test for every feature: <strong>does it help the citizen act correctly on the official system,
+without pretending to be the official system?</strong></p>
+
+<h3>What we deliberately do not build in Phase 1</h3>
+<ul>
+  <li>Anything that requires logging into a government account on the citizen's behalf with write access.</li>
+  <li>Payment processing or challan submission.</li>
+  <li>Aadhaar number collection or eKYC handling. Identity is passkey-only; Aadhaar linking is a Phase 2
+    conversation with MeitY's own eKYC rails.</li>
+  <li>A central database of citizen records. Per-user encrypted stores or nothing.</li>
+</ul>
+
+<!-- ==================== 2 ==================== -->
+<div class="page-break"></div>
+<h2 id="s2">2. The full product vision — nine capability domains</h2>
+
+<p>v1 had one domain: notice analysis. v2 has nine, each with a defined user journey, data model, and
+agent-facing tool surface. Nine is deliberately wide, but it is not a super-app: each domain exists to
+make the citizen's encounter with an official process survivable and correct.</p>
+
+<h3>Domain 1 — Notice &amp; document intelligence</h3>
+<p>Beyond PDF, text, and photo ingestion: OCR for handwritten and degraded scans, multi-notice batch
+processing, deadline extraction with calendar integration, fee and penalty computation, and
+cross-referencing a notice against the relevant Act or Rule section. The LLM extracts; deterministic
+validators (regex, checksums, section-number lookups against a maintained legal corpus) confirm.
+Nothing an LLM asserts about an amount or date is shown without a pattern match behind it.</p>
+
+<h3>Domain 2 — Scam &amp; fraud defense</h3>
+<p>A continuously updated pattern library: known scam templates, coercive-language classifiers,
+payment-demand anomaly detection (amounts that do not match official schedules), sender-impersonation
+checks (domain similarity to official portals), and a report loop where users submit scam notices that
+feed the library after human review. This becomes a public good — the pattern database is open, versioned,
+and citable.</p>
+
+<h3>Domain 3 — Process guidance engine</h3>
+<p>For every major government workflow, a structured playbook: steps, required documents, fees, typical
+timelines, common rejection reasons, and the exact portal URL at each step. Playbooks are maintained as
+versioned YAML/JSON content — not hardcoded — so the community, and later government partners, can
+contribute.</p>
+<p><strong>Seed set (15):</strong> e-Visa, passport, PAN, driving licence, GST registration, income-tax
+filing, RTI, labour complaint, property registration, birth certificate, death certificate, electricity
+connection, ration card, consumer complaint, municipal grievance. Aadhaar update is a guidance-only
+addition: explain the process, never collect the number.</p>
+
+<h3>Domain 4 — Portal health &amp; resilience monitor</h3>
+<p>A background fleet that probes every registry domain on a schedule: uptime, latency, TLS validity,
+whether the login page renders, whether key form pages return 200. Results feed a public dashboard and
+per-user banners. When IRCTC or the e-Visa site is down, Nagrik Saathi tells the citizen before they waste
+an hour. Cached last-known-good snapshots of critical pages (helplines, office lists, fee tables) serve as
+fallback content with staleness timestamps.</p>
+
+<h3>Domain 5 — Case &amp; state preservation</h3>
+<p>The single biggest v1 gap — but not the one the demo suggested. v1's IndexedDB store already survives a
+refresh on one device. What it never had was encryption, cross-device durability, a portable exit, or a
+case that survives the citizen switching phones. Every interaction becomes a durable, encrypted case:
+uploaded documents (field-level encrypted), extracted fields, generated briefs, checklists, drafted
+letters, portal links opened, health alerts received. Cases are exportable as encrypted files (the
+zero-knowledge escape hatch) and deletable with one action.</p>
+
+<h3>Domain 6 — Drafting &amp; response studio</h3>
+<p>Review-only letter and application drafting in English, Hindi, and Marathi, with tone controls
+(formal, polite-firm, complaint), section-aware templates pulled from the process playbooks, and a
+compare-against-official-format checker that flags missing mandatory fields before the citizen ever opens
+the government site.</p>
+
+<h3>Domain 7 — Grievance &amp; escalation routing</h3>
+<p>A mapped escalation graph: which grievance channel handles which problem (CPGRAMS, state portals,
+helplines, RTI, consumer forum, Lokpal), with pre-filled draft complaints and tracking-number capture so
+the citizen can log outcomes back into their case.</p>
+
+<h3>Domain 8 — Multilingual &amp; accessibility layer</h3>
+<p>Bhashini-powered translation for all output, Indic-script layout rules, screen-reader-complete UI, and
+a voice-first mode for users who cannot read comfortably — which, in rural India, is a large share of the
+people most harmed by broken portals.</p>
+
+<h3>Domain 9 — Community &amp; content engine</h3>
+<p>The existing X/content muscle, pointed inward: guides, threads, and videos teaching citizens how to use
+each portal and how to use Nagrik Saathi with their own agents. Content is both growth and proof.</p>
+
+<!-- ==================== 3 ==================== -->
+<div class="page-break"></div>
+<h2 id="s3">3. Security-first architecture</h2>
+
+<p>In v1, security was a section. In v2 it is the spine every other section hangs from. Zero-trust from
+edge to browser, every trust boundary named, every invariant testable.</p>
+
+<h3>3.1 Threat model</h3>
+<ul>
+  <li><strong>T1 — Prompt injection via notice content.</strong> All pasted or uploaded text is untrusted
+    input. System prompts forbid following embedded instructions. Tool descriptions carry trust-level
+    annotations. Red-team this before launch. No model-supplied URLs: portal links come only from the
+    reviewed registry.</li>
+  <li><strong>T2 — Secret exposure.</strong> No API key in client bundles. BYOK remains the public default;
+    a server-side vault or sealed environment is the operator opt-in. Automatic rotation, per-environment
+    separation.</li>
+  <li><strong>T3 — Session replay on future automation.</strong> Disposable browser profiles, single-use
+    sessions, no cookie reuse across users or across time.</li>
+  <li><strong>T4 — Data-at-rest breach.</strong> Field-level encryption, per-user keys derived from passkey
+    identity, envelope encryption for the key store.</li>
+  <li><strong>T5 — Supply chain.</strong> Lockfile integrity, Dependabot/Renovate, pinned CI actions, SBOM
+    on every release, provenance attestations.</li>
+  <li><strong>T6 — Agent abuse of WebMCP/MCP tools.</strong> Per-origin rate limits, allowlists for
+    side-effect tools, full invocation logging.</li>
+  <li><strong>T7 — PII leakage through logs or LLM providers.</strong> Redaction pipeline before any text
+    leaves the device or reaches a provider; log only hashes and redacted forms.</li>
+</ul>
+
+<h3>3.2 Zero-trust request flow</h3>
+<pre>
+Citizen UI  ·  WebMCP agent  ·  MCP client
+                    │
+                    ▼
+[Edge]  TLS · origin checks · request-size cap · security headers
+                    │
+                    ▼
+[Policy gate]  shared Zod schema · per-IP / per-key rate limit
+                    │  tool allowlist · trustLevel enforcement
+                    ▼
+[Tool runtime]  one implementation, three transports
+                    │  WebMCP (in-tab) · MCP (server) · A2A (later)
+                    ▼
+[Redaction boundary]  Aadhaar / PAN / card / OTP scrub
+                    │  before any log, cache, or model call
+                    ▼
+[Model or external]  notice text only · keys never echoed
+                    │
+                    ▼
+[Response validator]  schema-checked · citations and source snippets attached
+                    │
+                    ▼
+[Audit log]  actor · tool · input hash · output hash · origin · timestamp
+</pre>
+
+<h3>3.3 Concrete controls</h3>
+<ol>
+  <li><strong>CSP</strong> in <code>next.config.ts</code>: strict <code>script-src</code>, no inline eval
+    outside the WebMCP polyfill path, <code>frame-ancestors 'none'</code>. Current Stage 0 allows
+    <code>'unsafe-inline'</code> for Next.js hydration and <code>'wasm-unsafe-eval'</code> for Tesseract;
+    tightening to nonces is a later hardening item, not a reason to pretend the current policy is strict.</li>
+  <li><strong>Subresource Integrity</strong> on every third-party script. Prefer bundling over CDNs where
+    the dependency allows it.</li>
+  <li><strong>Shared Zod schemas</strong> between client and API routes — one definition of valid input.</li>
+  <li><strong>Rate limiting</strong> per IP and per key on all dynamic endpoints, with jittered backoff.</li>
+  <li><strong>PII redaction:</strong> Aadhaar via 12-digit plus Verhoeff check, PAN via format and checksum,
+    cards via Luhn, OTPs via pattern. Apply it to tool logs and anything leaving the device. Log only
+    redacted versions.</li>
+  <li><strong>Append-only hash-chained audit log:</strong> timestamp, actor, tool, input hash, output hash,
+    origin.</li>
+  <li><strong>CI gate:</strong> <code>pnpm audit</code>, OSV scan, CycloneDX SBOM on release, and a failing
+    build on high-severity findings.</li>
+  <li><strong>DPDP Act 2023 alignment</strong> documented in <code>docs/SAFETY.md</code>: on-device default
+    means minimal fiduciary exposure; any cloud feature gets purpose limitation, retention caps, a deletion
+    endpoint, and consent capture.</li>
+</ol>
+
+<h3>3.4 Invariants every pull request is checked against</h3>
+<ul>
+  <li>No secret in a client bundle, log line, error message, or commit.</li>
+  <li>No portal URL accepted from a model or user without registry verification.</li>
+  <li>No state-changing action without a visible approval gate and an audit entry.</li>
+  <li>No document text sent to a provider before redaction, unless the user explicitly opts in and the
+    provider contract forbids training on it.</li>
+  <li>No central citizen database. Encrypted per-user stores only.</li>
+  <li>No claim of official status. Every output says it is guidance, not a government decision.</li>
+</ul>
+
+<div class="callout warn">
+  <strong>The non-negotiable:</strong> the no-storage, on-device default stays the default forever. Cloud
+  features are opt-in, encrypted, and deletable. The moat is that Nagrik Saathi is the civic tool you can
+  trust with a scam notice — never erode that for convenience.
+</div>
+
+<!-- ==================== 4 ==================== -->
+<div class="page-break"></div>
+<h2 id="s4">4. Protocol layer</h2>
+
+<h3>4.1 WebMCP — the in-browser surface</h3>
+<p>Expand from eight hackathon tools to a complete agent-operable registry. Keep
+<code>document.modelContext</code> canonical; <code>navigator.modelContext</code> is only a compatibility
+fallback. Every tool carries: JSON Schema inputs, a plain-language description,
+<code>trustLevel</code> (<code>read-only</code> / <code>untrusted-content</code> /
+<code>side-effect</code>), and a max-frequency hint.</p>
+
+<p>New tools, in build order:</p>
+<ul>
+  <li><strong>Reuse existing logic first:</strong> <code>verify_portal_url</code>, <code>redact_pii</code>,
+    <code>translate_brief</code>, <code>generate_checklist_pdf</code>.</li>
+  <li><strong>After the resilience layer:</strong> <code>get_portal_health</code>,
+    <code>lookup_process_playbook</code>.</li>
+  <li><strong>After identity and playbooks:</strong> <code>get_case</code>, <code>save_case</code>,
+    <code>draft_grievance</code>, <code>compare_against_official_format</code>.</li>
+</ul>
+
+<p>A tool contract should be boring and explicit:</p>
+<pre><code>{
+  "name": "verify_portal_url",
+  "description": "Check a URL against the human-reviewed registry.",
+  "inputSchema": {
+    "type": "object",
+    "properties": { "url": { "type": "string", "format": "uri" } },
+    "required": ["url"],
+    "additionalProperties": false
+  },
+  "annotations": {
+    "trustLevel": "read-only",
+    "untrustedContentHint": false,
+    "maxFrequency": "30/min"
+  }
+}</code></pre>
+
+<h3>4.2 MCP server — the persistent surface</h3>
+<p>A TypeScript MCP server using the official SDK, sharing tool logic with the WebMCP surface through one
+codebase. Reachable from Claude Desktop, ChatGPT connectors, Cursor, and any custom harness. This is what
+makes Nagrik Saathi usable by agents the citizen already runs — including the ones you build.</p>
+<p><strong>Deployment reality:</strong> stdio for local clients, HTTP transport for remote clients, on a
+small always-on host. Do not pretend a Vercel serverless function is an MCP stdio server; the runtime is
+not a persistent process. The tool bodies in <code>src/lib/*</code> are already framework-agnostic, so the
+server is an adapter, not a rewrite.</p>
+
+<h3>4.3 A2A — cross-agent coordination</h3>
+<p>Not day one, but the tool registry is designed so each tool can later be exposed as an A2A Agent Card
+with signed identity. When MeitY's CoRover platform or a ministry agent needs to ask "does this citizen
+have an open grievance?", an A2A-compatible Nagrik Saathi answers without exposing internals.
+<code>agent-card.json</code> publishes when the server is stable.</p>
+
+<h3>4.4 llms.txt, robots.txt, and sitemap</h3>
+<pre><code># public/robots.txt
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://nagrik-saathi.vercel.app/sitemap.xml</code></pre>
+
+<p><code>llms.txt</code> at the root: H1 name, summary blockquote, H2 groups (Analyze notices, Check scams,
+Find portals, Track case health) each with a one-line description and links. Honest caveat: October 2026
+research showed 97% of <code>llms.txt</code> files receive zero requests — the real win is server-rendered
+HTML and clean crawlability, which Next.js already provides. Publish anyway; it costs nothing and some
+agents do read it.</p>
+<p>Keep AI answer engines allowed and training crawlers disallowed, as the current <code>robots.txt</code>
+does. The distinction matters: blocking the assistant that helps a citizen is a self-inflicted wound;
+opting out of model training is a legitimate choice.</p>
+
+<!-- ==================== 5 ==================== -->
+<div class="page-break"></div>
+<h2 id="s5">5. Resilience and state-preservation engine</h2>
+
+<h3>5.1 Portal health fleet</h3>
+<p>Scheduled probes (Vercel cron or an external scheduler) hitting every registry domain: HTTP status, TLS
+chain, render check on login and key form pages, latency percentiles. Public dashboard. Per-user
+contextual banners: "IRCTC login is currently returning errors — your Tatkal window may be affected."</p>
+
+<h3>5.2 Cached snapshots</h3>
+<p>Periodically refreshed text snapshots plus structured metadata (helplines, addresses, fees, required
+documents) per registry domain. If the live site is unreachable, serve last-known-good with a visible
+staleness timestamp. This is the direct answer to "the server went down" — Nagrik Saathi degrades
+gracefully instead of dying with it. Never hide the timestamp, and never let a stale fee table look
+current.</p>
+
+<h3>5.3 Offline-first PWA</h3>
+<p>A service worker caching the static layer, playbooks, and registry. Core flows — understand a notice,
+check scam signals, read a playbook — work with zero connectivity after first visit. For rural and
+low-bandwidth users this is not a nice-to-have; it is the product. Cache versions are explicit, so a bad
+deploy cannot silently poison the offline copy.</p>
+
+<h3>5.4 Durable case store</h3>
+<p>Server-side, field-level encrypted, keyed to passkey identity. Cross-device sync. Encrypted-file
+export. One-click delete. The citizen's case survives every failure mode: browser crash, portal crash,
+Nagrik Saathi deploy, even the citizen switching phones.</p>
+
+<h3>5.5 Failure-mode contract</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Failure</th><th scope="col">What the citizen sees</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Government portal returns 5xx or times out</td>
+      <td>Live health banner, last-known-good snapshot with timestamp, official helpline, and the exact
+        official step to retry later</td>
+    </tr>
+    <tr>
+      <td>No connectivity</td>
+      <td>PWA serves the cached playbook, registry, and previously analyzed case; new analysis waits</td>
+    </tr>
+    <tr>
+      <td>Browser crash or refresh</td>
+      <td>Local IndexedDB case resumes; no re-upload, no re-typing</td>
+    </tr>
+    <tr>
+      <td>Citizen switches devices</td>
+      <td>Opt-in encrypted sync, or an encrypted export/import file as the zero-knowledge path</td>
+    </tr>
+    <tr>
+      <td>Nagrik Saathi itself has an outage</td>
+      <td>Static layer and cached registry remain available; dynamic tools fail with a clear, honest
+        message rather than a blank screen</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ==================== 6 ==================== -->
+<div class="page-break"></div>
+<h2 id="s6">6. Identity, encryption, and the DPDP posture</h2>
+
+<h3>6.1 Default: no identity</h3>
+<p>The on-device, no-account flow remains the entry point. Paste a notice, get analysis. Zero friction,
+zero data retained. This is how you reach the citizen who will never create an account.</p>
+
+<h3>6.2 Opt-in: passkey identity</h3>
+<p>WebAuthn via <code>@simplewebauthn/server</code> (or Keycloak 26.4+ if the deployment needs a full
+identity provider). Edge-verifiable signatures, no central password store, phishing-resistant by
+construction. This unlocks the case store, cross-device sync, and future automation consent.</p>
+
+<h3>6.3 Encryption model</h3>
+<ul>
+  <li>Field-level encryption for stored documents and extracted PII.</li>
+  <li>Per-user data keys, wrapped by a master key held in a vault — not in the application database.</li>
+  <li>Passkey-derived wrapping keys for the client-held side where applicable.</li>
+  <li>Envelope encryption throughout, so a single database leak yields ciphertext.</li>
+</ul>
+
+<div class="callout warn">
+  <strong>Passkeys authenticate; they do not encrypt by themselves.</strong> If the wrapping key is derived
+  server-side after a passkey assertion, the server can decrypt. Be precise in the product language: call
+  it "encrypted at rest, access-controlled by passkey" unless the WebAuthn PRF extension (or a
+  client-derived key) keeps the wrapping key off the server entirely. Do not market it as zero-knowledge
+  until that is literally true.
+</div>
+
+<h3>6.4 DPDP Act 2023</h3>
+<p>On-device default: minimal fiduciary exposure, documented. Cloud features: consent capture at opt-in,
+purpose limitation stated in plain language, retention caps with automatic purge, a breach-notification
+runbook, and a public deletion endpoint. <code>docs/SAFETY.md</code> carries the full mapping before any
+cloud feature ships.</p>
+
+<h3>6.5 Data inventory</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Data</th><th scope="col">Default flow</th><th scope="col">Opt-in case store</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pasted or uploaded notice</td>
+      <td>Processed in the browser; <code>/api/analyze</code> receives pasted text transiently and persists
+        nothing</td>
+      <td>Stored only if the user saves the case; field-encrypted</td>
+    </tr>
+    <tr>
+      <td>Extracted fields (amount, deadline, reference)</td>
+      <td>Local only</td>
+      <td>Part of the encrypted case</td>
+    </tr>
+    <tr>
+      <td>Briefs, checklists, letters</td>
+      <td>Generated locally; downloadable</td>
+      <td>Part of the encrypted case</td>
+    </tr>
+    <tr>
+      <td>Passkey credential</td>
+      <td>None</td>
+      <td>Public key and credential ID server-side; private key stays in the authenticator</td>
+    </tr>
+    <tr>
+      <td>Tool invocation log</td>
+      <td>Local, redacted, capped</td>
+      <td>Hash-chained audit entry; redacted arguments only</td>
+    </tr>
+    <tr>
+      <td>Portal health data</td>
+      <td>Public, no personal data</td>
+      <td>Public, no personal data</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ==================== 7 ==================== -->
+<div class="page-break"></div>
+<h2 id="s7">7. The agent-native surface and the moat</h2>
+
+<p>No other Indian civic-tech project has this harness and multi-agent background. v2 makes that the
+centerpiece, not a side note.</p>
+
+<h3>7.1 What ships</h3>
+<ul>
+  <li>WebMCP registry (12+ tools) live on the site.</li>
+  <li>MCP server in production, documented, with an <code>AGENTS.md</code> contract file.</li>
+  <li>Example agent workflows published: "read my electricity bill, check it for scams, draft my
+    grievance, find the right portal" as one orchestrated run.</li>
+  <li>A public tool playground where anyone can try the tools from a browser.</li>
+</ul>
+
+<h3>7.2 What agent-native actually buys the citizen</h3>
+<ul>
+  <li><strong>No new app to learn.</strong> The citizen uses the assistant they already trust, in the
+    language they already use.</li>
+  <li><strong>Composable help.</strong> Notice analysis, scam checks, playbooks, and drafting become steps
+    an agent can chain, instead of four separate screens.</li>
+  <li><strong>Consent at the boundary.</strong> The agent can prepare; the citizen still approves anything
+    with a side effect. That is the line that makes agentic help trustworthy.</li>
+</ul>
+
+<h3>7.3 The moat, stated plainly</h3>
+<p>Competitors can copy a UI. They cannot copy a year of community trust, an open protocol surface with
+real agent adopters, a scam-pattern library fed by real users, and content that ranks when people search
+"IRCTC down" or "e-Visa rejected." The moat is the network of agents and humans already routed through
+Nagrik Saathi — and that compounds. The code is copyable by design; the registry's human review, the
+safety brand, and the distribution are not.</p>
+
+<!-- ==================== 8 ==================== -->
+<div class="page-break"></div>
+<h2 id="s8">8. Phase 2 — government integration</h2>
+
+<p>Phase 2 opens only when Phase 1 has receipts: users, uptime data, a clean security audit, and public
+agent adoption. The pitch is not "replace your portals." It is: <strong>become the open protocol layer
+that sits in front of what exists.</strong></p>
+
+<h3>8.1 What changes with government access</h3>
+<ul>
+  <li>MCP servers hosted inside or beside ministry infrastructure, reading authoritative data directly
+    instead of scraping public pages.</li>
+  <li>WebMCP registrations injected into official portal pages — the citizen's live session, their real
+    state, agent-readable.</li>
+  <li>A2A between Nagrik Saathi agents and ministry agents for cross-department checks (tax clearance
+    before visa, address verification before passport).</li>
+  <li>Passkey auth federated with the government's own identity rails.</li>
+  <li>Write-capable, human-gated automation on official sessions — the thing Phase 1 explicitly refuses.</li>
+</ul>
+
+<h3>8.2 The procurement argument</h3>
+<ul>
+  <li>Target <strong>NeGD</strong> under MeitY — they run UMANG and DigiLocker and issued the August 2026
+    AI-agent tender.</li>
+  <li>Frame as a <strong>DPI extension</strong> in the UPI/Aadhaar lineage: open protocol, private
+    implementers, no vendor lock-in.</li>
+  <li>Offer a <strong>90-day reversible pilot</strong> on the single most-complained-about surface:
+    e-Visa.</li>
+  <li>Publish everything open-source except the audit report and any government data. Openness is the
+    anti-corruption proof.</li>
+  <li>Lead with security: a FedRAMP-style MCP authorization framework, an NSA-CISA June 2026 compliance
+    matrix, immutable audit trails — before they ask.</li>
+</ul>
+
+<h3>8.3 Deliverables before approaching anyone</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Deliverable</th><th scope="col">Why it matters</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Third-party security audit</td><td>Removes the bureaucrat's fear of approving an insecure system</td></tr>
+    <tr><td>DPDP compliance memo</td><td>Legal clearance for data handling</td></tr>
+    <tr><td>MCP server with 5+ tools in production</td><td>Proof the protocol layer works</td></tr>
+    <tr><td>WebMCP registry with 12+ tools live</td><td>Proof of agent interoperability</td></tr>
+    <tr><td>Public portal-health dashboard</td><td>Value no ministry currently provides</td></tr>
+    <tr><td>X thread series on the build</td><td>Community proof and the content engine</td></tr>
+    <tr><td>One-page architecture diagram</td><td>Committees decide on visuals</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout">
+  <strong>Do not approach before the audit.</strong> A pitch without receipts is a vendor demo. The
+  sequence is deliberate: working product, public evidence, security report, then the meeting.
+</div>
+
+<!-- ==================== 9 ==================== -->
+<div class="page-break"></div>
+<h2 id="s9">9. Implementation roadmap, stages, and exit criteria</h2>
+
+<p><strong>Terminology:</strong> this plan has two macro phases — <strong>Phase 1</strong> (public web) and
+<strong>Phase 2</strong> (government integration). The table below divides Phase 1 into ten delivery
+<strong>stages</strong> numbered 0–9. "Stage 7" means the security audit inside Phase 1, not Phase 2.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Stage</th><th scope="col">When</th><th scope="col">Work</th><th scope="col">Exit criterion</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="phase-label">0</span> Foundation</td>
+      <td>Weeks 1–3</td>
+      <td>CSP hardening, shared Zod schemas, PII redaction (Verhoeff/Luhn), rate limiting, CI audit gate +
+        SBOM, <code>robots.txt</code> + <code>llms.txt</code> + sitemap, <code>docs/SAFETY.md</code></td>
+      <td>Lighthouse best-practices 95+, zero critical vulnerabilities, <code>llms.txt</code> live</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">1</span> WebMCP depth</td>
+      <td>Weeks 3–6</td>
+      <td>12 tools with <code>trustLevel</code> + frequency hints; <code>AGENTS.md</code> contracts;
+        playground page</td>
+      <td>All 12 tools callable from a Chrome origin-trial build and the inspector; MCP parity follows in Stage 2</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">2</span> MCP server</td>
+      <td>Weeks 6–10</td>
+      <td>TypeScript server sharing WebMCP logic; HTTP + stdio transports; deployed; Agent Card skeleton</td>
+      <td>Claude Desktop + a custom harness drive an end-to-end run via MCP</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">3</span> Process playbooks</td>
+      <td>Weeks 8–14</td>
+      <td>Versioned YAML playbooks for the top 15 workflows; community contribution pipeline</td>
+      <td>15 playbooks live, schema-validated, translatable</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">4</span> Resilience</td>
+      <td>Weeks 10–16</td>
+      <td>Health-probe fleet, cached snapshots, PWA offline mode, public dashboard</td>
+      <td>Live status for all registry domains; offline flow verified on a throttled network</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">5</span> Identity + cases</td>
+      <td>Weeks 14–20</td>
+      <td>Passkey auth, encrypted case store, cross-device sync, export/delete</td>
+      <td>Opt-in user persists a case across devices and can wipe everything</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">6</span> Scam library + drafting</td>
+      <td>Weeks 16–22</td>
+      <td>Pattern library with review loop, response studio, grievance routing graph</td>
+      <td>Users submitting scam notices; drafted complaints reaching CPGRAMS-ready quality</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">7</span> Security audit</td>
+      <td>Weeks 20–24</td>
+      <td>Third-party audit, DPDP memo, fix findings, publish summary</td>
+      <td>Clean report suitable for government review</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">8</span> Read-only automation</td>
+      <td>Weeks 24–32</td>
+      <td>Disposable-profile pools for read-only actions (visa status, tax acknowledgment, IRCTC
+        availability); legal review per portal</td>
+      <td>One read-only flow with full provenance logging</td>
+    </tr>
+    <tr>
+      <td><span class="phase-label">9</span> Government approach</td>
+      <td>Week 32+</td>
+      <td>NeGD/MeitY pitch: open protocol layer, 90-day reversible e-Visa pilot, DPI framing</td>
+      <td>Meeting scheduled; pilot in review</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>9.1 What not to do</h3>
+<ul>
+  <li>No write-automation before the Stage 7 audit. Irreversible actions behind an unaudited system is how
+    products get banned and founders get noticed for the wrong reasons.</li>
+  <li>No Aadhaar/PAN collection in Stages 0–5. The on-device default is the moat.</li>
+  <li>Do not block AI search crawlers. Block training crawlers if you want; do not accidentally block the
+    assistants that help citizens.</li>
+  <li>Do not build a central citizen database. Encrypted per-user stores, or nothing.</li>
+  <li>Do not become a super-app. Nine domains is already wide; depth beats breadth. Pick the three that
+    carry the promise — notice intelligence, resilience, and state preservation — and make them undeniable
+    before adding a tenth.</li>
+</ul>
+
+<h3>9.2 Stage 0 is already mostly in the working tree</h3>
+
+<p>Verified on 26 October 2026 against the current checkout. This is not a claim that Stage 0 is closed:
+the CI workflow has not run on GitHub yet, and deployed headers are still open.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">Remaining</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>public/robots.txt</code>, <code>llms.txt</code>, <code>sitemap.xml</code></td>
+      <td><span class="status done">Present</span></td>
+      <td>Confirm production serving and AI-crawler behavior</td>
+    </tr>
+    <tr>
+      <td>CSP, HSTS, frame-ancestors, Referrer-Policy</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>'unsafe-inline'</code> remains for Next hydration; move to nonces in a later hardening pass</td>
+    </tr>
+    <tr>
+      <td>Per-IP rate limit on <code>/api/discover</code></td>
+      <td><span class="status done">Present</span></td>
+      <td>Move the limiter to a shared store if the app spans regions</td>
+    </tr>
+    <tr>
+      <td>Verhoeff/Luhn-aware redaction + redacted tool logs</td>
+      <td><span class="status done">Present</span></td>
+      <td>Broader provider-boundary coverage as LLM features land</td>
+    </tr>
+    <tr>
+      <td>Pinned dependencies</td>
+      <td><span class="status done">Present</span></td>
+      <td>Add Dependabot/Renovate so pinning does not become rot</td>
+    </tr>
+    <tr>
+      <td>Eight-language <code>/api/analyze</code> enum</td>
+      <td><span class="status done">Present</span></td>
+      <td>Keep the shared schema as the single source of truth</td>
+    </tr>
+    <tr>
+      <td>Registry <code>lastReviewed</code> + re-review policy</td>
+      <td><span class="status done">Present</span></td>
+      <td>Add the quarterly re-verification cron and visible oldest-review warning</td>
+    </tr>
+    <tr>
+      <td>Dependency advisories (high/critical)</td>
+      <td><span class="status done">Clear</span></td>
+      <td><code>pnpm audit</code> reports no known vulnerabilities; add Dependabot/Renovate and OSV scan</td>
+    </tr>
+    <tr>
+      <td>CI audit gate + CycloneDX SBOM</td>
+      <td><span class="status done">Present in repo</span></td>
+      <td>First GitHub Actions run is unverified; OSV scan and Dependabot/Renovate remain</td>
+    </tr>
+    <tr>
+      <td>Local Lighthouse, <code>/</code> and <code>/playground</code></td>
+      <td><span class="status done">Passed</span></td>
+      <td>100 accessibility / best practices / SEO on both pages; repeat on the deployed HTTPS URL</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout success">
+  <strong>Definition of done for Stage 0:</strong> <code>pnpm lint &amp;&amp; pnpm test &amp;&amp; pnpm build</code>
+  green, CI running the same, headers verified on the deployed URL, and the audit/SBOM gate blocking a
+  known-vulnerable dependency. Until then, treat Stage 0 as "mostly landed," not "finished."
+</div>
+
+<h3>9.3 Stage 1 and Stage 2 are in the working tree, not closed</h3>
+
+<p>Verified on 26 October 2026. The browser, the playground, and the MCP server now share one registry in
+<code>src/lib/agent/tools.ts</code>. Local tests cover the registry, the browser adapter's shared logic,
+and both MCP transports.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">Remaining</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>12 tools with <code>trustLevel</code>, <code>maxFrequency</code>, approval, case, and MCP flags</td>
+      <td><span class="status done">Present</span></td>
+      <td>Chrome origin-trial and inspector run not yet recorded</td>
+    </tr>
+    <tr>
+      <td><code>AGENTS.md</code> tool contract table</td>
+      <td><span class="status done">Present</span></td>
+      <td>Keep it synchronized with every registry change</td>
+    </tr>
+    <tr>
+      <td><code>/playground</code> public tool runner</td>
+      <td><span class="status done">Present</span></td>
+      <td>Lighthouse passes on both pages; one <code>redact_pii</code> run recorded, the rest of the surface still needs recording</td>
+    </tr>
+    <tr>
+      <td>MCP server with stdio + Streamable HTTP</td>
+      <td><span class="status done">Local</span></td>
+      <td>No deployment; no Claude Desktop or custom-harness run recorded</td>
+    </tr>
+    <tr>
+      <td>MCP tool surface (10 read-only tools)</td>
+      <td><span class="status done">Tested</span></td>
+      <td>OAuth, per-user identity, and server-side frequency enforcement are not built</td>
+    </tr>
+    <tr>
+      <td>A2A Agent Card skeleton</td>
+      <td><span class="status done">Skeleton</span></td>
+      <td>No A2A endpoint exists; the card uses a loopback placeholder and says so</td>
+    </tr>
+    <tr>
+      <td>Local verification</td>
+      <td><span class="status done">Green</span></td>
+      <td>58 tests / 9 files; audit clean; build emits <code>/playground</code></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Stage 2 is not closed until a deployed server is reachable from Claude Desktop and one custom harness.
+Stage 1 is not closed until the 12 tools are exercised in a Chrome build and the result is recorded.</p>
+
+<!-- ==================== 10 ==================== -->
+<div class="page-break"></div>
+<h2 id="s10">10. Risks and honest limitations</h2>
+
+<p>A plan that lists only upside is a pitch, not a plan. These are the ways Nagrik Saathi fails, and the
+early signals that should change the plan.</p>
+
+<h3>10.1 Risk register</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Risk</th><th scope="col">Likelihood</th><th scope="col">Impact</th><th scope="col">Mitigation</th><th scope="col">Early warning</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A registry entry points to a lookalike or compromised domain</td>
+      <td>Low</td>
+      <td>Critical</td>
+      <td>Two-person review, <code>lastReviewed</code>, quarterly re-verification, TLS/hostname checks,
+        one-click user report</td>
+      <td>A domain changes hands or fails a health probe</td>
+    </tr>
+    <tr>
+      <td>Prompt injection through notice text triggers tool misuse</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Untrusted-content handling, narrow schemas, no model-supplied URLs, approval gates for side
+        effects, pre-launch red team</td>
+      <td>Anomalous tool calls or outputs; user reports of strange instructions</td>
+    </tr>
+    <tr>
+      <td>Breach of the opt-in case store</td>
+      <td>Low–Medium</td>
+      <td>Critical</td>
+      <td>Field-level encryption, per-user keys, envelope encryption, audit log, third-party pen test</td>
+      <td>Unusual decrypt volume, audit-chain gap, dependency advisory</td>
+    </tr>
+    <tr>
+      <td>Government portal terms-of-service or legal action over read-only automation</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Per-portal legal review, rate limits, honest identification, read-only first, kill switch per
+        portal</td>
+      <td>Cease-and-desist, IP block, CAPTCHA wall</td>
+    </tr>
+    <tr>
+      <td>Wrong amount or deadline extracted from a poor scan</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Deterministic extraction, source snippet beside every number, confidence display, "verify against
+        the original" copy</td>
+      <td>User corrections, support reports, OCR benchmark regressions</td>
+    </tr>
+    <tr>
+      <td>Stale cached snapshot presented as current</td>
+      <td>Medium</td>
+      <td>Medium</td>
+      <td>Visible staleness timestamp, cache-age alarms, link to live source, never auto-submit from
+        cache</td>
+      <td>Snapshot older than the policy window; probe recovers but cache does not refresh</td>
+    </tr>
+    <tr>
+      <td>WebMCP stalls in the Chrome origin trial</td>
+      <td>Medium</td>
+      <td>Medium</td>
+      <td>MCP server is protocol-agnostic and works in every agent client; never make browser support the
+        only path</td>
+      <td>Chrome roadmap signals, flat third-party tool adoption</td>
+    </tr>
+    <tr>
+      <td>Single-maintainer burnout or bus factor</td>
+      <td>High</td>
+      <td>High</td>
+      <td>CI, docs, a second maintainer or documented handover, scoped stages, funding path</td>
+      <td>Missed stages, review backlog, abandoned issues</td>
+    </tr>
+    <tr>
+      <td>Government pilot stalls in procurement</td>
+      <td>High</td>
+      <td>Medium</td>
+      <td>Do not depend on it for survival; build Phase 1 usage and open-protocol adoption first</td>
+      <td>No meeting after 90 days of follow-up</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>10.2 Legal and platform</h3>
+<ul>
+  <li><strong>Terms of service.</strong> Government portals generally prohibit automated access. Read-only
+    caching of public pages is a gray area most sites tolerate; form-filling is not. Legal review before
+    Stage 8 is mandatory, not optional.</li>
+  <li><strong>IT Act Section 43.</strong> Unauthorized access to a computer system can attract penalties.
+    Even read-only scraping at high volume could be framed as access without authorization. Rate limiting
+    and politeness are technical mitigations; a legal opinion is the real one.</li>
+  <li><strong>DPDP Act.</strong> If any cloud feature stores personal data, you become a Data Fiduciary
+    with consent, purpose-limitation, and breach-notification duties. The on-device default avoids this;
+    the opt-in path triggers it.</li>
+  <li><strong>SerpApi terms.</strong> BYOK shifts key custody to users, but verify that SerpApi's terms
+    cover caching and filtering results in a public product, and that BYOK distribution is permitted.</li>
+  <li><strong>WebMCP is experimental.</strong> The API can change under you. The three-tier runtime
+    (native, polyfill, local fallback) is the mitigation; treat native support as progressive enhancement,
+    not a dependency.</li>
+  <li><strong>Accessibility compliance.</strong> If the product is used by or with a government body, GIGW
+    and WCAG expectations arrive with the contract. UX4G alignment is cheaper before the audit than after.</li>
+</ul>
+
+<h3>10.3 Technical</h3>
+<ul>
+  <li><strong>OCR is not reliable enough to trust blindly.</strong> Tesseract on low-quality photos of
+    Hindi or Marathi notices will misread digits. A confidently wrong amount is worse than a failure. Show
+    the source snippet, show confidence, and never hide the original.</li>
+  <li><strong>LLM hallucination.</strong> The model may invent a fee, a section number, or a deadline.
+    Deterministic extraction and registry lookups stay authoritative; the model explains and drafts, it
+    does not certify.</li>
+  <li><strong>Portal HTML is a moving target.</strong> Health probes built on brittle selectors break
+    silently. Probe human-visible signals and alert on probe failure, not just on a 200 response.</li>
+  <li><strong>PWA cache staleness and poisoning.</strong> Versioned caches, integrity checks for snapshots,
+    and a visible "from cache" state. A stale offline fee table is a liability.</li>
+  <li><strong>Key management is hard.</strong> Passkeys do not encrypt by themselves; the PRF path is not
+    universal. Ship the simpler, honest "encrypted at rest, passkey access" model before claiming
+    zero-knowledge.</li>
+  <li><strong>Read-only automation still gets blocked.</strong> CAPTCHAs, bot detection, and IP bans are
+    normal. Budget for failure, degrade to guidance, and never promise uptime you do not control.</li>
+  <li><strong>Cost and latency.</strong> On-device processing stays first; cloud LLM calls are for what
+    genuinely cannot run locally. A civic tool that costs money per notice has a hard ceiling in India.</li>
+</ul>
+
+<h3>10.4 Strategic</h3>
+<ul>
+  <li><strong>You are a band-aid, not a cure.</strong> The root causes — procurement incentives, fragmented
+    ownership, lowest-bid culture — are institutional. The product absorbs citizen pain; it does not fix
+    the system. Be honest about this in every pitch. A facilitator that claims to "solve" e-Visa sounds
+    like every vendor the committee has already rejected. One that says "we make the broken hour survivable
+    and we publish the uptime data that proves it's broken" sounds like infrastructure.</li>
+  <li><strong>Single-maintainer risk.</strong> This is a one-person project. Before any government
+    conversation, it must look like an institution: pinned dependencies, CI, a second maintainer or a
+    documented handover, and a roadmap someone else could execute. Bureaucrats fund survivable projects,
+    not heroes.</li>
+  <li><strong>Hackathon-origin code.</strong> The codebase is clean and tested by hackathon standards, but
+    the gap between demo-grade and audit-grade is real: no CI, no error monitoring, no structured logging
+    until recently. Budget Stage 0 as a genuine hardening sprint, not a week of polish.</li>
+  <li><strong>The registry is the liability.</strong> A wrong entry in <code>official-portals.ts</code> is
+    the single most damaging failure possible: the scam-checker itself pointing users at a scam. The
+    health-check cron handles re-verification naturally; the human review is what actually protects it.</li>
+  <li><strong>Competition will come.</strong> If the facilitator layer shows traction, well-funded players
+    (including the CoRover platform itself) can copy the idea. The defensible parts are the registry's
+    human-verified quality, the safety posture as a public brand, and the open-source community around the
+    protocol layer — not the code.</li>
+  <li><strong>Distribution is not guaranteed.</strong> Agent adoption may stay flat; content requires
+    consistency; government sales cycles are long. Do not build a company that only works if one ministry
+    says yes. Phase 1 must be useful on its own, to real citizens, without anyone's permission.</li>
+</ul>
+
+<h3>10.5 Pre-registered kill criteria</h3>
+<p>Write these down before the work starts, so the decision is not made by sunk cost:</p>
+<ul>
+  <li>If Phase 1 has no measurable weekly use and no third-party agent adoption after six months, stop
+    expanding domains and focus on one wedge.</li>
+  <li>If both WebMCP and the MCP server fail to attract third-party agent usage, the "agent-native"
+    thesis is wrong; pivot to a human-first resilience product.</li>
+  <li>If legal review says read-only automation is not defensible for the target portals, drop Stage 8 and
+    stay guidance-only. That is still a valuable product.</li>
+  <li>If the audit finds unfixable high-risk issues in the case store, ship export-only local mode and
+    delay cloud sync indefinitely.</li>
+  <li>If a registry entry causes a user harm, freeze expansion and re-verify the entire registry before
+    anything else ships.</li>
+</ul>
+
+<div class="callout success">
+  <strong>What success looks like:</strong> A citizen whose e-Visa portal is down opens Nagrik Saathi,
+  sees the outage before wasting an hour, gets the cached checklist and the exact documents they need,
+  receives the correct official link and helpline, and finds their case still there when they switch
+  phones. No login to a government system. No submission on their behalf. No lost work. That is the
+  product.
+</div>
+
+</main>
+
+<p class="footer">
+  Nagrik Saathi v2 — Unconstrained Master Plan · 26 October 2026 ·
+  Supersedes the hackathon-scoped v1 plan ·
+  Baseline: <code>ccb8cb0</code> plus the Stage 0–2 working-tree changes ·
+  Companion to <code>docs/SAFETY.md</code>, <code>docs/STATUS.md</code>, and
+  <code>docs/GOAL_AND_LOOP.md</code>.
+</p>
+
+</body>
+</html>
