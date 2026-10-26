@@ -6,25 +6,48 @@ The repository now has one mandatory GitHub Actions workflow:
 Every push to `master` and every pull request runs:
 
 1. `pnpm install --frozen-lockfile`
-2. `pnpm lint`
-3. `pnpm test`
-4. `pnpm build`
-5. `pnpm audit --audit-level high`
-6. `pnpm sbom` (CycloneDX JSON via `cdxgen` against `pnpm-lock.yaml`) and
+2. `pnpm playbooks:check` (validates every YAML playbook and fails if the
+   generated JSON registry is stale)
+3. `pnpm lint`
+4. `pnpm test`
+5. `pnpm build`
+6. `pnpm audit --audit-level high`
+7. `pnpm sbom` (CycloneDX JSON via `cdxgen` against `pnpm-lock.yaml`) and
    uploads the result as an artifact
 
 ## Local commands
 
 ```sh
+pnpm playbooks:build   # rewrite src/data/playbooks.generated.json
+pnpm playbooks:check   # validate + fail if the generated file is stale
 pnpm lint
 pnpm test
 pnpm build
 pnpm audit
-pnpm sbom          # writes sbom.json (gitignored)
+pnpm sbom             # writes sbom.json (gitignored)
 ```
 
 `sbom.json` is generated, not committed. The CI artifact is the reviewable
 record for a release.
+
+## Playbook gate
+
+`content/playbooks/*.yaml` is the source of truth. The build script checks the
+schema, the required 15 workflows plus the Aadhaar guidance page, unique slugs
+and order values, portal keys against `src/data/official-portals.ts`, and that
+only `aadhaar-update` is guidance-only. `src/data/playbooks.generated.json` is
+committed so the UI can import it without a build step; `playbooks:check`
+compares a fresh serialization with the committed file.
+
+A stale generated file fails CI with:
+
+```text
+src/data/playbooks.generated.json is stale. Run `pnpm playbooks:build` and commit the result.
+```
+
+Run `pnpm playbooks:build` after any YAML change and commit both files
+together. The tests also re-validate the YAML sources and compare them with
+the generated registry, so a hand-edited JSON file fails twice.
 
 ## Current advisory state
 

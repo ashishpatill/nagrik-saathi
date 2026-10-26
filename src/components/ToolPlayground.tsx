@@ -220,12 +220,20 @@ export default function ToolPlayground() {
                 stay in the browser. Everything runs in this tab, with no preloaded sample notice.
               </p>
             </div>
-            <Link
-              href="/"
-              className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
-            >
-              Back to workspace
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/playbooks"
+                className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+              >
+                Process playbooks
+              </Link>
+              <Link
+                href="/"
+                className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+              >
+                Back to workspace
+              </Link>
+            </div>
           </div>
 
           <div className="mt-6 grid gap-3 border border-[var(--line)] bg-[var(--warn-soft)] px-4 py-3 text-xs leading-5 text-[var(--warn)] sm:grid-cols-[auto_1fr] sm:items-center">

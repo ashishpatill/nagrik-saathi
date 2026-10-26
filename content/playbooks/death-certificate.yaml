@@ -1,0 +1,107 @@
+schemaVersion: 1
+slug: death-certificate
+version: 1
+order: 11
+lastReviewed: "2026-10-26"
+category: civic
+guidanceOnly: false
+title:
+  en: Get a death certificate
+  hi: मृत्यु प्रमाणपत्र प्राप्त करें
+  mr: मृत्यू दाखला मिळवा
+summary:
+  en: >-
+    Register the death with the local registrar or the hospital channel, submit
+    the medical and identity records, and apply for the certificate needed for
+    inheritance, insurance, and pension claims.
+  hi: >-
+    स्थानीय रजिस्ट्रार या अस्पताल के माध्यम से मृत्यु पंजीकृत करें, चिकित्सा और
+    पहचान के रिकॉर्ड जमा करें और विरासत, बीमा तथा पेंशन के लिए आवश्यक
+    प्रमाणपत्र के लिए आवेदन करें।
+  mr: >-
+    स्थानिक निबंधक किंवा रुग्णालयाच्या मार्गाने मृत्यू नोंदवा, वैद्यकीय व ओळख
+    नोंदी सादर करा आणि वारसा, विमा व पेन्शनसाठी आवश्यक दाखल्यासाठी अर्ज करा.
+feeNote:
+  en: >-
+    Registration within the first 21 days is usually free or nominal. Late
+    registration can need a fee, affidavit, or order; confirm the local rule
+    with the registrar.
+  hi: >-
+    पहले 21 दिनों में पंजीकरण आमतौर पर निःशुल्क या नाममात्र शुल्क पर होता है।
+    देर से पंजीकरण में शुल्क, शपथ पत्र या आदेश की ज़रूरत हो सकती है; रजिस्ट्रार
+    से स्थानीय नियम की पुष्टि करें।
+  mr: >-
+    पहिल्या 21 दिवसांत नोंदणी साधारणपणे मोफत किंवा नाममात्र शुल्कात होते. उशिरा
+    नोंदणीला शुल्क, शपथपत्र किंवा आदेश लागू शकतो; निबंधकाकडून स्थानिक नियमाची
+    खात्री करा.
+timelineNote:
+  en: >-
+    A routine registration usually produces the certificate within one to three
+    weeks. Late registration and corrections take longer because they need
+    verification.
+  hi: >-
+    सामान्य पंजीकरण में प्रमाणपत्र आमतौर पर एक से तीन सप्ताह में मिल जाता है।
+    देर से पंजीकरण और सुधार में सत्यापन के कारण अधिक समय लगता है।
+  mr: >-
+    नियमित नोंदणीत दाखला साधारणपणे एक ते तीन आठवड्यांत मिळतो. उशिरा नोंदणी व
+    दुरुस्तीत पडताळणीमुळे जास्त वेळ लागतो.
+portalKeys:
+  - crs_india
+  - mahaonline_rts
+helplines:
+  - "1800-120-8040 (Aaple Sarkar citizen call centre)"
+  - "srocrs.rgi@nic.in (Civil Registration System)"
+documents:
+  - en: "Hospital death record or medical certificate of cause of death"
+  - en: "Identity proof of the deceased"
+  - en: "Identity and address proof of the informant"
+  - en: "Cremation or burial record, where required"
+  - en: "Affidavit or order for late registration, when applicable"
+  - en: "Existing certificate for a correction or duplicate"
+steps:
+  - title:
+      en: Register the death
+    detail:
+      en: >-
+        Hospitals usually report deaths directly. For a death at home, inform
+        the local registrar, municipal office, or police as the local rule
+        requires, and keep the medical record.
+    portalKey: crs_india
+  - title:
+      en: Check the local route
+    detail:
+      en: >-
+        Maharashtra residents can use the state service where the local body is
+        integrated; other states may use the Civil Registration System or a
+        municipal portal.
+    portalKey: mahaonline_rts
+  - title:
+      en: Fill the application
+    detail:
+      en: >-
+        Enter the deceased's name, date and place of death, cause as recorded,
+        and the informant's details. Keep the hospital registration number.
+  - title:
+      en: Submit proof
+    detail:
+      en: >-
+        Attach the medical record, identity proof, and cremation or burial
+        record if asked. Take originals for verification when required.
+  - title:
+      en: Handle late registration
+    detail:
+      en: >-
+        After the statutory window, the registrar may require an affidavit, late
+        fee, or magistrate's order. Ask for the exact requirement in writing.
+  - title:
+      en: Collect and verify the certificate
+    detail:
+      en: >-
+        Check the name, date, place, and cause details. Request a correction
+        through the same official channel if the certificate has an error.
+rejectionReasons:
+  - en: "Death was not recorded by the hospital or local registrar"
+  - en: "Medical cause-of-death record is missing or incomplete"
+  - en: "Late registration filed without the required affidavit or order"
+  - en: "Informant's identity or address proof does not match"
+  - en: "The application was sent to the wrong local body"

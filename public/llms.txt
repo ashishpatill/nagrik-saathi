@@ -17,6 +17,19 @@
   the twelve agent tools locally and inspect its trust level, frequency hint,
   approval requirement, and JSON schema.
 
+## Government process playbooks
+
+- [Process playbooks](https://nagrik-saathi.vercel.app/playbooks): fifteen
+  reviewed workflows (e-Visa, passport, PAN, driving licence, GST, income tax,
+  RTI, labour complaint, property registration, birth and death certificates,
+  electricity connection, ration card, consumer complaint, municipal
+  grievance) plus an Aadhaar guidance-only page.
+- Every playbook is versioned YAML in `content/playbooks/`, schema-validated,
+  and links only to the reviewed portal registry. English, Hindi, and Marathi
+  overviews are present; step detail is English-only for now.
+- The Aadhaar page explains the update process and never collects, stores, or
+  verifies an Aadhaar number.
+
 ## Safety
 
 - [Safety boundary](https://github.com/ashishpatill/nagrik-saathi/blob/master/docs/SAFETY.md):

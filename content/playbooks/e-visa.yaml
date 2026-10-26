@@ -1,0 +1,110 @@
+schemaVersion: 1
+slug: e-visa
+version: 1
+order: 1
+lastReviewed: "2026-10-26"
+category: travel
+guidanceOnly: false
+title:
+  en: Apply for an Indian e-Visa
+  hi: भारतीय ई-वीज़ा के लिए आवेदन
+  mr: भारतीय ई-व्हिसासाठी अर्ज
+summary:
+  en: >-
+    Check that your nationality and purpose are eligible, apply only on the
+    Government of India e-Visa portal, pay the published fee, and carry the
+    granted ETA with the same passport when you travel.
+  hi: >-
+    पहले जाँचें कि आपकी राष्ट्रीयता और यात्रा का उद्देश्य ई-वीज़ा के लिए पात्र है।
+    केवल भारत सरकार के ई-वीज़ा पोर्टल पर आवेदन करें, निर्धारित शुल्क भरें और
+    यात्रा के समय वही पासपोर्ट तथा मंज़ूर ETA साथ रखें।
+  mr: >-
+    तुमची राष्ट्रीयता आणि प्रवासाचा उद्देश ई-व्हिसासाठी पात्र आहे का ते आधी
+    तपासा. केवळ भारत सरकारच्या ई-व्हिसा पोर्टलवर अर्ज करा, जाहीर शुल्क भरा आणि
+    प्रवासाच्या वेळी तोच पासपोर्ट व मंजूर ETA सोबत ठेवा.
+feeNote:
+  en: >-
+    The fee depends on nationality and visa duration. Confirm the amount on the
+    official portal before paying; nobody can guarantee a faster grant for an
+    extra payment.
+  hi: >-
+    शुल्क आपकी राष्ट्रीयता और वीज़ा की अवधि पर निर्भर करता है। भुगतान से पहले
+    आधिकारिक पोर्टल पर राशि की पुष्टि करें; अतिरिक्त भुगतान पर तेज़ मंज़ूरी का
+    दावा करने वाले किसी भी व्यक्ति पर भरोसा न करें।
+  mr: >-
+    शुल्क तुमच्या राष्ट्रीयत्वावर आणि व्हिसाच्या कालावधीवर अवलंबून असते. पैसे
+    भरण्यापूर्वी अधिकृत पोर्टलवर रक्कम तपासा; अतिरिक्त पैसे घेऊन जलद मंजुरीचे
+    आश्वासन देणाऱ्या कोणावरही विश्वास ठेवू नका.
+timelineNote:
+  en: >-
+    Most applications are decided within about 72 hours, but apply at least four
+    days before travel and check the status before booking anything
+    non-refundable.
+  hi: >-
+    अधिकांश आवेदनों पर लगभग 72 घंटे में निर्णय होता है, फिर भी यात्रा से कम से कम
+    चार दिन पहले आवेदन करें और नॉन-रिफंडेबल बुकिंग से पहले स्थिति जाँचें।
+  mr: >-
+    बहुतेक अर्जांवर सुमारे 72 तासांत निर्णय होतो, तरीही प्रवासाच्या किमान चार
+    दिवस आधी अर्ज करा आणि परतावा न मिळणारे बुकिंग करण्यापूर्वी स्थिती तपासा.
+portalKeys:
+  - indianvisaonline
+helplines:
+  - "+91 8278087808 / 011-24300666 (e-Visa helpdesk)"
+  - "indian-evisa@gov.in"
+documents:
+  - en: "Passport valid for at least six months with two blank pages"
+  - en: "Recent photograph that meets the portal's specification"
+  - en: "Passport biodata page scan"
+  - en: "Return ticket, funds proof, or invitation letter if the category asks for it"
+  - en: "A working email address for the ETA and status updates"
+steps:
+  - title:
+      en: Confirm eligibility and visa category
+    detail:
+      en: >-
+        Read the category list on the official portal before starting. Tourist,
+        business, medical, student, and conference visits have different
+        conditions. A regular paper visa may be the right route if e-Visa does
+        not cover your purpose.
+    portalKey: indianvisaonline
+  - title:
+      en: Complete the application yourself
+    detail:
+      en: >-
+        Use the official portal, not a lookalike agent site. Enter your name
+        exactly as printed in the passport and keep the application ID. Never
+        share your password or payment OTP with an intermediary.
+    portalKey: indianvisaonline
+  - title:
+      en: Upload the photo and passport page
+    detail:
+      en: >-
+        Follow the pixel, size, and background rules shown on the portal. A
+        rejected photo is one of the most common reasons for delay.
+  - title:
+      en: Pay the published fee
+    detail:
+      en: >-
+        Pay only on the official payment page. Save the receipt and the
+        application ID; the portal is the only place that can confirm payment.
+  - title:
+      en: Receive and check the ETA
+    detail:
+      en: >-
+        The ETA normally arrives by email. Check the name, passport number,
+        category, and validity dates. Carry the ETA and the same passport when
+        travelling.
+  - title:
+      en: Track the application if it is delayed
+    detail:
+      en: >-
+        Use the portal's status enquiry with your application ID. Contact the
+        e-Visa helpdesk through the published channels rather than a
+        third-party agent.
+    portalKey: indianvisaonline
+rejectionReasons:
+  - en: "Wrong visa category for the stated purpose of travel"
+  - en: "Photo or passport scan does not meet the published specification"
+  - en: "Passport has less than six months' validity or too few blank pages"
+  - en: "Name, passport number, or date of birth does not match the passport"
+  - en: "Payment not confirmed, or the application was left incomplete"

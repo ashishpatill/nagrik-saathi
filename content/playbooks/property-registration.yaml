@@ -1,0 +1,112 @@
+schemaVersion: 1
+slug: property-registration
+version: 1
+order: 9
+lastReviewed: "2026-10-26"
+category: civic
+guidanceOnly: false
+title:
+  en: Register a property sale deed
+  hi: संपत्ति की बिक्री विलेख पंजीकृत करें
+  mr: मालमत्ता विक्रीचे खत नोंदवा
+summary:
+  en: >-
+    Verify the title and encumbrances, calculate stamp duty, pay through the
+    authorised route, book a sub-registrar appointment, and collect the
+    registered deed with both parties present.
+  hi: >-
+    स्वामित्व और भार की जाँच करें, स्टांप शुल्क की गणना करें, अधिकृत माध्यम से
+    भुगतान करें, उप-निबंधक के यहाँ अपॉइंटमेंट बुक करें और दोनों पक्षों की
+    उपस्थिति में पंजीकृत विलेख प्राप्त करें।
+  mr: >-
+    मालकी आणि भार तपासा, मुद्रांक शुल्क मोजा, अधिकृत मार्गाने भरा, उप-निबंधक
+    कार्यालयात अपॉइंटमेंट बुक करा आणि दोन्ही पक्षांच्या उपस्थितीत नोंदणीकृत
+    खत मिळवा.
+feeNote:
+  en: >-
+    Stamp duty and registration fees depend on the property value, use, and
+    location, and are set by the state. Use the official calculator; do not rely
+    on a private agent's estimate.
+  hi: >-
+    स्टांप शुल्क और पंजीकरण शुल्क संपत्ति के मूल्य, उपयोग और स्थान पर निर्भर
+    करते हैं और राज्य द्वारा तय होते हैं। आधिकारिक कैलकुलेटर का उपयोग करें;
+    निजी एजेंट के अनुमान पर भरोसा न करें।
+  mr: >-
+    मुद्रांक शुल्क आणि नोंदणी शुल्क मालमत्तेचे मूल्य, वापर आणि ठिकाणावर अवलंबून
+    असते आणि राज्य ठरवते. अधिकृत कॅल्क्युलेटर वापरा; खाजगी एजंटच्या अंदाजावर
+    विश्वास ठेवू नका.
+timelineNote:
+  en: >-
+    A properly stamped deed is often registered on the appointment day or within
+    a few working days. The registered copy may take longer to become available
+    online.
+  hi: >-
+    उचित स्टांप वाला विलेख अक्सर अपॉइंटमेंट के दिन या कुछ कार्यदिवसों में
+    पंजीकृत हो जाता है। पंजीकृत प्रति ऑनलाइन उपलब्ध होने में अधिक समय लग सकता है।
+  mr: >-
+    योग्य मुद्रांक असलेले खत सहसा अपॉइंटमेंटच्या दिवशी किंवा काही कामकाजाच्या
+    दिवसांत नोंदवले जाते. नोंदणीकृत प्रत ऑनलाइन उपलब्ध होण्यास जास्त वेळ लागू
+    शकतो.
+portalKeys:
+  - igr_maharashtra
+helplines:
+  - "See the IGR Maharashtra contact page for the sub-registrar office"
+documents:
+  - en: "Sale deed draft reviewed by both parties"
+  - en: "Previous title deed and chain of title"
+  - en: "Encumbrance certificate or property search report"
+  - en: "PAN, identity, and address proof of buyer and seller"
+  - en: "Passport-size photographs of the parties and witnesses"
+  - en: "Stamp duty payment proof or e-stamping receipt"
+  - en: "No-objection certificates required by the property type"
+  - en: "Society share certificate or possession proof, if applicable"
+steps:
+  - title:
+      en: Verify the title and encumbrances
+    detail:
+      en: >-
+        Obtain a property search report and check the chain of title, pending
+        loans, liens, and litigation. A lawyer's title review is worth the cost
+        for a large purchase.
+    portalKey: igr_maharashtra
+  - title:
+      en: Draft and agree the deed
+    detail:
+      en: >-
+        The deed should identify the parties, property, consideration, payment
+        schedule, possession, and liabilities. Both sides should read the final
+        draft before stamping.
+  - title:
+      en: Calculate and pay stamp duty
+    detail:
+      en: >-
+        Use the official calculator, then pay through the authorised e-stamping
+        or challan route. Keep the receipt; an under-stamped deed cannot be
+        registered without paying the difference.
+    portalKey: igr_maharashtra
+  - title:
+      en: Book the sub-registrar appointment
+    detail:
+      en: >-
+        Book a slot for the office that has jurisdiction over the property.
+        Confirm which parties, witnesses, and originals must attend.
+  - title:
+      en: Complete registration and biometrics
+    detail:
+      en: >-
+        Both parties sign before the registering officer and complete
+        fingerprint and photograph formalities. Pay the registration fee and
+        collect the receipt.
+  - title:
+      en: Collect and verify the registered deed
+    detail:
+      en: >-
+        Download or collect the registered copy, then check the names, property
+        description, consideration, and registration number. Store both the
+        digital and physical copies safely.
+rejectionReasons:
+  - en: "Property undervalued, so stamp duty is short"
+  - en: "Missing prior title document or broken chain of title"
+  - en: "Required NOC, society certificate, or possession proof is absent"
+  - en: "A party or witness does not attend, or identity does not match"
+  - en: "The deed is presented at the wrong sub-registrar office"

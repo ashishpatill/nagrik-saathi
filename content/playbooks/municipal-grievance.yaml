@@ -1,0 +1,109 @@
+schemaVersion: 1
+slug: municipal-grievance
+version: 1
+order: 15
+lastReviewed: "2026-10-26"
+category: civic
+guidanceOnly: false
+title:
+  en: File a municipal grievance
+  hi: नगरपालिका शिकायत दर्ज करें
+  mr: महानगरपालिका तक्रार दाखल करा
+summary:
+  en: >-
+    Report the issue to the municipal body that covers the address, include a
+    precise location and photograph, keep the complaint number, and escalate to
+    the state grievance portal if the local response stalls.
+  hi: >-
+    समस्या उस नगरपालिका निकाय को बताएँ जिसके क्षेत्र में वह पता आता है, सटीक
+    स्थान और फोटो शामिल करें, शिकायत संख्या रखें और स्थानीय उत्तर न आने पर
+    राज्य शिकायत पोर्टल पर आगे बढ़ाएँ।
+  mr: >-
+    समस्या त्या पत्त्याच्या महानगरपालिका विभागाला कळवा, नेमके ठिकाण आणि छायाचित्र
+    द्या, तक्रार क्रमांक ठेवा आणि स्थानिक उत्तर न मिळाल्यास राज्य तक्रार
+    पोर्टलवर पुढे न्या.
+feeNote:
+  en: >-
+    Filing a municipal grievance is normally free. Do not pay an intermediary to
+    "fast-track" a complaint; use the official portal or ward office.
+  hi: >-
+    नगरपालिका शिकायत दर्ज करना आमतौर पर निःशुल्क है। शिकायत "जल्दी निपटाने" के
+    नाम पर किसी बिचौलिए को भुगतान न करें; आधिकारिक पोर्टल या वार्ड कार्यालय
+    का उपयोग करें।
+  mr: >-
+    महानगरपालिका तक्रार दाखल करणे साधारणपणे मोफत असते. तक्रार "लवकर निकालण्यासाठी"
+    कोणत्याही दलालाला पैसे देऊ नका; अधिकृत पोर्टल किंवा प्रभाग कार्यालय वापरा.
+timelineNote:
+  en: >-
+    Local bodies often set service-level deadlines by complaint type. A simple
+    issue may be closed in days; roads, drainage, and property matters can take
+    weeks.
+  hi: >-
+    स्थानीय निकाय शिकायत के प्रकार के अनुसार सेवा-स्तर की समय-सीमा तय करते हैं।
+    साधारण समस्या कुछ दिनों में बंद हो सकती है; सड़क, जलनिकास और संपत्ति के
+    मामलों में सप्ताह लग सकते हैं।
+  mr: >-
+    स्थानिक संस्था तक्रारीच्या प्रकारानुसार सेवा-स्तरीय मुदत ठरवतात. साधी समस्या
+    काही दिवसांत बंद होऊ शकते; रस्ते, गटार आणि मालमत्तेच्या बाबतीत आठवडे लागू
+    शकतात.
+portalKeys:
+  - pune_municipal
+  - maha_grievances
+helplines:
+  - "1800-103-0222 (Pune Municipal Corporation)"
+  - "1800-120-8040 (Aaple Sarkar citizen call centre)"
+documents:
+  - en: "Exact address, ward, and nearest landmark"
+  - en: "Photograph or short video of the issue"
+  - en: "Your name and contact details"
+  - en: "Property tax or consumer number, if the issue relates to a property"
+  - en: "Previous complaint number or reply, if this is a follow-up"
+  - en: "Receipt or payment proof for a billing dispute"
+steps:
+  - title:
+      en: Identify the responsible body
+    detail:
+      en: >-
+        Roads, drainage, garbage, streetlights, and building permissions usually
+        sit with the municipal corporation or council. State or utility issues
+        may belong elsewhere.
+  - title:
+      en: File with a precise location
+    detail:
+      en: >-
+        Use the municipal grievance portal or ward office. Add the ward, street,
+        landmark, and a photograph; an incomplete location is a common reason
+        for rejection.
+    portalKey: pune_municipal
+  - title:
+      en: Keep the complaint number
+    detail:
+      en: >-
+        Save the acknowledgement and note the service deadline shown for that
+        complaint category. Do not file the same issue repeatedly under new
+        numbers.
+  - title:
+      en: Follow up once
+    detail:
+      en: >-
+        If the deadline passes, reply on the same complaint with the number and
+        ask for a status update. Keep the written response.
+  - title:
+      en: Escalate to the state portal
+    detail:
+      en: >-
+        If the local body does not respond, file on the state grievance portal
+        and attach the original complaint and any replies.
+    portalKey: maha_grievances
+  - title:
+      en: Close the loop
+    detail:
+      en: >-
+        When the work is done, check it and record the closure. If it is not
+        fixed, keep the evidence and escalate rather than opening a duplicate.
+rejectionReasons:
+  - en: "The issue is outside the municipal body's jurisdiction"
+  - en: "Address or ward is missing, so the site cannot be located"
+  - en: "The same complaint is already open under another number"
+  - en: "The complaint is about a private property or private dispute"
+  - en: "No proof or receipt is attached for a billing dispute"

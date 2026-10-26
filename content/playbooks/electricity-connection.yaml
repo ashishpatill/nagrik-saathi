@@ -1,0 +1,105 @@
+schemaVersion: 1
+slug: electricity-connection
+version: 1
+order: 12
+lastReviewed: "2026-10-26"
+category: utilities
+guidanceOnly: false
+title:
+  en: Apply for a new electricity connection
+  hi: नया बिजली कनेक्शन लें
+  mr: नवीन वीज जोडणी घ्या
+summary:
+  en: >-
+    Apply to the distribution company for the address, upload ownership or
+    occupancy proof and load details, pay the estimate, and track the meter
+    installation.
+  hi: >-
+    उस पते के लिए वितरण कंपनी में आवेदन करें, स्वामित्व या कब्जे का प्रमाण और
+    लोड का विवरण अपलोड करें, अनुमानित राशि चुकाएँ और मीटर लगने की स्थिति देखें।
+  mr: >-
+    त्या पत्त्यासाठी वितरण कंपनीकडे अर्ज करा, मालकी किंवा ताब्याचा पुरावा व
+    भाराचा तपशील अपलोड करा, अंदाजित रक्कम भरा आणि मीटर बसवणीची स्थिती तपासा.
+feeNote:
+  en: >-
+    The estimate usually includes a security deposit and connection charges based
+    on load and category. Confirm the official estimate before paying; keep the
+    receipt and the sanctioned-load letter.
+  hi: >-
+    अनुमान में आमतौर पर लोड और श्रेणी के अनुसार सुरक्षा जमा और कनेक्शन शुल्क
+    शामिल होते हैं। भुगतान से पहले आधिकारिक अनुमान की पुष्टि करें; रसीद और
+    स्वीकृत लोड का पत्र रखें।
+  mr: >-
+    अंदाजात साधारणपणे भार व श्रेणीनुसार सुरक्षा ठेव आणि जोडणी शुल्क असते. पैसे
+    भरण्यापूर्वी अधिकृत अंदाजाची खात्री करा; पावती आणि मंजूर भाराचे पत्र ठेवा.
+timelineNote:
+  en: >-
+    After payment and any required inspection, a connection is often energised
+    within two to four weeks. Work that needs a new pole, transformer, or road
+    permission can take longer.
+  hi: >-
+    भुगतान और आवश्यक निरीक्षण के बाद कनेक्शन आमतौर पर दो से चार सप्ताह में चालू
+    हो जाता है। नए खंभे, ट्रांसफार्मर या सड़क अनुमति वाले काम में अधिक समय लग
+    सकता है।
+  mr: >-
+    पैसे भरल्यानंतर आणि आवश्यक तपासणीनंतर जोडणी साधारणपणे दोन ते चार आठवड्यांत
+    सुरू होते. नवीन खांब, ट्रान्सफॉर्मर किंवा रस्ता परवानगी लागणाऱ्या कामास
+    जास्त वेळ लागू शकतो.
+portalKeys:
+  - msedcl_power
+helplines:
+  - "1912 / 1800-233-3435 (MSEDCL)"
+documents:
+  - en: "Identity proof of the applicant"
+  - en: "Ownership proof, rent agreement, or occupancy proof for the premises"
+  - en: "Address proof of the connection site"
+  - en: "Load requirement in kW and the purpose of the connection"
+  - en: "No-objection certificate from the society or landlord, if applicable"
+  - en: "Test report or wiring certificate from a licensed electrician"
+steps:
+  - title:
+      en: Apply for the connection
+    detail:
+      en: >-
+        Use the distribution company's official self-service portal, choose new
+        connection or load extension, and enter the exact premises address.
+    portalKey: msedcl_power
+  - title:
+      en: Upload documents and load details
+    detail:
+      en: >-
+        Attach identity, ownership or occupancy proof, and the sanctioned-load
+        requirement. A mismatch between the applicant and the property owner
+        needs an authorisation letter.
+  - title:
+      en: Wait for the feasibility check
+    detail:
+      en: >-
+        The company checks whether the network can supply the requested load.
+        Respond quickly if the office asks for a site visit or extra document.
+  - title:
+      en: Pay the official estimate
+    detail:
+      en: >-
+        Review the estimate for security deposit and connection charges. Pay
+        only through the official portal or office and keep the receipt.
+  - title:
+      en: Complete inspection and meter installation
+    detail:
+      en: >-
+        A licensed electrician should complete the wiring and test report.
+        Attend the inspection and check the meter serial number and sanctioned
+        load when it is installed.
+  - title:
+      en: Activate and verify the bill
+    detail:
+      en: >-
+        Confirm the consumer number, tariff category, and meter reading on the
+        first bill. Report a wrong category or reading through the official
+        grievance channel.
+rejectionReasons:
+  - en: "Applicant cannot prove ownership, tenancy, or lawful occupancy"
+  - en: "Requested load does not match the wiring or sanctioned capacity"
+  - en: "Missing society or landlord no-objection certificate"
+  - en: "Unpaid estimate or outstanding dues at the same premises"
+  - en: "Network feasibility work is incomplete"

@@ -1,0 +1,101 @@
+schemaVersion: 1
+slug: consumer-complaint
+version: 1
+order: 14
+lastReviewed: "2026-10-26"
+category: consumer
+guidanceOnly: false
+title:
+  en: File a consumer complaint
+  hi: उपभोक्ता शिकायत दर्ज करें
+  mr: ग्राहक तक्रार दाखल करा
+summary:
+  en: >-
+    First ask the seller in writing, then use the National Consumer Helpline for
+    mediation, and approach the Consumer Commission with the invoice and
+    evidence if the dispute is not resolved.
+  hi: >-
+    पहले विक्रेता से लिखित में शिकायत करें, फिर राष्ट्रीय उपभोक्ता हेल्पलाइन पर
+    मध्यस्थता का प्रयास करें और विवाद न सुलझने पर चालान तथा सबूत के साथ
+    उपभोक्ता आयोग जाएँ।
+  mr: >-
+    आधी विक्रेत्याकडे लेखी तक्रार करा, नंतर राष्ट्रीय ग्राहक हेल्पलाइनवर मध्यस्थतेचा
+    प्रयास करा आणि वाद न सुटल्यास बीजक व पुराव्यासह ग्राहक आयोगाकडे जा.
+feeNote:
+  en: >-
+    The National Consumer Helpline is free. A Consumer Commission charges a fee
+    based on the claim amount; check the current fee schedule before filing.
+  hi: >-
+    राष्ट्रीय उपभोक्ता हेल्पलाइन निःशुल्क है। उपभोक्ता आयोग दावा राशि के आधार पर
+    शुल्क लेता है; दाखिल करने से पहले मौजूदा शुल्क सूची देखें।
+  mr: >-
+    राष्ट्रीय ग्राहक हेल्पलाइन मोफत आहे. ग्राहक आयोग दावा रकमेवर आधारित शुल्क
+    घेतो; दाखल करण्यापूर्वी सध्याची शुल्क सूची पहा.
+timelineNote:
+  en: >-
+    Helpline mediation often takes a few weeks. A commission case can take
+    months, so keep the invoice, warranty, chats, and every written reply.
+  hi: >-
+    हेल्पलाइन पर मध्यस्थता में अक्सर कुछ सप्ताह लगते हैं। आयोग का मामला महीनों
+    ले सकता है, इसलिए चालान, वारंटी, चैट और हर लिखित उत्तर संभालकर रखें।
+  mr: >-
+    हेल्पलाइनवरील मध्यस्थतेस सहसा काही आठवडे लागतात. आयोगाचे प्रकरण महिने घेऊ
+    शकते, त्यामुळे बीजक, वॉरंटी, चॅट आणि प्रत्येक लेखी उत्तर जपून ठेवा.
+portalKeys:
+  - consumer_helpline
+helplines:
+  - "1915 (National Consumer Helpline)"
+documents:
+  - en: "Invoice, receipt, or order confirmation"
+  - en: "Warranty or guarantee card"
+  - en: "Payment proof and bank statement"
+  - en: "Photographs or video of the defect or damage"
+  - en: "Emails, chats, and written complaints to the seller"
+  - en: "Service report or technician's inspection note"
+  - en: "Seller's name, address, and contact details"
+steps:
+  - title:
+      en: Complain to the seller first
+    detail:
+      en: >-
+        Send a dated written complaint describing the product or service, the
+        defect, and the remedy you want. Keep proof of delivery.
+  - title:
+      en: Register on the National Consumer Helpline
+    detail:
+      en: >-
+        Create a grievance with the invoice and evidence. The helpline may
+        contact the company and attempt mediation.
+    portalKey: consumer_helpline
+  - title:
+      en: Check the limitation period
+    detail:
+      en: >-
+        A consumer complaint generally has a two-year limitation from the date
+        the defect or deficiency was known. Do not sit on a claim while
+        negotiating.
+  - title:
+      en: Choose the right commission
+    detail:
+      en: >-
+        District, state, or national commission depends on the claim value.
+        File in the forum that covers the seller's location or where the
+        transaction happened.
+  - title:
+      en: File with evidence
+    detail:
+      en: >-
+        Attach the invoice, warranty, correspondence, and a clear calculation of
+        the refund, replacement, or compensation claimed.
+  - title:
+      en: Track and attend hearings
+    detail:
+      en: >-
+        Keep the case number, attend every hearing, and file replies on time.
+        A settlement should be recorded in writing.
+rejectionReasons:
+  - en: "No proof of purchase or payment"
+  - en: "Complaint filed after the limitation period"
+  - en: "Wrong commission for the claim amount or territory"
+  - en: "The issue was not first raised with the seller, where required"
+  - en: "The claim is against a person or entity not covered by consumer law"

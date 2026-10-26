@@ -1,0 +1,109 @@
+schemaVersion: 1
+slug: rti
+version: 1
+order: 7
+lastReviewed: "2026-10-26"
+category: civic
+guidanceOnly: false
+title:
+  en: File a Right to Information request
+  hi: सूचना का अधिकार आवेदन दाखिल करें
+  mr: माहितीच्या अधिकारासाठी अर्ज दाखल करा
+summary:
+  en: >-
+    Identify the public authority that holds the information, file on the
+    official RTI portal or the authority's prescribed channel, pay the fee, and
+    track the reply and first appeal.
+  hi: >-
+    पहले उस सार्वजनिक प्राधिकरण की पहचान करें जिसके पास जानकारी है, आधिकारिक
+    आरटीआई पोर्टल या प्राधिकरण के निर्धारित माध्यम से आवेदन करें, शुल्क दें और
+    उत्तर तथा प्रथम अपील की स्थिति देखें।
+  mr: >-
+    माहिती कोणत्या सार्वजनिक प्राधिकरणाकडे आहे ते ओळखा, अधिकृत आरटीआय पोर्टल
+    किंवा प्राधिकरणाच्या ठरलेल्या मार्गाने अर्ज करा, शुल्क भरा आणि उत्तर व
+    प्रथम अपिलाची स्थिती तपासा.
+feeNote:
+  en: >-
+    The central RTI Online portal charges a small application fee. Applicants
+    below the poverty line may be exempt on proof. State rules and fees can
+    differ, so check the authority's page.
+  hi: >-
+    केंद्रीय आरटीआई ऑनलाइन पोर्टल पर छोटा आवेदन शुल्क है। गरीबी रेखा से नीचे
+    के आवेदक प्रमाण देकर छूट पा सकते हैं। राज्यों के नियम और शुल्क अलग हो सकते
+    हैं, इसलिए प्राधिकरण का पेज देखें।
+  mr: >-
+    केंद्रीय आरटीआय ऑनलाइन पोर्टलवर थोडे अर्ज शुल्क आहे. दारिद्र्यरेषेखालील
+    अर्जदार पुराव्यासह सूट मिळवू शकतात. राज्यांचे नियम व शुल्क वेगळे असू शकतात,
+    त्यामुळे प्राधिकरणाचे पान पाहा.
+timelineNote:
+  en: >-
+    A public authority should normally reply within 30 days. Information
+    concerning life or liberty is expected within 48 hours. A first appeal is
+    usually available within 30 days of the reply or deadline.
+  hi: >-
+    सार्वजनिक प्राधिकरण को सामान्यतः 30 दिनों में उत्तर देना चाहिए। जीवन या
+    स्वतंत्रता से जुड़ी जानकारी 48 घंटों में अपेक्षित है। उत्तर या समय-सीमा के
+    30 दिनों के भीतर प्रथम अपील की जा सकती है।
+  mr: >-
+    सार्वजनिक प्राधिकरणाने साधारणपणे 30 दिवसांत उत्तर द्यावे. जीवन किंवा
+    स्वातंत्र्याशी संबंधित माहिती 48 तासांत अपेक्षित आहे. उत्तर किंवा मुदतीनंतर
+    30 दिवसांत प्रथम अपील करता येते.
+portalKeys:
+  - rti_online
+helplines:
+  - "Use the help/contact page on the RTI Online portal"
+documents:
+  - en: "Your name, address, and contact details"
+  - en: "A clear description of the information sought"
+  - en: "The public authority and department that holds it"
+  - en: "Fee payment proof, or BPL proof for an exemption"
+  - en: "Identity proof if the portal or authority asks for it"
+steps:
+  - title:
+      en: Identify the public authority
+    detail:
+      en: >-
+        RTI applies to public authorities. Decide which ministry, department,
+        or office holds the record; a request sent to the wrong authority may
+        be transferred or rejected.
+    portalKey: rti_online
+  - title:
+      en: Write specific questions
+    detail:
+      en: >-
+        Ask for documents or recorded information, not opinions or explanations.
+        Keep the request factual, dated, and limited to what you need.
+  - title:
+      en: File and pay
+    detail:
+      en: >-
+        Use the official portal for central public authorities, or the state
+        portal/prescribed channel for state bodies. Save the registration number
+        and payment receipt.
+    portalKey: rti_online
+  - title:
+      en: Track the 30-day clock
+    detail:
+      en: >-
+        Note the filing date and the statutory deadline. If no reply arrives,
+        you can usually file a first appeal without waiting further.
+  - title:
+      en: File a first appeal if needed
+    detail:
+      en: >-
+        Address the appellate authority named in the reply or on the portal.
+        Attach the original request, proof of filing, and the reply if there is
+        one.
+  - title:
+      en: Escalate to the Information Commission
+    detail:
+      en: >-
+        If the first appeal is not decided or the information is still withheld,
+        a second appeal may be filed with the Information Commission within the
+        limitation period.
+rejectionReasons:
+  - en: "Request sent to an authority that does not hold the information"
+  - en: "The question is vague, opinion-seeking, or not for recorded information"
+  - en: "Fee not paid, or the exemption proof is missing"
+  - en: "The information is covered by a statutory exemption"
+  - en: "First appeal filed after the limitation period"

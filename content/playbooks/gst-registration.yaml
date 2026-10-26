@@ -1,0 +1,107 @@
+schemaVersion: 1
+slug: gst-registration
+version: 1
+order: 5
+lastReviewed: "2026-10-26"
+category: tax
+guidanceOnly: false
+title:
+  en: Register a business for GST
+  hi: व्यवसाय का जीएसटी पंजीकरण
+  mr: व्यवसायाची जीएसटी नोंदणी
+summary:
+  en: >-
+    Check whether registration is required, create a GST portal account, upload
+    business and address proof, complete Aadhaar authentication, and respond to
+    any clarification before the ARN is approved.
+  hi: >-
+    जाँचें कि पंजीकरण आवश्यक है या नहीं, जीएसटी पोर्टल पर खाता बनाएँ, व्यवसाय और
+    पते का प्रमाण अपलोड करें, आधार प्रमाणीकरण पूरा करें और एआरएन स्वीकृत होने से
+    पहले किसी भी स्पष्टीकरण का उत्तर दें।
+  mr: >-
+    नोंदणी आवश्यक आहे का ते तपासा, जीएसटी पोर्टलवर खाते तयार करा, व्यवसाय व
+    पत्त्याचा पुरावा अपलोड करा, आधार प्रमाणीकरण पूर्ण करा आणि एआरएन मंजूर होण्यापूर्वी
+    कोणत्याही स्पष्टीकरणाचे उत्तर द्या.
+feeNote:
+  en: >-
+    GST registration itself has no government fee. Beware of private websites
+    that charge a service fee while looking like the official portal.
+  hi: >-
+    जीएसटी पंजीकरण के लिए सरकारी शुल्क नहीं है। ऐसी निजी वेबसाइटों से सावधान
+    रहें जो आधिकारिक पोर्टल जैसी दिखती हैं और सेवा शुल्क लेती हैं।
+  mr: >-
+    जीएसटी नोंदणीसाठी सरकारी शुल्क नाही. अधिकृत पोर्टलसारख्या दिसणाऱ्या आणि
+    सेवा शुल्क आकारणाऱ्या खाजगी वेबसाइटांपासून सावधान राहा.
+timelineNote:
+  en: >-
+    A complete application is often approved in about seven working days. A
+    clarification notice restarts the clock, so reply with the exact document
+    requested.
+  hi: >-
+    पूरा आवेदन आमतौर पर लगभग सात कार्यदिवसों में स्वीकृत हो जाता है। स्पष्टीकरण
+    नोटिस मिलने पर समय फिर से शुरू होता है, इसलिए माँगे गए सटीक दस्तावेज़ के साथ
+    उत्तर दें।
+  mr: >-
+    पूर्ण अर्ज साधारणपणे सुमारे सात कामकाजाच्या दिवसांत मंजूर होतो. स्पष्टीकरण
+    नोटीस आल्यास मुदत पुन्हा सुरू होते, त्यामुळे मागितलेल्या नेमक्या कागदपत्रासह
+    उत्तर द्या.
+portalKeys:
+  - gst_portal
+helplines:
+  - "1800-103-4786 (GST helpdesk)"
+documents:
+  - en: "PAN of the business or applicant"
+  - en: "Aadhaar of the authorised signatory, where authentication is required"
+  - en: "Proof of business address, such as a rent agreement and utility bill"
+  - en: "Bank account statement or cancelled cheque"
+  - en: "Partnership deed, incorporation certificate, or constitution proof"
+  - en: "Photograph of the authorised signatory"
+  - en: "Digital signature, if the entity requires one"
+steps:
+  - title:
+      en: Check the registration threshold
+    detail:
+      en: >-
+        Turnover thresholds and special-category rules vary by state and by
+        goods or services. Confirm your position before applying; voluntary
+        registration is also possible.
+    portalKey: gst_portal
+  - title:
+      en: Start a fresh registration
+    detail:
+      en: >-
+        Use the GST portal's registration service and select the correct
+        taxpayer type. Keep the temporary reference number (TRN) safe.
+    portalKey: gst_portal
+  - title:
+      en: Upload business and address proof
+    detail:
+      en: >-
+        Match the name and address on every document. A rent agreement should
+        be supported by a utility bill and the landlord's ownership proof where
+        the portal asks for it.
+  - title:
+      en: Complete Aadhaar authentication
+    detail:
+      en: >-
+        The authorised signatory completes authentication. Do not share the OTP
+        with a consultant or agent; complete it yourself.
+  - title:
+      en: Respond to clarification
+    detail:
+      en: >-
+        If an officer raises a query, reply through the portal within the stated
+        period with exactly the document requested. Keep the acknowledgement.
+  - title:
+      en: Download the certificate and check the ARN
+    detail:
+      en: >-
+        After approval, download the registration certificate and display the
+        GSTIN where required. Verify the trade name, address, and jurisdiction.
+    portalKey: gst_portal
+rejectionReasons:
+  - en: "Address proof does not match the business address or is incomplete"
+  - en: "PAN name does not match the entity or authorised signatory"
+  - en: "A clarification notice was not answered in time"
+  - en: "Aadhaar authentication failed or was not completed"
+  - en: "Wrong taxpayer type or jurisdiction selected"

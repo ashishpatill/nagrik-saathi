@@ -459,12 +459,14 @@ export default function Workspace() {
                   </select>
                 </label>
               </div>
-              <Link
-                href="/playground"
-                className="text-right text-[11px] font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
-              >
-                Agent tool playground →
-              </Link>
+              <div className="flex flex-col items-end gap-1 text-right text-xs font-semibold text-[var(--accent)]">
+                <Link href="/playbooks" className="underline-offset-4 hover:underline">
+                  Process playbooks →
+                </Link>
+                <Link href="/playground" className="underline-offset-4 hover:underline">
+                  Agent tool playground →
+                </Link>
+              </div>
             </div>
           </div>
 

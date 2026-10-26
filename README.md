@@ -29,6 +29,9 @@ video.
   else is counted and dropped, and the count is shown on screen.
 - Documents are handled on the device. Nothing is uploaded for the core
   flows.
+- Sixteen versioned process playbooks explain the steps, documents, fees,
+  timelines, and common rejection reasons for the top 15 workflows, plus an
+  Aadhaar guidance-only page. They link only to the reviewed portal registry.
 - WebMCP tools let AI agents call the app inside the same trust rules.
 
 ## Run locally
@@ -48,6 +51,7 @@ pnpm lint
 pnpm test
 pnpm build
 pnpm start
+pnpm playbooks:check   # generated playbook JSON is current
 ```
 
 ## Deploy
@@ -60,9 +64,19 @@ visitors paste their own free SerpApi key, stored only in their browser,
 so the operator cannot be charged for anyone's searches. To deploy with a
 server key instead, set SERPAPI_API_KEY in the host's environment.
 
-Local verify: pnpm lint, pnpm test, pnpm build. CI runs the same checks plus
-`pnpm audit` and a CycloneDX SBOM on pushes to `master` and on pull requests;
-see [docs/CI.md](docs/CI.md). Optional HTTPS deploy notes live in docs/DEPLOY.md.
+Local verify: pnpm lint, pnpm test, pnpm playbooks:check, pnpm build. CI runs
+the same checks plus `pnpm audit` and a CycloneDX SBOM on pushes to `master`
+and on pull requests; see [docs/CI.md](docs/CI.md). Optional HTTPS deploy notes
+live in docs/DEPLOY.md.
+
+## Process playbooks
+
+`/playbooks` publishes the reviewed workflows as versioned YAML. Each page has
+an English, Hindi, and Marathi overview, then the steps, required documents,
+fee and timeline guidance, common rejection reasons, helplines, and reviewed
+official portal links. The Aadhaar page is guidance-only and never asks for a
+number. Source, schema, review rules, and the correction flow are in
+[docs/PLAYBOOKS.md](docs/PLAYBOOKS.md).
 
 ## Goals
 

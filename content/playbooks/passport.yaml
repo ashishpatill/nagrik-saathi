@@ -1,0 +1,106 @@
+schemaVersion: 1
+slug: passport
+version: 1
+order: 2
+lastReviewed: "2026-10-26"
+category: travel
+guidanceOnly: false
+title:
+  en: Apply for or renew an Indian passport
+  hi: भारतीय पासपोर्ट के लिए आवेदन या नवीनीकरण
+  mr: भारतीय पासपोर्टसाठी अर्ज किंवा नूतनीकरण
+summary:
+  en: >-
+    Register on Passport Seva, complete the form, pay, book a Passport Seva
+    Kendra appointment, carry original documents, and track the file until
+    police verification and dispatch are complete.
+  hi: >-
+    पासपोर्ट सेवा पर पंजीकरण करें, फॉर्म भरें, शुल्क दें, पासपोर्ट सेवा केंद्र
+    में अपॉइंटमेंट बुक करें, मूल दस्तावेज़ साथ ले जाएँ और पुलिस सत्यापन तथा
+    डिस्पैच तक फ़ाइल की स्थिति देखते रहें।
+  mr: >-
+    पासपोर्ट सेवेवर नोंदणी करा, अर्ज भरा, शुल्क भरा, पासपोर्ट सेवा केंद्रात
+    अपॉइंटमेंट बुक करा, मूळ कागदपत्रे सोबत न्या आणि पोलिस पडताळणी व पाठवणी
+    पूर्ण होईपर्यंत फाइलची स्थिती तपासत राहा.
+feeNote:
+  en: >-
+    The fee depends on booklet size and whether you choose normal or tatkal
+    service. Confirm the current amount on Passport Seva before paying; keep the
+    receipt.
+  hi: >-
+    शुल्क बुकलेट के आकार और सामान्य या तत्काल सेवा पर निर्भर करता है। भुगतान से
+    पहले पासपोर्ट सेवा पर मौजूदा राशि की पुष्टि करें और रसीद संभालकर रखें।
+  mr: >-
+    शुल्क बुकलेटच्या आकारावर आणि सामान्य किंवा तत्काळ सेवेवर अवलंबून असते.
+    पैसे भरण्यापूर्वी पासपोर्ट सेवेवर सध्याची रक्कम तपासा आणि पावती जपून ठेवा.
+timelineNote:
+  en: >-
+    Normal service commonly takes about 30 to 45 days after police verification;
+    tatkal is faster but not instant and still depends on verification and
+    dispatch.
+  hi: >-
+    सामान्य सेवा में पुलिस सत्यापन के बाद आमतौर पर लगभग 30 से 45 दिन लगते हैं;
+    तत्काल सेवा तेज़ है, लेकिन तुरंत नहीं, और सत्यापन तथा डिस्पैच पर निर्भर है।
+  mr: >-
+    सामान्य सेवेत पोलिस पडताळणीनंतर साधारणपणे 30 ते 45 दिवस लागतात; तत्काळ सेवा
+    जलद असते, पण तात्काळ नाही आणि ती पडताळणी व पाठवणीवर अवलंबून असते.
+portalKeys:
+  - passportindia
+helplines:
+  - "1800-258-1800 (Passport Seva national call centre)"
+documents:
+  - en: "Proof of identity from the accepted list on Passport Seva"
+  - en: "Proof of address from the accepted list on Passport Seva"
+  - en: "Proof of date of birth"
+  - en: "Old passport and a copy, if you are renewing"
+  - en: "Passport-size photographs if the application asks for them"
+  - en: "Marriage certificate, name-change affidavit, or other supporting paper when applicable"
+steps:
+  - title:
+      en: Register and fill the form
+    detail:
+      en: >-
+        Create an account on Passport Seva, choose fresh or reissue, and enter
+        your details exactly as they appear in your supporting documents. Save
+        the application number.
+    portalKey: passportindia
+  - title:
+      en: Pay and book an appointment
+    detail:
+      en: >-
+        Pay the fee on the portal and choose a Passport Seva Kendra or Post
+        Office Passport Seva Kendra. Keep the appointment receipt and arrive
+        within the reporting window.
+    portalKey: passportindia
+  - title:
+      en: Carry original documents
+    detail:
+      en: >-
+        Take the originals and self-attested copies listed for your case. The
+        centre will scan them; do not hand your documents to an outside agent.
+  - title:
+      en: Complete biometrics and interview
+    detail:
+      en: >-
+        At the centre, staff verify your documents, capture biometrics, and may
+        ask brief questions. Check the printed application before you sign.
+  - title:
+      en: Track police verification
+    detail:
+      en: >-
+        Use the file number on Passport Seva to track status. Respond promptly
+        if the police or passport office asks for more information.
+    portalKey: passportindia
+  - title:
+      en: Receive the passport and check details
+    detail:
+      en: >-
+        After dispatch, verify your name, date of birth, address, and passport
+        number. Report a printing error through the official grievance channel
+        immediately.
+rejectionReasons:
+  - en: "Name or date of birth does not match the supporting documents"
+  - en: "Incomplete or non-accepted proof of identity or address"
+  - en: "Adverse police verification or an unanswered query"
+  - en: "Wrong application type, such as fresh instead of reissue"
+  - en: "Unpaid fee or a missed appointment without rescheduling"

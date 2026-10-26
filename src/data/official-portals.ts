@@ -35,6 +35,15 @@ const portalSeeds: readonly PortalSeed[] = [
   ["consumer_helpline", "National Consumer Helpline", "India", "https://consumerhelpline.gov.in/", ["consumerhelpline.gov.in"], "1915", ["consumer_complaint", "complaint_status"]],
   ["cybercrime", "National Cyber Crime Reporting Portal", "India", "https://cybercrime.gov.in/", ["cybercrime.gov.in"], "1930", ["cyber_complaint"]],
   ["incometax", "Income Tax e-Filing", "India", "https://www.incometax.gov.in/", ["www.incometax.gov.in", "incometax.gov.in"], "1800-103-0025", ["tax_information"]],
+  ["indianvisaonline", "Indian Visa Online (e-Visa)", "India", "https://indianvisaonline.gov.in/evisa/tvoa.html", ["indianvisaonline.gov.in"], "+91 8278087808 / 011-24300666", ["visa_application", "visa_status"]],
+  ["passportindia", "Passport Seva", "India", "https://www.passportindia.gov.in/psp", ["www.passportindia.gov.in", "passportindia.gov.in"], "1800-258-1800", ["passport_application", "passport_status"]],
+  ["protean_pan", "Protean PAN Services", "India", "https://onlineservices.proteantech.in/paam/endUserRegisterContact.html", ["onlineservices.proteantech.in"], "020-27218080", ["pan_application", "pan_correction"]],
+  ["gst_portal", "GST Portal", "India", "https://www.gst.gov.in/", ["www.gst.gov.in", "gst.gov.in"], "1800-103-4786", ["gst_registration", "gst_return"]],
+  ["rti_online", "RTI Online", "India", "https://rtionline.gov.in/", ["rtionline.gov.in"], "Help page on the portal", ["rti_application", "rti_status"]],
+  ["igr_maharashtra", "Inspector General of Registration, Maharashtra", "Maharashtra", "https://igrmaharashtra.gov.in/", ["igrmaharashtra.gov.in"], "See the IGR Maharashtra contact page", ["property_registration", "stamp_duty"]],
+  ["crs_india", "Civil Registration System", "India", "https://dc.crsorgi.gov.in/crs/home", ["dc.crsorgi.gov.in", "crsorgi.gov.in"], "srocrs.rgi@nic.in", ["birth_certificate", "death_certificate"]],
+  ["rcms_maharashtra", "Ration Card Management System, Maharashtra", "Maharashtra", "https://rcms.mahafood.gov.in/", ["rcms.mahafood.gov.in"], "1800-22-4950 / 1967", ["ration_card", "ration_card_status"]],
+  ["uidai", "Unique Identification Authority of India", "India", "https://uidai.gov.in/", ["uidai.gov.in", "www.uidai.gov.in"], "1947", ["aadhaar_update", "aadhaar_information"]],
 ];
 
 export const VERIFIED_PORTALS: OfficialPortal[] = portalSeeds.map(([key, departmentName, state, portalUrl, allowedHostnames, helpline, allowedServices]) => ({

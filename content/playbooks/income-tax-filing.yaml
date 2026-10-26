@@ -1,0 +1,110 @@
+schemaVersion: 1
+slug: income-tax-filing
+version: 1
+order: 6
+lastReviewed: "2026-10-26"
+category: tax
+guidanceOnly: false
+title:
+  en: File an income-tax return
+  hi: आयकर रिटर्न दाखिल करें
+  mr: आयकर विवरणपत्र दाखल करा
+summary:
+  en: >-
+    Pick the correct ITR form, reconcile Form 16, AIS, and bank details, file on
+    the Income Tax e-filing portal, pay any balance tax, and e-verify within the
+    deadline so the return is treated as filed.
+  hi: >-
+    सही आईटीआर फॉर्म चुनें, फॉर्म 16, एआईएस और बैंक विवरण का मिलान करें, आयकर
+    ई-फाइलिंग पोर्टल पर रिटर्न दाखिल करें, बाकी कर चुकाएँ और निर्धारित समय में
+    ई-वेरिफाई करें ताकि रिटर्न दाखिल माना जाए।
+  mr: >-
+    योग्य आयटीआर फॉर्म निवडा, फॉर्म 16, एआयएस आणि बँक तपशीलांची जुळणी करा, आयकर
+    ई-फाइलिंग पोर्टलवर रिटर्न दाखल करा, उर्वरित कर भरा आणि ठरलेल्या मुदतीत
+    ई-व्हेरिफाय करा जेणेकरून रिटर्न दाखल मानला जाईल.
+feeNote:
+  en: >-
+    Filing on the official e-filing portal is free. Late filing, interest, or
+    other statutory charges may still apply; the portal calculates what it can
+    from your return.
+  hi: >-
+    आधिकारिक ई-फाइलिंग पोर्टल पर रिटर्न दाखिल करना निःशुल्क है। देर से दाखिल
+    करने पर विलंब शुल्क, ब्याज या अन्य वैधानिक शुल्क लग सकते हैं; पोर्टल आपके
+    रिटर्न से जितना संभव हो गणना करता है।
+  mr: >-
+    अधिकृत ई-फाइलिंग पोर्टलवर रिटर्न दाखल करणे मोफत आहे. उशिरा दाखल केल्यास
+    विलंब शुल्क, व्याज किंवा इतर वैधानिक शुल्क लागू शकतात; पोर्टल तुमच्या
+    रिटर्नवरून शक्य ते मोजते.
+timelineNote:
+  en: >-
+    File by the due date for your assessment year. If you miss it, file a belated
+    return before the extended deadline and e-verify it; an unverified return is
+    not complete.
+  hi: >-
+    अपने निर्धारण वर्ष की नियत तारीख तक रिटर्न दाखिल करें। छूट जाने पर विस्तारित
+    समय-सीमा से पहले विलंबित रिटर्न दाखिल करें और ई-वेरिफाई करें; बिना
+    सत्यापन वाला रिटर्न पूरा नहीं माना जाता।
+  mr: >-
+    तुमच्या निर्धारण वर्षाच्या नियत तारखेपर्यंत रिटर्न दाखल करा. चुकल्यास
+    वाढीव मुदतीपूर्वी विलंबित रिटर्न दाखल करा आणि ई-व्हेरिफाय करा; पडताळणी
+    न केलेला रिटर्न पूर्ण मानला जात नाही.
+portalKeys:
+  - incometax
+helplines:
+  - "1800-103-0025 (Income Tax e-filing helpdesk)"
+documents:
+  - en: "PAN and Aadhaar linked to it"
+  - en: "Form 16 from each employer"
+  - en: "Form 26AS and Annual Information Statement (AIS)"
+  - en: "Bank account details for refunds"
+  - en: "Investment, insurance, loan, and donation proofs if you claim deductions"
+  - en: "Capital-gain statements or business books, if applicable"
+steps:
+  - title:
+      en: Choose the right ITR form
+    detail:
+      en: >-
+        Salary, house property, capital gains, business income, and presumptive
+        income use different forms. Use the portal's helper if you are unsure,
+        or ask a qualified tax professional.
+    portalKey: incometax
+  - title:
+      en: Reconcile the prefill
+    detail:
+      en: >-
+        Compare Form 16, Form 26AS, AIS, and your bank records. Report every
+        income source; a mismatch is easier to fix before filing than after a
+        notice.
+  - title:
+      en: Fill and validate the return
+    detail:
+      en: >-
+        Enter deductions and bank details, then run validation. Save the draft
+        and review the tax payable or refund before submitting.
+    portalKey: incometax
+  - title:
+      en: Pay balance tax if due
+    detail:
+      en: >-
+        Use the e-Pay Tax service linked from the portal. Pay from your own bank
+        account and keep the challan number.
+  - title:
+      en: Submit and e-verify
+    detail:
+      en: >-
+        Submit the return, then e-verify with Aadhaar OTP, net banking, or
+        another supported method. Keep the acknowledgement number and ITR-V.
+    portalKey: incometax
+  - title:
+      en: Check refund or notice status
+    detail:
+      en: >-
+        Track the return and refund on the portal. If a notice arrives, read the
+        response deadline and reply through the portal, not an unofficial
+        helpline.
+rejectionReasons:
+  - en: "Wrong ITR form for the income sources"
+  - en: "Return submitted but not e-verified"
+  - en: "Tax payable remains unpaid"
+  - en: "Income in AIS or Form 26AS does not match the return"
+  - en: "Bank account is not pre-validated for a refund"

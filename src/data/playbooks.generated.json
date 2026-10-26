@@ -1,0 +1,1994 @@
+[
+  {
+    "schemaVersion": 1,
+    "slug": "e-visa",
+    "version": 1,
+    "order": 1,
+    "lastReviewed": "2026-10-26",
+    "category": "travel",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Apply for an Indian e-Visa",
+      "hi": "भारतीय ई-वीज़ा के लिए आवेदन",
+      "mr": "भारतीय ई-व्हिसासाठी अर्ज"
+    },
+    "summary": {
+      "en": "Check that your nationality and purpose are eligible, apply only on the Government of India e-Visa portal, pay the published fee, and carry the granted ETA with the same passport when you travel.",
+      "hi": "पहले जाँचें कि आपकी राष्ट्रीयता और यात्रा का उद्देश्य ई-वीज़ा के लिए पात्र है। केवल भारत सरकार के ई-वीज़ा पोर्टल पर आवेदन करें, निर्धारित शुल्क भरें और यात्रा के समय वही पासपोर्ट तथा मंज़ूर ETA साथ रखें।",
+      "mr": "तुमची राष्ट्रीयता आणि प्रवासाचा उद्देश ई-व्हिसासाठी पात्र आहे का ते आधी तपासा. केवळ भारत सरकारच्या ई-व्हिसा पोर्टलवर अर्ज करा, जाहीर शुल्क भरा आणि प्रवासाच्या वेळी तोच पासपोर्ट व मंजूर ETA सोबत ठेवा."
+    },
+    "feeNote": {
+      "en": "The fee depends on nationality and visa duration. Confirm the amount on the official portal before paying; nobody can guarantee a faster grant for an extra payment.",
+      "hi": "शुल्क आपकी राष्ट्रीयता और वीज़ा की अवधि पर निर्भर करता है। भुगतान से पहले आधिकारिक पोर्टल पर राशि की पुष्टि करें; अतिरिक्त भुगतान पर तेज़ मंज़ूरी का दावा करने वाले किसी भी व्यक्ति पर भरोसा न करें।",
+      "mr": "शुल्क तुमच्या राष्ट्रीयत्वावर आणि व्हिसाच्या कालावधीवर अवलंबून असते. पैसे भरण्यापूर्वी अधिकृत पोर्टलवर रक्कम तपासा; अतिरिक्त पैसे घेऊन जलद मंजुरीचे आश्वासन देणाऱ्या कोणावरही विश्वास ठेवू नका."
+    },
+    "timelineNote": {
+      "en": "Most applications are decided within about 72 hours, but apply at least four days before travel and check the status before booking anything non-refundable.",
+      "hi": "अधिकांश आवेदनों पर लगभग 72 घंटे में निर्णय होता है, फिर भी यात्रा से कम से कम चार दिन पहले आवेदन करें और नॉन-रिफंडेबल बुकिंग से पहले स्थिति जाँचें।",
+      "mr": "बहुतेक अर्जांवर सुमारे 72 तासांत निर्णय होतो, तरीही प्रवासाच्या किमान चार दिवस आधी अर्ज करा आणि परतावा न मिळणारे बुकिंग करण्यापूर्वी स्थिती तपासा."
+    },
+    "portalKeys": [
+      "indianvisaonline"
+    ],
+    "helplines": [
+      "+91 8278087808 / 011-24300666 (e-Visa helpdesk)",
+      "indian-evisa@gov.in"
+    ],
+    "documents": [
+      {
+        "en": "Passport valid for at least six months with two blank pages"
+      },
+      {
+        "en": "Recent photograph that meets the portal's specification"
+      },
+      {
+        "en": "Passport biodata page scan"
+      },
+      {
+        "en": "Return ticket, funds proof, or invitation letter if the category asks for it"
+      },
+      {
+        "en": "A working email address for the ETA and status updates"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Confirm eligibility and visa category"
+        },
+        "detail": {
+          "en": "Read the category list on the official portal before starting. Tourist, business, medical, student, and conference visits have different conditions. A regular paper visa may be the right route if e-Visa does not cover your purpose."
+        },
+        "portalKey": "indianvisaonline"
+      },
+      {
+        "title": {
+          "en": "Complete the application yourself"
+        },
+        "detail": {
+          "en": "Use the official portal, not a lookalike agent site. Enter your name exactly as printed in the passport and keep the application ID. Never share your password or payment OTP with an intermediary."
+        },
+        "portalKey": "indianvisaonline"
+      },
+      {
+        "title": {
+          "en": "Upload the photo and passport page"
+        },
+        "detail": {
+          "en": "Follow the pixel, size, and background rules shown on the portal. A rejected photo is one of the most common reasons for delay."
+        }
+      },
+      {
+        "title": {
+          "en": "Pay the published fee"
+        },
+        "detail": {
+          "en": "Pay only on the official payment page. Save the receipt and the application ID; the portal is the only place that can confirm payment."
+        }
+      },
+      {
+        "title": {
+          "en": "Receive and check the ETA"
+        },
+        "detail": {
+          "en": "The ETA normally arrives by email. Check the name, passport number, category, and validity dates. Carry the ETA and the same passport when travelling."
+        }
+      },
+      {
+        "title": {
+          "en": "Track the application if it is delayed"
+        },
+        "detail": {
+          "en": "Use the portal's status enquiry with your application ID. Contact the e-Visa helpdesk through the published channels rather than a third-party agent."
+        },
+        "portalKey": "indianvisaonline"
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Wrong visa category for the stated purpose of travel"
+      },
+      {
+        "en": "Photo or passport scan does not meet the published specification"
+      },
+      {
+        "en": "Passport has less than six months' validity or too few blank pages"
+      },
+      {
+        "en": "Name, passport number, or date of birth does not match the passport"
+      },
+      {
+        "en": "Payment not confirmed, or the application was left incomplete"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "passport",
+    "version": 1,
+    "order": 2,
+    "lastReviewed": "2026-10-26",
+    "category": "travel",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Apply for or renew an Indian passport",
+      "hi": "भारतीय पासपोर्ट के लिए आवेदन या नवीनीकरण",
+      "mr": "भारतीय पासपोर्टसाठी अर्ज किंवा नूतनीकरण"
+    },
+    "summary": {
+      "en": "Register on Passport Seva, complete the form, pay, book a Passport Seva Kendra appointment, carry original documents, and track the file until police verification and dispatch are complete.",
+      "hi": "पासपोर्ट सेवा पर पंजीकरण करें, फॉर्म भरें, शुल्क दें, पासपोर्ट सेवा केंद्र में अपॉइंटमेंट बुक करें, मूल दस्तावेज़ साथ ले जाएँ और पुलिस सत्यापन तथा डिस्पैच तक फ़ाइल की स्थिति देखते रहें।",
+      "mr": "पासपोर्ट सेवेवर नोंदणी करा, अर्ज भरा, शुल्क भरा, पासपोर्ट सेवा केंद्रात अपॉइंटमेंट बुक करा, मूळ कागदपत्रे सोबत न्या आणि पोलिस पडताळणी व पाठवणी पूर्ण होईपर्यंत फाइलची स्थिती तपासत राहा."
+    },
+    "feeNote": {
+      "en": "The fee depends on booklet size and whether you choose normal or tatkal service. Confirm the current amount on Passport Seva before paying; keep the receipt.",
+      "hi": "शुल्क बुकलेट के आकार और सामान्य या तत्काल सेवा पर निर्भर करता है। भुगतान से पहले पासपोर्ट सेवा पर मौजूदा राशि की पुष्टि करें और रसीद संभालकर रखें।",
+      "mr": "शुल्क बुकलेटच्या आकारावर आणि सामान्य किंवा तत्काळ सेवेवर अवलंबून असते. पैसे भरण्यापूर्वी पासपोर्ट सेवेवर सध्याची रक्कम तपासा आणि पावती जपून ठेवा."
+    },
+    "timelineNote": {
+      "en": "Normal service commonly takes about 30 to 45 days after police verification; tatkal is faster but not instant and still depends on verification and dispatch.",
+      "hi": "सामान्य सेवा में पुलिस सत्यापन के बाद आमतौर पर लगभग 30 से 45 दिन लगते हैं; तत्काल सेवा तेज़ है, लेकिन तुरंत नहीं, और सत्यापन तथा डिस्पैच पर निर्भर है।",
+      "mr": "सामान्य सेवेत पोलिस पडताळणीनंतर साधारणपणे 30 ते 45 दिवस लागतात; तत्काळ सेवा जलद असते, पण तात्काळ नाही आणि ती पडताळणी व पाठवणीवर अवलंबून असते."
+    },
+    "portalKeys": [
+      "passportindia"
+    ],
+    "helplines": [
+      "1800-258-1800 (Passport Seva national call centre)"
+    ],
+    "documents": [
+      {
+        "en": "Proof of identity from the accepted list on Passport Seva"
+      },
+      {
+        "en": "Proof of address from the accepted list on Passport Seva"
+      },
+      {
+        "en": "Proof of date of birth"
+      },
+      {
+        "en": "Old passport and a copy, if you are renewing"
+      },
+      {
+        "en": "Passport-size photographs if the application asks for them"
+      },
+      {
+        "en": "Marriage certificate, name-change affidavit, or other supporting paper when applicable"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Register and fill the form"
+        },
+        "detail": {
+          "en": "Create an account on Passport Seva, choose fresh or reissue, and enter your details exactly as they appear in your supporting documents. Save the application number."
+        },
+        "portalKey": "passportindia"
+      },
+      {
+        "title": {
+          "en": "Pay and book an appointment"
+        },
+        "detail": {
+          "en": "Pay the fee on the portal and choose a Passport Seva Kendra or Post Office Passport Seva Kendra. Keep the appointment receipt and arrive within the reporting window."
+        },
+        "portalKey": "passportindia"
+      },
+      {
+        "title": {
+          "en": "Carry original documents"
+        },
+        "detail": {
+          "en": "Take the originals and self-attested copies listed for your case. The centre will scan them; do not hand your documents to an outside agent."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete biometrics and interview"
+        },
+        "detail": {
+          "en": "At the centre, staff verify your documents, capture biometrics, and may ask brief questions. Check the printed application before you sign."
+        }
+      },
+      {
+        "title": {
+          "en": "Track police verification"
+        },
+        "detail": {
+          "en": "Use the file number on Passport Seva to track status. Respond promptly if the police or passport office asks for more information."
+        },
+        "portalKey": "passportindia"
+      },
+      {
+        "title": {
+          "en": "Receive the passport and check details"
+        },
+        "detail": {
+          "en": "After dispatch, verify your name, date of birth, address, and passport number. Report a printing error through the official grievance channel immediately."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Name or date of birth does not match the supporting documents"
+      },
+      {
+        "en": "Incomplete or non-accepted proof of identity or address"
+      },
+      {
+        "en": "Adverse police verification or an unanswered query"
+      },
+      {
+        "en": "Wrong application type, such as fresh instead of reissue"
+      },
+      {
+        "en": "Unpaid fee or a missed appointment without rescheduling"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "pan",
+    "version": 1,
+    "order": 3,
+    "lastReviewed": "2026-10-26",
+    "category": "identity",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Apply for a PAN or correct an existing PAN",
+      "hi": "पैन के लिए आवेदन या मौजूदा पैन में सुधार",
+      "mr": "पॅनसाठी अर्ज किंवा सध्याच्या पॅनमध्ये दुरुस्ती"
+    },
+    "summary": {
+      "en": "Use the official Protean or Income Tax e-filing route, complete the application with identity, address, and date-of-birth proof, finish e-KYC or e-sign, and keep the acknowledgement number for tracking.",
+      "hi": "आधिकारिक प्रोटियन या आयकर ई-फाइलिंग मार्ग का उपयोग करें, पहचान, पते और जन्मतिथि के प्रमाण के साथ आवेदन पूरा करें, ई-केवाईसी या ई-साइन करें और ट्रैकिंग के लिए पावती संख्या संभालकर रखें।",
+      "mr": "अधिकृत प्रोटियन किंवा आयकर ई-फाइलिंग मार्ग वापरा, ओळख, पत्ता आणि जन्मतारीख पुराव्यासह अर्ज पूर्ण करा, ई-केवायसी किंवा ई-साइन करा आणि पाठपुराव्यासाठी पावती क्रमांक जपून ठेवा."
+    },
+    "feeNote": {
+      "en": "The portal shows the current application fee and any physical-card dispatch charge. An instant e-PAN may be free. Pay only on the official portal and keep the receipt.",
+      "hi": "पोर्टल पर मौजूदा आवेदन शुल्क और भौतिक कार्ड भेजने का शुल्क दिखाई देता है। तत्काल ई-पैन निःशुल्क हो सकता है। केवल आधिकारिक पोर्टल पर भुगतान करें और रसीद रखें।",
+      "mr": "पोर्टलवर सध्याचे अर्ज शुल्क आणि भौतिक कार्ड पाठवणीचे शुल्क दिसते. तात्काळ ई-पॅन मोफत असू शकते. केवळ अधिकृत पोर्टलवर पैसे भरा आणि पावती ठेवा."
+    },
+    "timelineNote": {
+      "en": "An e-PAN often arrives within a day or two; a physical card usually follows in about 10 to 15 days. Delivery can take longer if documents need manual review.",
+      "hi": "ई-पैन अक्सर एक-दो दिन में मिल जाता है; भौतिक कार्ड आमतौर पर लगभग 10 से 15 दिन में आता है। दस्तावेज़ों की मैन्युअल समीक्षा होने पर देरी हो सकती है।",
+      "mr": "ई-पॅन सहसा एक-दोन दिवसांत मिळतो; भौतिक कार्ड साधारणपणे सुमारे 10 ते 15 दिवसांत येते. कागदपत्रांची मॅन्युअल तपासणी लागल्यास उशीर होऊ शकतो."
+    },
+    "portalKeys": [
+      "protean_pan",
+      "incometax"
+    ],
+    "helplines": [
+      "020-27218080 (Protean PAN/TDS call centre)"
+    ],
+    "documents": [
+      {
+        "en": "Proof of identity from the accepted list"
+      },
+      {
+        "en": "Proof of address from the accepted list"
+      },
+      {
+        "en": "Proof of date of birth"
+      },
+      {
+        "en": "Recent photograph and signature, if the route asks for them"
+      },
+      {
+        "en": "Aadhaar for e-KYC or for linking, where the portal requires it"
+      },
+      {
+        "en": "Existing PAN details, if this is a correction or reprint"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Choose the right route"
+        },
+        "detail": {
+          "en": "A new PAN, a correction, and a reprint are different applications. An instant e-PAN is available only to eligible applicants with an Aadhaar and a registered mobile number."
+        },
+        "portalKey": "incometax"
+      },
+      {
+        "title": {
+          "en": "Fill the application"
+        },
+        "detail": {
+          "en": "Enter your name, date of birth, and address exactly as they appear in the supporting documents. Use the portal's own guidance for initials and name expansions."
+        },
+        "portalKey": "protean_pan"
+      },
+      {
+        "title": {
+          "en": "Complete e-KYC or e-sign"
+        },
+        "detail": {
+          "en": "Follow the Aadhaar-based e-KYC or e-sign flow if offered. The OTP is for you alone; no agent should ask you to share it."
+        }
+      },
+      {
+        "title": {
+          "en": "Pay and save the acknowledgement"
+        },
+        "detail": {
+          "en": "Pay only on the official portal, then save the acknowledgement number. If physical documents are required, send them within the stated window."
+        }
+      },
+      {
+        "title": {
+          "en": "Track and download the PAN"
+        },
+        "detail": {
+          "en": "Use the acknowledgement number to check status. Download the e-PAN when it is issued and verify the printed details before using it."
+        },
+        "portalKey": "protean_pan"
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Name or date of birth does not match the supporting documents"
+      },
+      {
+        "en": "Aadhaar e-KYC fails because the mobile number is not linked"
+      },
+      {
+        "en": "Duplicate application, or an existing PAN is already active"
+      },
+      {
+        "en": "Photograph, signature, or document scan is unclear"
+      },
+      {
+        "en": "Physical documents were not sent within the required window"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "driving-licence",
+    "version": 1,
+    "order": 4,
+    "lastReviewed": "2026-10-26",
+    "category": "transport",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Get a learner licence and a driving licence",
+      "hi": "लर्नर लाइसेंस और ड्राइविंग लाइसेंस प्राप्त करें",
+      "mr": "लर्नर परवाना आणि वाहन चालक परवाना मिळवा"
+    },
+    "summary": {
+      "en": "Apply for a learner licence on Parivahan, pass the learner test, practise within the rules, then book the driving test at your RTO and carry the required medical and address documents.",
+      "hi": "परिवहन पोर्टल पर लर्नर लाइसेंस के लिए आवेदन करें, लर्नर टेस्ट पास करें, नियमों के भीतर अभ्यास करें, फिर अपने आरटीओ में ड्राइविंग टेस्ट बुक करें और आवश्यक मेडिकल तथा पते के दस्तावेज़ साथ रखें।",
+      "mr": "परिवहन पोर्टलवर लर्नर परवान्यासाठी अर्ज करा, लर्नर चाचणी उत्तीर्ण करा, नियमांच्या मर्यादेत सराव करा, नंतर तुमच्या आरटीओमध्ये वाहन चाचणी बुक करा आणि आवश्यक वैद्यकीय व पत्ता कागदपत्रे सोबत ठेवा."
+    },
+    "feeNote": {
+      "en": "Learner and driving-test fees are set by the state and service type. Confirm the amount on Parivahan or at your RTO before paying; keep every receipt.",
+      "hi": "लर्नर और ड्राइविंग टेस्ट का शुल्क राज्य और सेवा के प्रकार के अनुसार तय होता है। भुगतान से पहले परिवहन पोर्टल या अपने आरटीओ पर राशि की पुष्टि करें और हर रसीद रखें।",
+      "mr": "लर्नर आणि वाहन चाचणीचे शुल्क राज्य आणि सेवेच्या प्रकारानुसार ठरते. पैसे भरण्यापूर्वी परिवहन पोर्टलवर किंवा तुमच्या आरटीओमध्ये रक्कम तपासा आणि प्रत्येक पावती ठेवा."
+    },
+    "timelineNote": {
+      "en": "A learner licence is often issued the same day after the test. The permanent licence usually follows within about a week to a month after the driving test, depending on RTO workload.",
+      "hi": "टेस्ट के बाद लर्नर लाइसेंस अक्सर उसी दिन मिल जाता है। स्थायी लाइसेंस आमतौर पर ड्राइविंग टेस्ट के लगभग एक सप्ताह से एक महीने के भीतर मिलता है, जो आरटीओ के काम पर निर्भर है।",
+      "mr": "चाचणीनंतर लर्नर परवाना सहसा त्याच दिवशी मिळतो. कायमचा परवाना साधारणपणे वाहन चाचणीनंतर सुमारे एक आठवड्यापासून एक महिन्यात मिळतो, जो आरटीओच्या कामावर अवलंबून असतो."
+    },
+    "portalKeys": [
+      "parivahan"
+    ],
+    "helplines": [
+      "0120-4925505 (Parivahan helpline)"
+    ],
+    "documents": [
+      {
+        "en": "Proof of age"
+      },
+      {
+        "en": "Proof of address"
+      },
+      {
+        "en": "Passport-size photograph"
+      },
+      {
+        "en": "Medical certificate in the prescribed form, when required"
+      },
+      {
+        "en": "Existing learner licence or driving licence, if applicable"
+      },
+      {
+        "en": "Visa or other residency proof for eligible foreign applicants"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Apply for a learner licence"
+        },
+        "detail": {
+          "en": "Choose your RTO, complete the learner application, upload the documents, and book the learner test slot shown on Parivahan."
+        },
+        "portalKey": "parivahan"
+      },
+      {
+        "title": {
+          "en": "Pass the learner test"
+        },
+        "detail": {
+          "en": "The test checks road signs and basic rules. Carry the appointment slip and original documents. A learner licence is normally valid for six months."
+        }
+      },
+      {
+        "title": {
+          "en": "Practise within the learner rules"
+        },
+        "detail": {
+          "en": "Drive only with a valid learner licence, with the required supervisor, and with the correct L-board. Do not drive alone before you hold a permanent licence."
+        }
+      },
+      {
+        "title": {
+          "en": "Book the driving test"
+        },
+        "detail": {
+          "en": "Apply for the permanent licence before the learner licence expires. Choose an RTO slot and pay the test fee on the official portal."
+        },
+        "portalKey": "parivahan"
+      },
+      {
+        "title": {
+          "en": "Take the driving test"
+        },
+        "detail": {
+          "en": "Carry the learner licence, application receipt, and originals. The inspector tests vehicle control, signals, and road behaviour."
+        }
+      },
+      {
+        "title": {
+          "en": "Collect or download the licence"
+        },
+        "detail": {
+          "en": "Track the application on Parivahan. Use the digital licence in DigiLocker where accepted, and report errors at the RTO that issued it."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Learner licence has expired before the driving test"
+      },
+      {
+        "en": "Wrong RTO or jurisdiction for the applicant's address"
+      },
+      {
+        "en": "Missing medical certificate or address proof"
+      },
+      {
+        "en": "Applicant cannot demonstrate basic vehicle control or road signs"
+      },
+      {
+        "en": "Name or date of birth mismatch across documents"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "gst-registration",
+    "version": 1,
+    "order": 5,
+    "lastReviewed": "2026-10-26",
+    "category": "tax",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Register a business for GST",
+      "hi": "व्यवसाय का जीएसटी पंजीकरण",
+      "mr": "व्यवसायाची जीएसटी नोंदणी"
+    },
+    "summary": {
+      "en": "Check whether registration is required, create a GST portal account, upload business and address proof, complete Aadhaar authentication, and respond to any clarification before the ARN is approved.",
+      "hi": "जाँचें कि पंजीकरण आवश्यक है या नहीं, जीएसटी पोर्टल पर खाता बनाएँ, व्यवसाय और पते का प्रमाण अपलोड करें, आधार प्रमाणीकरण पूरा करें और एआरएन स्वीकृत होने से पहले किसी भी स्पष्टीकरण का उत्तर दें।",
+      "mr": "नोंदणी आवश्यक आहे का ते तपासा, जीएसटी पोर्टलवर खाते तयार करा, व्यवसाय व पत्त्याचा पुरावा अपलोड करा, आधार प्रमाणीकरण पूर्ण करा आणि एआरएन मंजूर होण्यापूर्वी कोणत्याही स्पष्टीकरणाचे उत्तर द्या."
+    },
+    "feeNote": {
+      "en": "GST registration itself has no government fee. Beware of private websites that charge a service fee while looking like the official portal.",
+      "hi": "जीएसटी पंजीकरण के लिए सरकारी शुल्क नहीं है। ऐसी निजी वेबसाइटों से सावधान रहें जो आधिकारिक पोर्टल जैसी दिखती हैं और सेवा शुल्क लेती हैं।",
+      "mr": "जीएसटी नोंदणीसाठी सरकारी शुल्क नाही. अधिकृत पोर्टलसारख्या दिसणाऱ्या आणि सेवा शुल्क आकारणाऱ्या खाजगी वेबसाइटांपासून सावधान राहा."
+    },
+    "timelineNote": {
+      "en": "A complete application is often approved in about seven working days. A clarification notice restarts the clock, so reply with the exact document requested.",
+      "hi": "पूरा आवेदन आमतौर पर लगभग सात कार्यदिवसों में स्वीकृत हो जाता है। स्पष्टीकरण नोटिस मिलने पर समय फिर से शुरू होता है, इसलिए माँगे गए सटीक दस्तावेज़ के साथ उत्तर दें।",
+      "mr": "पूर्ण अर्ज साधारणपणे सुमारे सात कामकाजाच्या दिवसांत मंजूर होतो. स्पष्टीकरण नोटीस आल्यास मुदत पुन्हा सुरू होते, त्यामुळे मागितलेल्या नेमक्या कागदपत्रासह उत्तर द्या."
+    },
+    "portalKeys": [
+      "gst_portal"
+    ],
+    "helplines": [
+      "1800-103-4786 (GST helpdesk)"
+    ],
+    "documents": [
+      {
+        "en": "PAN of the business or applicant"
+      },
+      {
+        "en": "Aadhaar of the authorised signatory, where authentication is required"
+      },
+      {
+        "en": "Proof of business address, such as a rent agreement and utility bill"
+      },
+      {
+        "en": "Bank account statement or cancelled cheque"
+      },
+      {
+        "en": "Partnership deed, incorporation certificate, or constitution proof"
+      },
+      {
+        "en": "Photograph of the authorised signatory"
+      },
+      {
+        "en": "Digital signature, if the entity requires one"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Check the registration threshold"
+        },
+        "detail": {
+          "en": "Turnover thresholds and special-category rules vary by state and by goods or services. Confirm your position before applying; voluntary registration is also possible."
+        },
+        "portalKey": "gst_portal"
+      },
+      {
+        "title": {
+          "en": "Start a fresh registration"
+        },
+        "detail": {
+          "en": "Use the GST portal's registration service and select the correct taxpayer type. Keep the temporary reference number (TRN) safe."
+        },
+        "portalKey": "gst_portal"
+      },
+      {
+        "title": {
+          "en": "Upload business and address proof"
+        },
+        "detail": {
+          "en": "Match the name and address on every document. A rent agreement should be supported by a utility bill and the landlord's ownership proof where the portal asks for it."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete Aadhaar authentication"
+        },
+        "detail": {
+          "en": "The authorised signatory completes authentication. Do not share the OTP with a consultant or agent; complete it yourself."
+        }
+      },
+      {
+        "title": {
+          "en": "Respond to clarification"
+        },
+        "detail": {
+          "en": "If an officer raises a query, reply through the portal within the stated period with exactly the document requested. Keep the acknowledgement."
+        }
+      },
+      {
+        "title": {
+          "en": "Download the certificate and check the ARN"
+        },
+        "detail": {
+          "en": "After approval, download the registration certificate and display the GSTIN where required. Verify the trade name, address, and jurisdiction."
+        },
+        "portalKey": "gst_portal"
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Address proof does not match the business address or is incomplete"
+      },
+      {
+        "en": "PAN name does not match the entity or authorised signatory"
+      },
+      {
+        "en": "A clarification notice was not answered in time"
+      },
+      {
+        "en": "Aadhaar authentication failed or was not completed"
+      },
+      {
+        "en": "Wrong taxpayer type or jurisdiction selected"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "income-tax-filing",
+    "version": 1,
+    "order": 6,
+    "lastReviewed": "2026-10-26",
+    "category": "tax",
+    "guidanceOnly": false,
+    "title": {
+      "en": "File an income-tax return",
+      "hi": "आयकर रिटर्न दाखिल करें",
+      "mr": "आयकर विवरणपत्र दाखल करा"
+    },
+    "summary": {
+      "en": "Pick the correct ITR form, reconcile Form 16, AIS, and bank details, file on the Income Tax e-filing portal, pay any balance tax, and e-verify within the deadline so the return is treated as filed.",
+      "hi": "सही आईटीआर फॉर्म चुनें, फॉर्म 16, एआईएस और बैंक विवरण का मिलान करें, आयकर ई-फाइलिंग पोर्टल पर रिटर्न दाखिल करें, बाकी कर चुकाएँ और निर्धारित समय में ई-वेरिफाई करें ताकि रिटर्न दाखिल माना जाए।",
+      "mr": "योग्य आयटीआर फॉर्म निवडा, फॉर्म 16, एआयएस आणि बँक तपशीलांची जुळणी करा, आयकर ई-फाइलिंग पोर्टलवर रिटर्न दाखल करा, उर्वरित कर भरा आणि ठरलेल्या मुदतीत ई-व्हेरिफाय करा जेणेकरून रिटर्न दाखल मानला जाईल."
+    },
+    "feeNote": {
+      "en": "Filing on the official e-filing portal is free. Late filing, interest, or other statutory charges may still apply; the portal calculates what it can from your return.",
+      "hi": "आधिकारिक ई-फाइलिंग पोर्टल पर रिटर्न दाखिल करना निःशुल्क है। देर से दाखिल करने पर विलंब शुल्क, ब्याज या अन्य वैधानिक शुल्क लग सकते हैं; पोर्टल आपके रिटर्न से जितना संभव हो गणना करता है।",
+      "mr": "अधिकृत ई-फाइलिंग पोर्टलवर रिटर्न दाखल करणे मोफत आहे. उशिरा दाखल केल्यास विलंब शुल्क, व्याज किंवा इतर वैधानिक शुल्क लागू शकतात; पोर्टल तुमच्या रिटर्नवरून शक्य ते मोजते."
+    },
+    "timelineNote": {
+      "en": "File by the due date for your assessment year. If you miss it, file a belated return before the extended deadline and e-verify it; an unverified return is not complete.",
+      "hi": "अपने निर्धारण वर्ष की नियत तारीख तक रिटर्न दाखिल करें। छूट जाने पर विस्तारित समय-सीमा से पहले विलंबित रिटर्न दाखिल करें और ई-वेरिफाई करें; बिना सत्यापन वाला रिटर्न पूरा नहीं माना जाता।",
+      "mr": "तुमच्या निर्धारण वर्षाच्या नियत तारखेपर्यंत रिटर्न दाखल करा. चुकल्यास वाढीव मुदतीपूर्वी विलंबित रिटर्न दाखल करा आणि ई-व्हेरिफाय करा; पडताळणी न केलेला रिटर्न पूर्ण मानला जात नाही."
+    },
+    "portalKeys": [
+      "incometax"
+    ],
+    "helplines": [
+      "1800-103-0025 (Income Tax e-filing helpdesk)"
+    ],
+    "documents": [
+      {
+        "en": "PAN and Aadhaar linked to it"
+      },
+      {
+        "en": "Form 16 from each employer"
+      },
+      {
+        "en": "Form 26AS and Annual Information Statement (AIS)"
+      },
+      {
+        "en": "Bank account details for refunds"
+      },
+      {
+        "en": "Investment, insurance, loan, and donation proofs if you claim deductions"
+      },
+      {
+        "en": "Capital-gain statements or business books, if applicable"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Choose the right ITR form"
+        },
+        "detail": {
+          "en": "Salary, house property, capital gains, business income, and presumptive income use different forms. Use the portal's helper if you are unsure, or ask a qualified tax professional."
+        },
+        "portalKey": "incometax"
+      },
+      {
+        "title": {
+          "en": "Reconcile the prefill"
+        },
+        "detail": {
+          "en": "Compare Form 16, Form 26AS, AIS, and your bank records. Report every income source; a mismatch is easier to fix before filing than after a notice."
+        }
+      },
+      {
+        "title": {
+          "en": "Fill and validate the return"
+        },
+        "detail": {
+          "en": "Enter deductions and bank details, then run validation. Save the draft and review the tax payable or refund before submitting."
+        },
+        "portalKey": "incometax"
+      },
+      {
+        "title": {
+          "en": "Pay balance tax if due"
+        },
+        "detail": {
+          "en": "Use the e-Pay Tax service linked from the portal. Pay from your own bank account and keep the challan number."
+        }
+      },
+      {
+        "title": {
+          "en": "Submit and e-verify"
+        },
+        "detail": {
+          "en": "Submit the return, then e-verify with Aadhaar OTP, net banking, or another supported method. Keep the acknowledgement number and ITR-V."
+        },
+        "portalKey": "incometax"
+      },
+      {
+        "title": {
+          "en": "Check refund or notice status"
+        },
+        "detail": {
+          "en": "Track the return and refund on the portal. If a notice arrives, read the response deadline and reply through the portal, not an unofficial helpline."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Wrong ITR form for the income sources"
+      },
+      {
+        "en": "Return submitted but not e-verified"
+      },
+      {
+        "en": "Tax payable remains unpaid"
+      },
+      {
+        "en": "Income in AIS or Form 26AS does not match the return"
+      },
+      {
+        "en": "Bank account is not pre-validated for a refund"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "rti",
+    "version": 1,
+    "order": 7,
+    "lastReviewed": "2026-10-26",
+    "category": "civic",
+    "guidanceOnly": false,
+    "title": {
+      "en": "File a Right to Information request",
+      "hi": "सूचना का अधिकार आवेदन दाखिल करें",
+      "mr": "माहितीच्या अधिकारासाठी अर्ज दाखल करा"
+    },
+    "summary": {
+      "en": "Identify the public authority that holds the information, file on the official RTI portal or the authority's prescribed channel, pay the fee, and track the reply and first appeal.",
+      "hi": "पहले उस सार्वजनिक प्राधिकरण की पहचान करें जिसके पास जानकारी है, आधिकारिक आरटीआई पोर्टल या प्राधिकरण के निर्धारित माध्यम से आवेदन करें, शुल्क दें और उत्तर तथा प्रथम अपील की स्थिति देखें।",
+      "mr": "माहिती कोणत्या सार्वजनिक प्राधिकरणाकडे आहे ते ओळखा, अधिकृत आरटीआय पोर्टल किंवा प्राधिकरणाच्या ठरलेल्या मार्गाने अर्ज करा, शुल्क भरा आणि उत्तर व प्रथम अपिलाची स्थिती तपासा."
+    },
+    "feeNote": {
+      "en": "The central RTI Online portal charges a small application fee. Applicants below the poverty line may be exempt on proof. State rules and fees can differ, so check the authority's page.",
+      "hi": "केंद्रीय आरटीआई ऑनलाइन पोर्टल पर छोटा आवेदन शुल्क है। गरीबी रेखा से नीचे के आवेदक प्रमाण देकर छूट पा सकते हैं। राज्यों के नियम और शुल्क अलग हो सकते हैं, इसलिए प्राधिकरण का पेज देखें।",
+      "mr": "केंद्रीय आरटीआय ऑनलाइन पोर्टलवर थोडे अर्ज शुल्क आहे. दारिद्र्यरेषेखालील अर्जदार पुराव्यासह सूट मिळवू शकतात. राज्यांचे नियम व शुल्क वेगळे असू शकतात, त्यामुळे प्राधिकरणाचे पान पाहा."
+    },
+    "timelineNote": {
+      "en": "A public authority should normally reply within 30 days. Information concerning life or liberty is expected within 48 hours. A first appeal is usually available within 30 days of the reply or deadline.",
+      "hi": "सार्वजनिक प्राधिकरण को सामान्यतः 30 दिनों में उत्तर देना चाहिए। जीवन या स्वतंत्रता से जुड़ी जानकारी 48 घंटों में अपेक्षित है। उत्तर या समय-सीमा के 30 दिनों के भीतर प्रथम अपील की जा सकती है।",
+      "mr": "सार्वजनिक प्राधिकरणाने साधारणपणे 30 दिवसांत उत्तर द्यावे. जीवन किंवा स्वातंत्र्याशी संबंधित माहिती 48 तासांत अपेक्षित आहे. उत्तर किंवा मुदतीनंतर 30 दिवसांत प्रथम अपील करता येते."
+    },
+    "portalKeys": [
+      "rti_online"
+    ],
+    "helplines": [
+      "Use the help/contact page on the RTI Online portal"
+    ],
+    "documents": [
+      {
+        "en": "Your name, address, and contact details"
+      },
+      {
+        "en": "A clear description of the information sought"
+      },
+      {
+        "en": "The public authority and department that holds it"
+      },
+      {
+        "en": "Fee payment proof, or BPL proof for an exemption"
+      },
+      {
+        "en": "Identity proof if the portal or authority asks for it"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Identify the public authority"
+        },
+        "detail": {
+          "en": "RTI applies to public authorities. Decide which ministry, department, or office holds the record; a request sent to the wrong authority may be transferred or rejected."
+        },
+        "portalKey": "rti_online"
+      },
+      {
+        "title": {
+          "en": "Write specific questions"
+        },
+        "detail": {
+          "en": "Ask for documents or recorded information, not opinions or explanations. Keep the request factual, dated, and limited to what you need."
+        }
+      },
+      {
+        "title": {
+          "en": "File and pay"
+        },
+        "detail": {
+          "en": "Use the official portal for central public authorities, or the state portal/prescribed channel for state bodies. Save the registration number and payment receipt."
+        },
+        "portalKey": "rti_online"
+      },
+      {
+        "title": {
+          "en": "Track the 30-day clock"
+        },
+        "detail": {
+          "en": "Note the filing date and the statutory deadline. If no reply arrives, you can usually file a first appeal without waiting further."
+        }
+      },
+      {
+        "title": {
+          "en": "File a first appeal if needed"
+        },
+        "detail": {
+          "en": "Address the appellate authority named in the reply or on the portal. Attach the original request, proof of filing, and the reply if there is one."
+        }
+      },
+      {
+        "title": {
+          "en": "Escalate to the Information Commission"
+        },
+        "detail": {
+          "en": "If the first appeal is not decided or the information is still withheld, a second appeal may be filed with the Information Commission within the limitation period."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Request sent to an authority that does not hold the information"
+      },
+      {
+        "en": "The question is vague, opinion-seeking, or not for recorded information"
+      },
+      {
+        "en": "Fee not paid, or the exemption proof is missing"
+      },
+      {
+        "en": "The information is covered by a statutory exemption"
+      },
+      {
+        "en": "First appeal filed after the limitation period"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "labour-complaint",
+    "version": 1,
+    "order": 8,
+    "lastReviewed": "2026-10-26",
+    "category": "welfare",
+    "guidanceOnly": false,
+    "title": {
+      "en": "File a labour or wage complaint",
+      "hi": "श्रम या वेतन शिकायत दर्ज करें",
+      "mr": "कामगार किंवा वेतन तक्रार दाखल करा"
+    },
+    "summary": {
+      "en": "Gather proof of employment and unpaid wages, file with the Labour Department or the state labour portal for the workplace location, and keep the complaint number for conciliation and escalation.",
+      "hi": "रोजगार और बकाया वेतन के प्रमाण इकट्ठा करें, कार्यस्थल के स्थान वाले श्रम विभाग या राज्य के श्रम पोर्टल पर शिकायत दर्ज करें और सुलह तथा आगे की कार्रवाई के लिए शिकायत संख्या रखें।",
+      "mr": "रोजगार आणि थकीत वेतनाचे पुरावे गोळा करा, कामाच्या ठिकाणाच्या ठिकाणी असलेल्या कामगार विभागाकडे किंवा राज्याच्या कामगार पोर्टलवर तक्रार दाखल करा आणि सलोखा व पुढील कारवाईसाठी तक्रार क्रमांक ठेवा."
+    },
+    "feeNote": {
+      "en": "Filing a labour complaint is normally free. A lawyer is not required to file, though you may choose one for a contested or court-bound case.",
+      "hi": "श्रम शिकायत दर्ज करना आमतौर पर निःशुल्क है। दाखिल करने के लिए वकील ज़रूरी नहीं, हालाँकि विवादित या अदालत जाने वाले मामले में आप वकील चुन सकते हैं।",
+      "mr": "कामगार तक्रार दाखल करणे साधारणपणे मोफत असते. दाखल करण्यासाठी वकील आवश्यक नाही, तथापि वादग्रस्त किंवा न्यायालयात जाणाऱ्या प्रकरणात तुम्ही वकील निवडू शकता."
+    },
+    "timelineNote": {
+      "en": "Timelines vary by district and dispute type. Conciliation is often listed within a few weeks; a contested matter can take months, so keep every acknowledgement.",
+      "hi": "समय-सीमा जिले और विवाद के प्रकार से बदलती है। सुलह अक्सर कुछ सप्ताह में होती है; विवादित मामला महीनों ले सकता है, इसलिए हर पावती संभालकर रखें।",
+      "mr": "मुदती जिल्हा आणि वादाच्या प्रकारानुसार बदलतात. सलोखा सहसा काही आठवड्यांत होतो; वादग्रस्त प्रकरण महिने घेऊ शकते, त्यामुळे प्रत्येक पावती जपून ठेवा."
+    },
+    "portalKeys": [
+      "maha_labor",
+      "maha_grievances"
+    ],
+    "helplines": [
+      "022-2657-3847 (Maharashtra Labour Department)",
+      "1800-120-8040 (Aaple Sarkar citizen call centre)"
+    ],
+    "documents": [
+      {
+        "en": "Identity proof"
+      },
+      {
+        "en": "Appointment letter, contract, or offer letter"
+      },
+      {
+        "en": "Salary slips and bank statements showing the unpaid period"
+      },
+      {
+        "en": "Attendance record, messages, or emails about the work"
+      },
+      {
+        "en": "Termination letter or resignation correspondence, if any"
+      },
+      {
+        "en": "Employer's name, address, and establishment details"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Write down the claim"
+        },
+        "detail": {
+          "en": "List the employer, workplace, employment period, wages due, and what you already asked for. Keep the claim factual and attach only copies, never original documents."
+        }
+      },
+      {
+        "title": {
+          "en": "Choose the right office"
+        },
+        "detail": {
+          "en": "Labour jurisdiction usually follows the workplace location. Use the state labour portal or the district Labour Commissioner's office for that area."
+        },
+        "portalKey": "maha_labor"
+      },
+      {
+        "title": {
+          "en": "File the complaint"
+        },
+        "detail": {
+          "en": "Submit through the official portal or in person. Keep the complaint or acknowledgement number and a copy of everything you attached."
+        },
+        "portalKey": "maha_grievances"
+      },
+      {
+        "title": {
+          "en": "Attend conciliation"
+        },
+        "detail": {
+          "en": "The Labour Department may call both sides. Bring the originals behind your copies and a written summary of the amount claimed."
+        }
+      },
+      {
+        "title": {
+          "en": "Escalate if conciliation fails"
+        },
+        "detail": {
+          "en": "Ask the office for the next step in writing. Depending on the claim, the route may be the labour court, industrial tribunal, or civil court."
+        }
+      },
+      {
+        "title": {
+          "en": "Track the outcome"
+        },
+        "detail": {
+          "en": "Keep every order, notice, and payment proof. Record the date and amount of any settlement so a later claim does not rely on memory."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "No proof that the employer employed the complainant"
+      },
+      {
+        "en": "Complaint filed in the wrong district or labour jurisdiction"
+      },
+      {
+        "en": "Wage claim is outside the applicable limitation period"
+      },
+      {
+        "en": "Employer details or the amount claimed are incomplete"
+      },
+      {
+        "en": "The dispute is a civil or criminal matter outside the labour forum"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "property-registration",
+    "version": 1,
+    "order": 9,
+    "lastReviewed": "2026-10-26",
+    "category": "civic",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Register a property sale deed",
+      "hi": "संपत्ति की बिक्री विलेख पंजीकृत करें",
+      "mr": "मालमत्ता विक्रीचे खत नोंदवा"
+    },
+    "summary": {
+      "en": "Verify the title and encumbrances, calculate stamp duty, pay through the authorised route, book a sub-registrar appointment, and collect the registered deed with both parties present.",
+      "hi": "स्वामित्व और भार की जाँच करें, स्टांप शुल्क की गणना करें, अधिकृत माध्यम से भुगतान करें, उप-निबंधक के यहाँ अपॉइंटमेंट बुक करें और दोनों पक्षों की उपस्थिति में पंजीकृत विलेख प्राप्त करें।",
+      "mr": "मालकी आणि भार तपासा, मुद्रांक शुल्क मोजा, अधिकृत मार्गाने भरा, उप-निबंधक कार्यालयात अपॉइंटमेंट बुक करा आणि दोन्ही पक्षांच्या उपस्थितीत नोंदणीकृत खत मिळवा."
+    },
+    "feeNote": {
+      "en": "Stamp duty and registration fees depend on the property value, use, and location, and are set by the state. Use the official calculator; do not rely on a private agent's estimate.",
+      "hi": "स्टांप शुल्क और पंजीकरण शुल्क संपत्ति के मूल्य, उपयोग और स्थान पर निर्भर करते हैं और राज्य द्वारा तय होते हैं। आधिकारिक कैलकुलेटर का उपयोग करें; निजी एजेंट के अनुमान पर भरोसा न करें।",
+      "mr": "मुद्रांक शुल्क आणि नोंदणी शुल्क मालमत्तेचे मूल्य, वापर आणि ठिकाणावर अवलंबून असते आणि राज्य ठरवते. अधिकृत कॅल्क्युलेटर वापरा; खाजगी एजंटच्या अंदाजावर विश्वास ठेवू नका."
+    },
+    "timelineNote": {
+      "en": "A properly stamped deed is often registered on the appointment day or within a few working days. The registered copy may take longer to become available online.",
+      "hi": "उचित स्टांप वाला विलेख अक्सर अपॉइंटमेंट के दिन या कुछ कार्यदिवसों में पंजीकृत हो जाता है। पंजीकृत प्रति ऑनलाइन उपलब्ध होने में अधिक समय लग सकता है।",
+      "mr": "योग्य मुद्रांक असलेले खत सहसा अपॉइंटमेंटच्या दिवशी किंवा काही कामकाजाच्या दिवसांत नोंदवले जाते. नोंदणीकृत प्रत ऑनलाइन उपलब्ध होण्यास जास्त वेळ लागू शकतो."
+    },
+    "portalKeys": [
+      "igr_maharashtra"
+    ],
+    "helplines": [
+      "See the IGR Maharashtra contact page for the sub-registrar office"
+    ],
+    "documents": [
+      {
+        "en": "Sale deed draft reviewed by both parties"
+      },
+      {
+        "en": "Previous title deed and chain of title"
+      },
+      {
+        "en": "Encumbrance certificate or property search report"
+      },
+      {
+        "en": "PAN, identity, and address proof of buyer and seller"
+      },
+      {
+        "en": "Passport-size photographs of the parties and witnesses"
+      },
+      {
+        "en": "Stamp duty payment proof or e-stamping receipt"
+      },
+      {
+        "en": "No-objection certificates required by the property type"
+      },
+      {
+        "en": "Society share certificate or possession proof, if applicable"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Verify the title and encumbrances"
+        },
+        "detail": {
+          "en": "Obtain a property search report and check the chain of title, pending loans, liens, and litigation. A lawyer's title review is worth the cost for a large purchase."
+        },
+        "portalKey": "igr_maharashtra"
+      },
+      {
+        "title": {
+          "en": "Draft and agree the deed"
+        },
+        "detail": {
+          "en": "The deed should identify the parties, property, consideration, payment schedule, possession, and liabilities. Both sides should read the final draft before stamping."
+        }
+      },
+      {
+        "title": {
+          "en": "Calculate and pay stamp duty"
+        },
+        "detail": {
+          "en": "Use the official calculator, then pay through the authorised e-stamping or challan route. Keep the receipt; an under-stamped deed cannot be registered without paying the difference."
+        },
+        "portalKey": "igr_maharashtra"
+      },
+      {
+        "title": {
+          "en": "Book the sub-registrar appointment"
+        },
+        "detail": {
+          "en": "Book a slot for the office that has jurisdiction over the property. Confirm which parties, witnesses, and originals must attend."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete registration and biometrics"
+        },
+        "detail": {
+          "en": "Both parties sign before the registering officer and complete fingerprint and photograph formalities. Pay the registration fee and collect the receipt."
+        }
+      },
+      {
+        "title": {
+          "en": "Collect and verify the registered deed"
+        },
+        "detail": {
+          "en": "Download or collect the registered copy, then check the names, property description, consideration, and registration number. Store both the digital and physical copies safely."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Property undervalued, so stamp duty is short"
+      },
+      {
+        "en": "Missing prior title document or broken chain of title"
+      },
+      {
+        "en": "Required NOC, society certificate, or possession proof is absent"
+      },
+      {
+        "en": "A party or witness does not attend, or identity does not match"
+      },
+      {
+        "en": "The deed is presented at the wrong sub-registrar office"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "birth-certificate",
+    "version": 1,
+    "order": 10,
+    "lastReviewed": "2026-10-26",
+    "category": "civic",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Get a birth certificate",
+      "hi": "जन्म प्रमाणपत्र प्राप्त करें",
+      "mr": "जन्म दाखला मिळवा"
+    },
+    "summary": {
+      "en": "Register the birth with the local registrar, use the hospital or municipal channel where available, and apply for the certificate with the parents' identity and address proof.",
+      "hi": "स्थानीय रजिस्ट्रार के यहाँ जन्म पंजीकृत करें, जहाँ उपलब्ध हो वहाँ अस्पताल या नगरपालिका के माध्यम का उपयोग करें और माता-पिता की पहचान तथा पते के प्रमाण के साथ प्रमाणपत्र के लिए आवेदन करें।",
+      "mr": "स्थानिक निबंधकाकडे जन्म नोंदवा, उपलब्ध असल्यास रुग्णालय किंवा महानगरपालिकेचा मार्ग वापरा आणि पालकांच्या ओळख व पत्ता पुराव्यासह दाखल्यासाठी अर्ज करा."
+    },
+    "feeNote": {
+      "en": "Registration within the first 21 days is usually free or nominal. Late registration can attract a fee and may need an affidavit or order; confirm with the local registrar.",
+      "hi": "पहले 21 दिनों में पंजीकरण आमतौर पर निःशुल्क या नाममात्र शुल्क पर होता है। देर से पंजीकरण पर शुल्क लग सकता है और शपथ पत्र या आदेश की ज़रूरत हो सकती है; स्थानीय रजिस्ट्रार से पुष्टि करें।",
+      "mr": "पहिल्या 21 दिवसांत नोंदणी साधारणपणे मोफत किंवा नाममात्र शुल्कात होते. उशिरा नोंदणीला शुल्क लागू शकते आणि शपथपत्र किंवा आदेश लागू शकतो; स्थानिक निबंधकाकडून खात्री करा."
+    },
+    "timelineNote": {
+      "en": "A routine registration usually produces the certificate within one to three weeks. Late or disputed registrations take longer because they need verification or a magistrate's order.",
+      "hi": "सामान्य पंजीकरण में प्रमाणपत्र आमतौर पर एक से तीन सप्ताह में मिल जाता है। देर से या विवादित पंजीकरण में सत्यापन या मजिस्ट्रेट के आदेश के कारण अधिक समय लगता है।",
+      "mr": "नियमित नोंदणीत दाखला साधारणपणे एक ते तीन आठवड्यांत मिळतो. उशिरा किंवा वादग्रस्त नोंदणीत पडताळणी किंवा दंडाधिकाऱ्याच्या आदेशामुळे जास्त वेळ लागतो."
+    },
+    "portalKeys": [
+      "crs_india",
+      "mahaonline_rts"
+    ],
+    "helplines": [
+      "1800-120-8040 (Aaple Sarkar citizen call centre)",
+      "srocrs.rgi@nic.in (Civil Registration System)"
+    ],
+    "documents": [
+      {
+        "en": "Hospital birth record or discharge summary"
+      },
+      {
+        "en": "Identity proof of both parents"
+      },
+      {
+        "en": "Address proof of the parents"
+      },
+      {
+        "en": "Marriage certificate, if the registrar asks for it"
+      },
+      {
+        "en": "Affidavit or order for late registration, when applicable"
+      },
+      {
+        "en": "Previous birth certificate for a correction or duplicate"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Register the birth at the source"
+        },
+        "detail": {
+          "en": "Hospitals usually report births directly. If the birth happened at home, inform the local registrar or municipal office promptly and keep the supporting record."
+        },
+        "portalKey": "crs_india"
+      },
+      {
+        "title": {
+          "en": "Check the local application route"
+        },
+        "detail": {
+          "en": "Maharashtra residents can use the state service where the local body is integrated; other states may use the Civil Registration System or a municipal portal."
+        },
+        "portalKey": "mahaonline_rts"
+      },
+      {
+        "title": {
+          "en": "Fill the certificate application"
+        },
+        "detail": {
+          "en": "Enter the child's name, date and place of birth, parents' details, and the hospital registration number exactly as recorded."
+        }
+      },
+      {
+        "title": {
+          "en": "Upload or submit proof"
+        },
+        "detail": {
+          "en": "Attach the hospital record and parents' identity and address proof. Take originals to the counter if the application asks for verification."
+        }
+      },
+      {
+        "title": {
+          "en": "Handle late registration"
+        },
+        "detail": {
+          "en": "After the statutory window, the registrar may require an affidavit, late fee, or magistrate's order. Ask for the exact local requirement before paying anyone."
+        }
+      },
+      {
+        "title": {
+          "en": "Collect and verify the certificate"
+        },
+        "detail": {
+          "en": "Check the spelling of the name, date, place, and parents' details. Request a correction through the same official channel if anything is wrong."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Birth was not recorded by the hospital or local registrar"
+      },
+      {
+        "en": "Parents' identity or address proof does not match the record"
+      },
+      {
+        "en": "Late registration filed without the required affidavit or order"
+      },
+      {
+        "en": "The application was sent to the wrong local body"
+      },
+      {
+        "en": "Name or date-of-birth spelling differs across documents"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "death-certificate",
+    "version": 1,
+    "order": 11,
+    "lastReviewed": "2026-10-26",
+    "category": "civic",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Get a death certificate",
+      "hi": "मृत्यु प्रमाणपत्र प्राप्त करें",
+      "mr": "मृत्यू दाखला मिळवा"
+    },
+    "summary": {
+      "en": "Register the death with the local registrar or the hospital channel, submit the medical and identity records, and apply for the certificate needed for inheritance, insurance, and pension claims.",
+      "hi": "स्थानीय रजिस्ट्रार या अस्पताल के माध्यम से मृत्यु पंजीकृत करें, चिकित्सा और पहचान के रिकॉर्ड जमा करें और विरासत, बीमा तथा पेंशन के लिए आवश्यक प्रमाणपत्र के लिए आवेदन करें।",
+      "mr": "स्थानिक निबंधक किंवा रुग्णालयाच्या मार्गाने मृत्यू नोंदवा, वैद्यकीय व ओळख नोंदी सादर करा आणि वारसा, विमा व पेन्शनसाठी आवश्यक दाखल्यासाठी अर्ज करा."
+    },
+    "feeNote": {
+      "en": "Registration within the first 21 days is usually free or nominal. Late registration can need a fee, affidavit, or order; confirm the local rule with the registrar.",
+      "hi": "पहले 21 दिनों में पंजीकरण आमतौर पर निःशुल्क या नाममात्र शुल्क पर होता है। देर से पंजीकरण में शुल्क, शपथ पत्र या आदेश की ज़रूरत हो सकती है; रजिस्ट्रार से स्थानीय नियम की पुष्टि करें।",
+      "mr": "पहिल्या 21 दिवसांत नोंदणी साधारणपणे मोफत किंवा नाममात्र शुल्कात होते. उशिरा नोंदणीला शुल्क, शपथपत्र किंवा आदेश लागू शकतो; निबंधकाकडून स्थानिक नियमाची खात्री करा."
+    },
+    "timelineNote": {
+      "en": "A routine registration usually produces the certificate within one to three weeks. Late registration and corrections take longer because they need verification.",
+      "hi": "सामान्य पंजीकरण में प्रमाणपत्र आमतौर पर एक से तीन सप्ताह में मिल जाता है। देर से पंजीकरण और सुधार में सत्यापन के कारण अधिक समय लगता है।",
+      "mr": "नियमित नोंदणीत दाखला साधारणपणे एक ते तीन आठवड्यांत मिळतो. उशिरा नोंदणी व दुरुस्तीत पडताळणीमुळे जास्त वेळ लागतो."
+    },
+    "portalKeys": [
+      "crs_india",
+      "mahaonline_rts"
+    ],
+    "helplines": [
+      "1800-120-8040 (Aaple Sarkar citizen call centre)",
+      "srocrs.rgi@nic.in (Civil Registration System)"
+    ],
+    "documents": [
+      {
+        "en": "Hospital death record or medical certificate of cause of death"
+      },
+      {
+        "en": "Identity proof of the deceased"
+      },
+      {
+        "en": "Identity and address proof of the informant"
+      },
+      {
+        "en": "Cremation or burial record, where required"
+      },
+      {
+        "en": "Affidavit or order for late registration, when applicable"
+      },
+      {
+        "en": "Existing certificate for a correction or duplicate"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Register the death"
+        },
+        "detail": {
+          "en": "Hospitals usually report deaths directly. For a death at home, inform the local registrar, municipal office, or police as the local rule requires, and keep the medical record."
+        },
+        "portalKey": "crs_india"
+      },
+      {
+        "title": {
+          "en": "Check the local route"
+        },
+        "detail": {
+          "en": "Maharashtra residents can use the state service where the local body is integrated; other states may use the Civil Registration System or a municipal portal."
+        },
+        "portalKey": "mahaonline_rts"
+      },
+      {
+        "title": {
+          "en": "Fill the application"
+        },
+        "detail": {
+          "en": "Enter the deceased's name, date and place of death, cause as recorded, and the informant's details. Keep the hospital registration number."
+        }
+      },
+      {
+        "title": {
+          "en": "Submit proof"
+        },
+        "detail": {
+          "en": "Attach the medical record, identity proof, and cremation or burial record if asked. Take originals for verification when required."
+        }
+      },
+      {
+        "title": {
+          "en": "Handle late registration"
+        },
+        "detail": {
+          "en": "After the statutory window, the registrar may require an affidavit, late fee, or magistrate's order. Ask for the exact requirement in writing."
+        }
+      },
+      {
+        "title": {
+          "en": "Collect and verify the certificate"
+        },
+        "detail": {
+          "en": "Check the name, date, place, and cause details. Request a correction through the same official channel if the certificate has an error."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Death was not recorded by the hospital or local registrar"
+      },
+      {
+        "en": "Medical cause-of-death record is missing or incomplete"
+      },
+      {
+        "en": "Late registration filed without the required affidavit or order"
+      },
+      {
+        "en": "Informant's identity or address proof does not match"
+      },
+      {
+        "en": "The application was sent to the wrong local body"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "electricity-connection",
+    "version": 1,
+    "order": 12,
+    "lastReviewed": "2026-10-26",
+    "category": "utilities",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Apply for a new electricity connection",
+      "hi": "नया बिजली कनेक्शन लें",
+      "mr": "नवीन वीज जोडणी घ्या"
+    },
+    "summary": {
+      "en": "Apply to the distribution company for the address, upload ownership or occupancy proof and load details, pay the estimate, and track the meter installation.",
+      "hi": "उस पते के लिए वितरण कंपनी में आवेदन करें, स्वामित्व या कब्जे का प्रमाण और लोड का विवरण अपलोड करें, अनुमानित राशि चुकाएँ और मीटर लगने की स्थिति देखें।",
+      "mr": "त्या पत्त्यासाठी वितरण कंपनीकडे अर्ज करा, मालकी किंवा ताब्याचा पुरावा व भाराचा तपशील अपलोड करा, अंदाजित रक्कम भरा आणि मीटर बसवणीची स्थिती तपासा."
+    },
+    "feeNote": {
+      "en": "The estimate usually includes a security deposit and connection charges based on load and category. Confirm the official estimate before paying; keep the receipt and the sanctioned-load letter.",
+      "hi": "अनुमान में आमतौर पर लोड और श्रेणी के अनुसार सुरक्षा जमा और कनेक्शन शुल्क शामिल होते हैं। भुगतान से पहले आधिकारिक अनुमान की पुष्टि करें; रसीद और स्वीकृत लोड का पत्र रखें।",
+      "mr": "अंदाजात साधारणपणे भार व श्रेणीनुसार सुरक्षा ठेव आणि जोडणी शुल्क असते. पैसे भरण्यापूर्वी अधिकृत अंदाजाची खात्री करा; पावती आणि मंजूर भाराचे पत्र ठेवा."
+    },
+    "timelineNote": {
+      "en": "After payment and any required inspection, a connection is often energised within two to four weeks. Work that needs a new pole, transformer, or road permission can take longer.",
+      "hi": "भुगतान और आवश्यक निरीक्षण के बाद कनेक्शन आमतौर पर दो से चार सप्ताह में चालू हो जाता है। नए खंभे, ट्रांसफार्मर या सड़क अनुमति वाले काम में अधिक समय लग सकता है।",
+      "mr": "पैसे भरल्यानंतर आणि आवश्यक तपासणीनंतर जोडणी साधारणपणे दोन ते चार आठवड्यांत सुरू होते. नवीन खांब, ट्रान्सफॉर्मर किंवा रस्ता परवानगी लागणाऱ्या कामास जास्त वेळ लागू शकतो."
+    },
+    "portalKeys": [
+      "msedcl_power"
+    ],
+    "helplines": [
+      "1912 / 1800-233-3435 (MSEDCL)"
+    ],
+    "documents": [
+      {
+        "en": "Identity proof of the applicant"
+      },
+      {
+        "en": "Ownership proof, rent agreement, or occupancy proof for the premises"
+      },
+      {
+        "en": "Address proof of the connection site"
+      },
+      {
+        "en": "Load requirement in kW and the purpose of the connection"
+      },
+      {
+        "en": "No-objection certificate from the society or landlord, if applicable"
+      },
+      {
+        "en": "Test report or wiring certificate from a licensed electrician"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Apply for the connection"
+        },
+        "detail": {
+          "en": "Use the distribution company's official self-service portal, choose new connection or load extension, and enter the exact premises address."
+        },
+        "portalKey": "msedcl_power"
+      },
+      {
+        "title": {
+          "en": "Upload documents and load details"
+        },
+        "detail": {
+          "en": "Attach identity, ownership or occupancy proof, and the sanctioned-load requirement. A mismatch between the applicant and the property owner needs an authorisation letter."
+        }
+      },
+      {
+        "title": {
+          "en": "Wait for the feasibility check"
+        },
+        "detail": {
+          "en": "The company checks whether the network can supply the requested load. Respond quickly if the office asks for a site visit or extra document."
+        }
+      },
+      {
+        "title": {
+          "en": "Pay the official estimate"
+        },
+        "detail": {
+          "en": "Review the estimate for security deposit and connection charges. Pay only through the official portal or office and keep the receipt."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete inspection and meter installation"
+        },
+        "detail": {
+          "en": "A licensed electrician should complete the wiring and test report. Attend the inspection and check the meter serial number and sanctioned load when it is installed."
+        }
+      },
+      {
+        "title": {
+          "en": "Activate and verify the bill"
+        },
+        "detail": {
+          "en": "Confirm the consumer number, tariff category, and meter reading on the first bill. Report a wrong category or reading through the official grievance channel."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Applicant cannot prove ownership, tenancy, or lawful occupancy"
+      },
+      {
+        "en": "Requested load does not match the wiring or sanctioned capacity"
+      },
+      {
+        "en": "Missing society or landlord no-objection certificate"
+      },
+      {
+        "en": "Unpaid estimate or outstanding dues at the same premises"
+      },
+      {
+        "en": "Network feasibility work is incomplete"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "ration-card",
+    "version": 1,
+    "order": 13,
+    "lastReviewed": "2026-10-26",
+    "category": "welfare",
+    "guidanceOnly": false,
+    "title": {
+      "en": "Apply for a ration card or add a family member",
+      "hi": "राशन कार्ड के लिए आवेदन या परिवार का सदस्य जोड़ें",
+      "mr": "रेशन कार्डसाठी अर्ज किंवा कुटुंबातील सदस्य जोडा"
+    },
+    "summary": {
+      "en": "Apply on the state Ration Card Management System, complete e-KYC for the head of household and members, upload identity, address, and income proof, and track verification by the food and civil supplies office.",
+      "hi": "राज्य के राशन कार्ड प्रबंधन प्रणाली पर आवेदन करें, परिवार के मुखिया और सदस्यों का ई-केवाईसी पूरा करें, पहचान, पते और आय का प्रमाण अपलोड करें और खाद्य एवं नागरिक आपूर्ति कार्यालय के सत्यापन की स्थिति देखें।",
+      "mr": "राज्याच्या रेशन कार्ड व्यवस्थापन प्रणालीवर अर्ज करा, कुटुंबप्रमुख व सदस्यांचे ई-केवायसी पूर्ण करा, ओळख, पत्ता व उत्पन्नाचा पुरावा अपलोड करा आणि अन्न व नागरी पुरवठा कार्यालयाच्या पडताळणीची स्थिती तपासा."
+    },
+    "feeNote": {
+      "en": "The state may charge a small fee for a new card or a duplicate. Confirm the amount on the official portal or at the office; keep the receipt.",
+      "hi": "राज्य नए कार्ड या डुप्लिकेट के लिए छोटा शुल्क ले सकता है। आधिकारिक पोर्टल या कार्यालय में राशि की पुष्टि करें और रसीद रखें।",
+      "mr": "राज्य नवीन कार्ड किंवा डुप्लिकेटसाठी थोडे शुल्क घेऊ शकते. अधिकृत पोर्टलवर किंवा कार्यालयात रक्कम तपासा आणि पावती ठेवा."
+    },
+    "timelineNote": {
+      "en": "Verification usually takes about two to four weeks after a complete application. Incomplete family or address details are the most common cause of delay.",
+      "hi": "पूरा आवेदन मिलने के बाद सत्यापन में आमतौर पर लगभग दो से चार सप्ताह लगते हैं। अधूरे पारिवारिक या पते के विवरण देरी का सबसे आम कारण हैं।",
+      "mr": "पूर्ण अर्ज मिळाल्यानंतर पडताळणीला साधारणपणे सुमारे दोन ते चार आठवडे लागतात. अपूर्ण कौटुंबिक किंवा पत्ता तपशील उशिराचे सर्वात सामान्य कारण असतात."
+    },
+    "portalKeys": [
+      "rcms_maharashtra"
+    ],
+    "helplines": [
+      "1800-22-4950 / 1967 (Maharashtra food and civil supplies helpline)"
+    ],
+    "documents": [
+      {
+        "en": "Identity proof of the head of household"
+      },
+      {
+        "en": "Address proof for the family's residence"
+      },
+      {
+        "en": "Aadhaar for e-KYC, where the portal requires it"
+      },
+      {
+        "en": "Income proof or self-declaration for the applicable category"
+      },
+      {
+        "en": "Existing ration card, if adding or removing a member"
+      },
+      {
+        "en": "Bank account details for the head of household"
+      },
+      {
+        "en": "Passport-size photograph of the head of household"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Check the eligibility category"
+        },
+        "detail": {
+          "en": "The card category depends on family income and the state's scheme rules. Read the current criteria on the official portal before applying."
+        },
+        "portalKey": "rcms_maharashtra"
+      },
+      {
+        "title": {
+          "en": "Start the application"
+        },
+        "detail": {
+          "en": "Choose new card, member addition, correction, or duplicate. Enter the head of household and every family member exactly as in their identity documents."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete e-KYC"
+        },
+        "detail": {
+          "en": "The head of household and adult members complete Aadhaar-based e-KYC where required. Do not share the OTP with a fair-price-shop agent."
+        }
+      },
+      {
+        "title": {
+          "en": "Upload proof and submit"
+        },
+        "detail": {
+          "en": "Attach identity, address, income, and bank details. Save the application number and check that the preview shows the correct family composition."
+        }
+      },
+      {
+        "title": {
+          "en": "Track verification"
+        },
+        "detail": {
+          "en": "The food and civil supplies office verifies the application, sometimes through a field visit. Respond to any query through the portal."
+        },
+        "portalKey": "rcms_maharashtra"
+      },
+      {
+        "title": {
+          "en": "Collect or download the card"
+        },
+        "detail": {
+          "en": "After approval, collect the card or download the e-ration card. Check the names, category, and fair-price shop before using it."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "Family already holds an active ration card in another location"
+      },
+      {
+        "en": "Address or family-member details do not match the proof"
+      },
+      {
+        "en": "Income exceeds the limit for the claimed category"
+      },
+      {
+        "en": "e-KYC is incomplete for the head of household or adult members"
+      },
+      {
+        "en": "A field verification query was not answered"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "consumer-complaint",
+    "version": 1,
+    "order": 14,
+    "lastReviewed": "2026-10-26",
+    "category": "consumer",
+    "guidanceOnly": false,
+    "title": {
+      "en": "File a consumer complaint",
+      "hi": "उपभोक्ता शिकायत दर्ज करें",
+      "mr": "ग्राहक तक्रार दाखल करा"
+    },
+    "summary": {
+      "en": "First ask the seller in writing, then use the National Consumer Helpline for mediation, and approach the Consumer Commission with the invoice and evidence if the dispute is not resolved.",
+      "hi": "पहले विक्रेता से लिखित में शिकायत करें, फिर राष्ट्रीय उपभोक्ता हेल्पलाइन पर मध्यस्थता का प्रयास करें और विवाद न सुलझने पर चालान तथा सबूत के साथ उपभोक्ता आयोग जाएँ।",
+      "mr": "आधी विक्रेत्याकडे लेखी तक्रार करा, नंतर राष्ट्रीय ग्राहक हेल्पलाइनवर मध्यस्थतेचा प्रयास करा आणि वाद न सुटल्यास बीजक व पुराव्यासह ग्राहक आयोगाकडे जा."
+    },
+    "feeNote": {
+      "en": "The National Consumer Helpline is free. A Consumer Commission charges a fee based on the claim amount; check the current fee schedule before filing.",
+      "hi": "राष्ट्रीय उपभोक्ता हेल्पलाइन निःशुल्क है। उपभोक्ता आयोग दावा राशि के आधार पर शुल्क लेता है; दाखिल करने से पहले मौजूदा शुल्क सूची देखें।",
+      "mr": "राष्ट्रीय ग्राहक हेल्पलाइन मोफत आहे. ग्राहक आयोग दावा रकमेवर आधारित शुल्क घेतो; दाखल करण्यापूर्वी सध्याची शुल्क सूची पहा."
+    },
+    "timelineNote": {
+      "en": "Helpline mediation often takes a few weeks. A commission case can take months, so keep the invoice, warranty, chats, and every written reply.",
+      "hi": "हेल्पलाइन पर मध्यस्थता में अक्सर कुछ सप्ताह लगते हैं। आयोग का मामला महीनों ले सकता है, इसलिए चालान, वारंटी, चैट और हर लिखित उत्तर संभालकर रखें।",
+      "mr": "हेल्पलाइनवरील मध्यस्थतेस सहसा काही आठवडे लागतात. आयोगाचे प्रकरण महिने घेऊ शकते, त्यामुळे बीजक, वॉरंटी, चॅट आणि प्रत्येक लेखी उत्तर जपून ठेवा."
+    },
+    "portalKeys": [
+      "consumer_helpline"
+    ],
+    "helplines": [
+      "1915 (National Consumer Helpline)"
+    ],
+    "documents": [
+      {
+        "en": "Invoice, receipt, or order confirmation"
+      },
+      {
+        "en": "Warranty or guarantee card"
+      },
+      {
+        "en": "Payment proof and bank statement"
+      },
+      {
+        "en": "Photographs or video of the defect or damage"
+      },
+      {
+        "en": "Emails, chats, and written complaints to the seller"
+      },
+      {
+        "en": "Service report or technician's inspection note"
+      },
+      {
+        "en": "Seller's name, address, and contact details"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Complain to the seller first"
+        },
+        "detail": {
+          "en": "Send a dated written complaint describing the product or service, the defect, and the remedy you want. Keep proof of delivery."
+        }
+      },
+      {
+        "title": {
+          "en": "Register on the National Consumer Helpline"
+        },
+        "detail": {
+          "en": "Create a grievance with the invoice and evidence. The helpline may contact the company and attempt mediation."
+        },
+        "portalKey": "consumer_helpline"
+      },
+      {
+        "title": {
+          "en": "Check the limitation period"
+        },
+        "detail": {
+          "en": "A consumer complaint generally has a two-year limitation from the date the defect or deficiency was known. Do not sit on a claim while negotiating."
+        }
+      },
+      {
+        "title": {
+          "en": "Choose the right commission"
+        },
+        "detail": {
+          "en": "District, state, or national commission depends on the claim value. File in the forum that covers the seller's location or where the transaction happened."
+        }
+      },
+      {
+        "title": {
+          "en": "File with evidence"
+        },
+        "detail": {
+          "en": "Attach the invoice, warranty, correspondence, and a clear calculation of the refund, replacement, or compensation claimed."
+        }
+      },
+      {
+        "title": {
+          "en": "Track and attend hearings"
+        },
+        "detail": {
+          "en": "Keep the case number, attend every hearing, and file replies on time. A settlement should be recorded in writing."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "No proof of purchase or payment"
+      },
+      {
+        "en": "Complaint filed after the limitation period"
+      },
+      {
+        "en": "Wrong commission for the claim amount or territory"
+      },
+      {
+        "en": "The issue was not first raised with the seller, where required"
+      },
+      {
+        "en": "The claim is against a person or entity not covered by consumer law"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "municipal-grievance",
+    "version": 1,
+    "order": 15,
+    "lastReviewed": "2026-10-26",
+    "category": "civic",
+    "guidanceOnly": false,
+    "title": {
+      "en": "File a municipal grievance",
+      "hi": "नगरपालिका शिकायत दर्ज करें",
+      "mr": "महानगरपालिका तक्रार दाखल करा"
+    },
+    "summary": {
+      "en": "Report the issue to the municipal body that covers the address, include a precise location and photograph, keep the complaint number, and escalate to the state grievance portal if the local response stalls.",
+      "hi": "समस्या उस नगरपालिका निकाय को बताएँ जिसके क्षेत्र में वह पता आता है, सटीक स्थान और फोटो शामिल करें, शिकायत संख्या रखें और स्थानीय उत्तर न आने पर राज्य शिकायत पोर्टल पर आगे बढ़ाएँ।",
+      "mr": "समस्या त्या पत्त्याच्या महानगरपालिका विभागाला कळवा, नेमके ठिकाण आणि छायाचित्र द्या, तक्रार क्रमांक ठेवा आणि स्थानिक उत्तर न मिळाल्यास राज्य तक्रार पोर्टलवर पुढे न्या."
+    },
+    "feeNote": {
+      "en": "Filing a municipal grievance is normally free. Do not pay an intermediary to \"fast-track\" a complaint; use the official portal or ward office.",
+      "hi": "नगरपालिका शिकायत दर्ज करना आमतौर पर निःशुल्क है। शिकायत \"जल्दी निपटाने\" के नाम पर किसी बिचौलिए को भुगतान न करें; आधिकारिक पोर्टल या वार्ड कार्यालय का उपयोग करें।",
+      "mr": "महानगरपालिका तक्रार दाखल करणे साधारणपणे मोफत असते. तक्रार \"लवकर निकालण्यासाठी\" कोणत्याही दलालाला पैसे देऊ नका; अधिकृत पोर्टल किंवा प्रभाग कार्यालय वापरा."
+    },
+    "timelineNote": {
+      "en": "Local bodies often set service-level deadlines by complaint type. A simple issue may be closed in days; roads, drainage, and property matters can take weeks.",
+      "hi": "स्थानीय निकाय शिकायत के प्रकार के अनुसार सेवा-स्तर की समय-सीमा तय करते हैं। साधारण समस्या कुछ दिनों में बंद हो सकती है; सड़क, जलनिकास और संपत्ति के मामलों में सप्ताह लग सकते हैं।",
+      "mr": "स्थानिक संस्था तक्रारीच्या प्रकारानुसार सेवा-स्तरीय मुदत ठरवतात. साधी समस्या काही दिवसांत बंद होऊ शकते; रस्ते, गटार आणि मालमत्तेच्या बाबतीत आठवडे लागू शकतात."
+    },
+    "portalKeys": [
+      "pune_municipal",
+      "maha_grievances"
+    ],
+    "helplines": [
+      "1800-103-0222 (Pune Municipal Corporation)",
+      "1800-120-8040 (Aaple Sarkar citizen call centre)"
+    ],
+    "documents": [
+      {
+        "en": "Exact address, ward, and nearest landmark"
+      },
+      {
+        "en": "Photograph or short video of the issue"
+      },
+      {
+        "en": "Your name and contact details"
+      },
+      {
+        "en": "Property tax or consumer number, if the issue relates to a property"
+      },
+      {
+        "en": "Previous complaint number or reply, if this is a follow-up"
+      },
+      {
+        "en": "Receipt or payment proof for a billing dispute"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Identify the responsible body"
+        },
+        "detail": {
+          "en": "Roads, drainage, garbage, streetlights, and building permissions usually sit with the municipal corporation or council. State or utility issues may belong elsewhere."
+        }
+      },
+      {
+        "title": {
+          "en": "File with a precise location"
+        },
+        "detail": {
+          "en": "Use the municipal grievance portal or ward office. Add the ward, street, landmark, and a photograph; an incomplete location is a common reason for rejection."
+        },
+        "portalKey": "pune_municipal"
+      },
+      {
+        "title": {
+          "en": "Keep the complaint number"
+        },
+        "detail": {
+          "en": "Save the acknowledgement and note the service deadline shown for that complaint category. Do not file the same issue repeatedly under new numbers."
+        }
+      },
+      {
+        "title": {
+          "en": "Follow up once"
+        },
+        "detail": {
+          "en": "If the deadline passes, reply on the same complaint with the number and ask for a status update. Keep the written response."
+        }
+      },
+      {
+        "title": {
+          "en": "Escalate to the state portal"
+        },
+        "detail": {
+          "en": "If the local body does not respond, file on the state grievance portal and attach the original complaint and any replies."
+        },
+        "portalKey": "maha_grievances"
+      },
+      {
+        "title": {
+          "en": "Close the loop"
+        },
+        "detail": {
+          "en": "When the work is done, check it and record the closure. If it is not fixed, keep the evidence and escalate rather than opening a duplicate."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "The issue is outside the municipal body's jurisdiction"
+      },
+      {
+        "en": "Address or ward is missing, so the site cannot be located"
+      },
+      {
+        "en": "The same complaint is already open under another number"
+      },
+      {
+        "en": "The complaint is about a private property or private dispute"
+      },
+      {
+        "en": "No proof or receipt is attached for a billing dispute"
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "slug": "aadhaar-update",
+    "version": 1,
+    "order": 16,
+    "lastReviewed": "2026-10-26",
+    "category": "identity",
+    "guidanceOnly": true,
+    "title": {
+      "en": "Update Aadhaar details (guidance only)",
+      "hi": "आधार विवरण अपडेट करें (केवल मार्गदर्शन)",
+      "mr": "आधार तपशील अद्ययावत करा (केवळ मार्गदर्शन)"
+    },
+    "summary": {
+      "en": "This page explains the update process only. It never asks for, stores, or verifies an Aadhaar number. Book an appointment at an official UIDAI centre, carry the original proof, complete biometrics there, and keep the acknowledgement.",
+      "hi": "यह पृष्ठ केवल अपडेट प्रक्रिया समझाता है। यह आधार संख्या कभी नहीं माँगता, संग्रहीत या सत्यापित नहीं करता। आधिकारिक यूआईडीएआई केंद्र पर अपॉइंटमेंट बुक करें, मूल प्रमाण साथ ले जाएँ, वहीं बायोमेट्रिक्स पूरा करें और पावती रखें।",
+      "mr": "हे पान केवळ अद्ययावत प्रक्रिया समजावते. ते आधार क्रमांक कधीही मागत नाही, साठवत नाही किंवा पडताळत नाही. अधिकृत यूआयडीएआय केंद्रावर अपॉइंटमेंट बुक करा, मूळ पुरावा सोबत न्या, तिथेच बायोमेट्रिक्स पूर्ण करा आणि पावती ठेवा."
+    },
+    "feeNote": {
+      "en": "UIDAI publishes the current fee for demographic, biometric, and contact updates. Pay at the official centre or portal; never pay a private website that asks for your Aadhaar number first.",
+      "hi": "यूआईडीएआई जनसांख्यिकीय, बायोमेट्रिक और संपर्क अपडेट का मौजूदा शुल्क प्रकाशित करता है। आधिकारिक केंद्र या पोर्टल पर भुगतान करें; ऐसी निजी वेबसाइट को कभी न दें जो पहले आधार संख्या माँगे।",
+      "mr": "यूआयडीएआय लोकसंख्याशास्त्रीय, बायोमेट्रिक आणि संपर्क अद्ययावतनाचे सध्याचे शुल्क प्रकाशित करते. अधिकृत केंद्र किंवा पोर्टलवर पैसे भरा; आधी आधार क्रमांक मागणाऱ्या खाजगी वेबसाइटला कधीही देऊ नका."
+    },
+    "timelineNote": {
+      "en": "An update request is usually processed within about a week to a month. Check the status with the acknowledgement number; do not send your Aadhaar number to a third party for \"status checking\".",
+      "hi": "अपडेट अनुरोध आमतौर पर लगभग एक सप्ताह से एक महीने में संसाधित होता है। पावती संख्या से स्थिति जाँचें; \"स्थिति जाँचने\" के लिए किसी तीसरे पक्ष को अपनी आधार संख्या न भेजें।",
+      "mr": "अद्ययावत विनंती साधारणपणे सुमारे एक आठवड्यापासून एक महिन्यात प्रक्रिया होते. पावती क्रमांकाने स्थिती तपासा; \"स्थिती तपासण्यासाठी\" तुमचा आधार क्रमांक तिसऱ्या व्यक्तीला पाठवू नका."
+    },
+    "portalKeys": [
+      "uidai"
+    ],
+    "helplines": [
+      "1947 (UIDAI helpline)"
+    ],
+    "documents": [
+      {
+        "en": "The existing Aadhaar card or e-Aadhaar, for your own reference at the centre"
+      },
+      {
+        "en": "Proof of identity, address, or date of birth for the field being changed"
+      },
+      {
+        "en": "Marriage certificate or name-change proof for a name update"
+      },
+      {
+        "en": "Mobile number linked to Aadhaar for OTP, if the process asks for it"
+      }
+    ],
+    "steps": [
+      {
+        "title": {
+          "en": "Decide which field needs updating"
+        },
+        "detail": {
+          "en": "Name, address, date of birth, mobile number, email, and biometrics have different proof requirements. Read the official list before booking."
+        },
+        "portalKey": "uidai"
+      },
+      {
+        "title": {
+          "en": "Book an appointment"
+        },
+        "detail": {
+          "en": "Use the official UIDAI appointment service or visit an authorised centre. Choose a centre that handles the update you need."
+        },
+        "portalKey": "uidai"
+      },
+      {
+        "title": {
+          "en": "Carry original proof"
+        },
+        "detail": {
+          "en": "Take the original document that supports the change and a photocopy if the centre asks for one. Do not leave originals with an agent."
+        }
+      },
+      {
+        "title": {
+          "en": "Complete biometrics at the centre"
+        },
+        "detail": {
+          "en": "The operator captures fingerprints, iris, and a photograph as required. Watch the screen and confirm the details before you sign."
+        }
+      },
+      {
+        "title": {
+          "en": "Keep the acknowledgement"
+        },
+        "detail": {
+          "en": "The acknowledgement number is your only tracking reference. Store it offline and check the update status only on the official UIDAI service."
+        }
+      },
+      {
+        "title": {
+          "en": "Download or collect the updated Aadhaar"
+        },
+        "detail": {
+          "en": "After processing, download the e-Aadhaar from the official site or collect the printed copy. Check every changed field before using it."
+        }
+      }
+    ],
+    "rejectionReasons": [
+      {
+        "en": "The proof document does not support the exact field being changed"
+      },
+      {
+        "en": "Name or date of birth differs across the submitted documents"
+      },
+      {
+        "en": "Biometric capture fails repeatedly at the centre"
+      },
+      {
+        "en": "The applicant visits a centre that does not handle that update type"
+      },
+      {
+        "en": "The acknowledgement number is lost, so the request cannot be tracked"
+      }
+    ]
+  }
+]

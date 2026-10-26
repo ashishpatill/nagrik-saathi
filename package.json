@@ -12,6 +12,8 @@
     "test:watch": "vitest",
     "audit": "pnpm audit --audit-level high",
     "sbom": "cdxgen -t pnpm -o sbom.json .",
+    "playbooks:build": "tsx scripts/build-playbooks.ts",
+    "playbooks:check": "tsx scripts/build-playbooks.ts --check",
     "mcp": "tsx mcp/server.ts",
     "mcp:dev": "tsx watch mcp/server.ts"
   },
@@ -48,6 +50,7 @@
     "tsx": "4.23.15",
     "typescript": "5.8.3",
     "vite": "8.3.5",
-    "vitest": "4.1.12"
+    "vitest": "4.1.12",
+    "yaml": "2.9.1"
   }
 }

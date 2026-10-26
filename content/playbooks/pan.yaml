@@ -1,0 +1,101 @@
+schemaVersion: 1
+slug: pan
+version: 1
+order: 3
+lastReviewed: "2026-10-26"
+category: identity
+guidanceOnly: false
+title:
+  en: Apply for a PAN or correct an existing PAN
+  hi: पैन के लिए आवेदन या मौजूदा पैन में सुधार
+  mr: पॅनसाठी अर्ज किंवा सध्याच्या पॅनमध्ये दुरुस्ती
+summary:
+  en: >-
+    Use the official Protean or Income Tax e-filing route, complete the
+    application with identity, address, and date-of-birth proof, finish e-KYC or
+    e-sign, and keep the acknowledgement number for tracking.
+  hi: >-
+    आधिकारिक प्रोटियन या आयकर ई-फाइलिंग मार्ग का उपयोग करें, पहचान, पते और
+    जन्मतिथि के प्रमाण के साथ आवेदन पूरा करें, ई-केवाईसी या ई-साइन करें और
+    ट्रैकिंग के लिए पावती संख्या संभालकर रखें।
+  mr: >-
+    अधिकृत प्रोटियन किंवा आयकर ई-फाइलिंग मार्ग वापरा, ओळख, पत्ता आणि जन्मतारीख
+    पुराव्यासह अर्ज पूर्ण करा, ई-केवायसी किंवा ई-साइन करा आणि पाठपुराव्यासाठी
+    पावती क्रमांक जपून ठेवा.
+feeNote:
+  en: >-
+    The portal shows the current application fee and any physical-card dispatch
+    charge. An instant e-PAN may be free. Pay only on the official portal and
+    keep the receipt.
+  hi: >-
+    पोर्टल पर मौजूदा आवेदन शुल्क और भौतिक कार्ड भेजने का शुल्क दिखाई देता है।
+    तत्काल ई-पैन निःशुल्क हो सकता है। केवल आधिकारिक पोर्टल पर भुगतान करें और
+    रसीद रखें।
+  mr: >-
+    पोर्टलवर सध्याचे अर्ज शुल्क आणि भौतिक कार्ड पाठवणीचे शुल्क दिसते. तात्काळ
+    ई-पॅन मोफत असू शकते. केवळ अधिकृत पोर्टलवर पैसे भरा आणि पावती ठेवा.
+timelineNote:
+  en: >-
+    An e-PAN often arrives within a day or two; a physical card usually follows
+    in about 10 to 15 days. Delivery can take longer if documents need manual
+    review.
+  hi: >-
+    ई-पैन अक्सर एक-दो दिन में मिल जाता है; भौतिक कार्ड आमतौर पर लगभग 10 से 15
+    दिन में आता है। दस्तावेज़ों की मैन्युअल समीक्षा होने पर देरी हो सकती है।
+  mr: >-
+    ई-पॅन सहसा एक-दोन दिवसांत मिळतो; भौतिक कार्ड साधारणपणे सुमारे 10 ते 15
+    दिवसांत येते. कागदपत्रांची मॅन्युअल तपासणी लागल्यास उशीर होऊ शकतो.
+portalKeys:
+  - protean_pan
+  - incometax
+helplines:
+  - "020-27218080 (Protean PAN/TDS call centre)"
+documents:
+  - en: "Proof of identity from the accepted list"
+  - en: "Proof of address from the accepted list"
+  - en: "Proof of date of birth"
+  - en: "Recent photograph and signature, if the route asks for them"
+  - en: "Aadhaar for e-KYC or for linking, where the portal requires it"
+  - en: "Existing PAN details, if this is a correction or reprint"
+steps:
+  - title:
+      en: Choose the right route
+    detail:
+      en: >-
+        A new PAN, a correction, and a reprint are different applications. An
+        instant e-PAN is available only to eligible applicants with an Aadhaar
+        and a registered mobile number.
+    portalKey: incometax
+  - title:
+      en: Fill the application
+    detail:
+      en: >-
+        Enter your name, date of birth, and address exactly as they appear in
+        the supporting documents. Use the portal's own guidance for initials and
+        name expansions.
+    portalKey: protean_pan
+  - title:
+      en: Complete e-KYC or e-sign
+    detail:
+      en: >-
+        Follow the Aadhaar-based e-KYC or e-sign flow if offered. The OTP is for
+        you alone; no agent should ask you to share it.
+  - title:
+      en: Pay and save the acknowledgement
+    detail:
+      en: >-
+        Pay only on the official portal, then save the acknowledgement number.
+        If physical documents are required, send them within the stated window.
+  - title:
+      en: Track and download the PAN
+    detail:
+      en: >-
+        Use the acknowledgement number to check status. Download the e-PAN when
+        it is issued and verify the printed details before using it.
+    portalKey: protean_pan
+rejectionReasons:
+  - en: "Name or date of birth does not match the supporting documents"
+  - en: "Aadhaar e-KYC fails because the mobile number is not linked"
+  - en: "Duplicate application, or an existing PAN is already active"
+  - en: "Photograph, signature, or document scan is unclear"
+  - en: "Physical documents were not sent within the required window"
