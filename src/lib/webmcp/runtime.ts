@@ -9,6 +9,10 @@ import type { DocumentAnalysis, ToolLog } from "@/lib/types";
 import type { ModelContext, WebMCPClient, WebMCPTool } from "@/types/webmcp";
 
 let polyfillInitialized = false;
+// Set when this module had to install the MCP-B polyfill. The polyfill does not
+// mark its own context, so without this the UI would label a polyfilled page
+// as native.
+let installedPolyfill = false;
 
 export type WebMCPRuntimeMode = "native" | "polyfill" | "local" | "unavailable";
 
@@ -25,8 +29,10 @@ export function initializeWebMCP() {
     // Polyfill rejects or hangs when originAgentCluster is false; use local fallback.
     installFallbackModelContext();
   } else {
+    const hadNativeContext = "modelContext" in document || "modelContext" in navigator;
     try {
       installWebMCP();
+      if (!hadNativeContext && document.modelContext) installedPolyfill = true;
     } catch {
       installFallbackModelContext();
     }
@@ -74,7 +80,8 @@ export function describeRuntimeMode(registeredViaContext: boolean): WebMCPRuntim
   if (!context?.registerTool) return registeredViaContext ? "local" : "unavailable";
   if (!registeredViaContext) return "local";
   if (context.__isNagrikFallback) return "local";
-  return context.__isWebMCPPolyfill ? "polyfill" : "native";
+  if (installedPolyfill || context.__isWebMCPPolyfill) return "polyfill";
+  return "native";
 }
 
 type RegisterOptions = {

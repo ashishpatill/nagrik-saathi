@@ -118,7 +118,15 @@ successful until it has been recorded on the deployed HTTPS URL.
 ## Limitations
 
 - WebMCP is experimental; API names and annotation sets can change.
-- No Chrome origin-trial or ChatGPT Site-tools run has been recorded for the
-  12-tool surface. Local inspector and playground runs are the current evidence.
+- A native Chrome 154 run is recorded in
+  [`iterations/STAGE1-CLOSEOUT.md`](iterations/STAGE1-CLOSEOUT.md): the testing
+  feature was enabled with `--enable-features=WebMCP`, and all 12 tools ran
+  through `document.modelContext.executeTool`. A production origin-trial token
+  is still needed for ordinary visitors until Chrome ships the feature.
+- No ChatGPT Site-tools run has been recorded. That remains blocked on an
+  eligible account and the desktop built-in browser.
+- The public playground and local browser use the MCP-B polyfill or the local
+  fallback when native WebMCP is absent; the runtime badge now distinguishes
+  Native, Polyfill, Local, and Unavailable.
 - Frequency hints are advisory. The browser and MCP server do not enforce them.
 - The MCP server is local-only today. See [`../mcp/README.md`](../mcp/README.md).

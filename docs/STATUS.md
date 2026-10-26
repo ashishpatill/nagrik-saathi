@@ -35,11 +35,27 @@
 - `docs/CI.md`, `pnpm audit` / `pnpm sbom` scripts, `sbom.json` gitignored.
 - CSP/HSTS/frame-ancestors/Referrer-Policy, per-IP rate limit, Verhoeff/Luhn
   redaction, `robots.txt`, `llms.txt`, `sitemap.xml`.
-- Local Lighthouse against the production build (2026-10-26):
-  - `/` — accessibility 100, best practices 100, SEO 100, performance 97
-  - `/playground` — accessibility 100, best practices 100, SEO 100, performance 97
+- PR [#1](https://github.com/ashishpatill/nagrik-saathi/pull/1) merged to
+  `master` as `6790f62`; the feature branch was deleted. The first CI run on
+  `master` is green
+  ([40316807095](https://github.com/ashishpatill/nagrik-saathi/actions/runs/40316807095)).
+- Production is live at <https://nagrik-saathi.vercel.app>. Verified over
+  HTTPS: CSP (no `unsafe-eval`), HSTS, `frame-ancestors 'none'`,
+  `Referrer-Policy: strict-origin-when-cross-origin`,
+  `Permissions-Policy: tools=(self)`, `X-Content-Type-Options: nosniff`.
+  `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/.well-known/agent-card.json`,
+  and `/playground` all return 200.
+- Deployed Lighthouse (2026-10-26, before the playground font-size pass):
+  - `/` — performance 96, accessibility 100, best practices 100, SEO 100
+  - `/playground` — performance 99, accessibility 100, best practices 96,
+    SEO 100. The only deduction was “document doesn't use legible font sizes”
+    (13.9% legible). Small playground text was raised to 12px in the follow-up
+    change; the deployed re-run is recorded in `docs/CI.md`.
   - Run with `--force-prefers-reduced-motion` in headless Chrome; the entry
     animation otherwise prevents FCP in this display-less environment.
+- Agent Card is served with an explicit skeleton note and
+  `endpointDeployed: false`; its `url` is a production placeholder, not
+  loopback.
 
 ### Stage 1 — WebMCP depth
 
@@ -62,6 +78,14 @@
 - Browser interaction on `/playground` (2026-10-26): ran `redact_pii` on
   synthetic Aadhaar/PAN/card/account text; result reported
   `status: "redacted"` with four redactions, and the console had no errors.
+- Native Chrome close-out (2026-10-26): Chrome 154.0.8037.93, local
+  production build, WebMCP feature enabled. The inspector reported
+  **12 tools · Native**. All 12 tools were executed through native
+  `document.modelContext.executeTool`; both side-effect tools showed the
+  approval modal and succeeded after approval. Evidence and the screenshot
+  are in [iterations/STAGE1-CLOSEOUT.md](iterations/STAGE1-CLOSEOUT.md).
+- Fixed the runtime mode label: the MCP-B polyfill no longer reports itself
+  as “Native” when it is the active context.
 
 ### Stage 2 — MCP server foundation
 
@@ -75,10 +99,15 @@
   the 10-tool surface.
 - Tests: end-to-end over `InMemoryTransport` and a real
   `StreamableHTTPClientTransport` client.
-- `public/.well-known/agent-card.json` is an honest skeleton with a loopback
-  placeholder URL and an explicit "no A2A endpoint is deployed" note.
+- `public/.well-known/agent-card.json` is an honest skeleton with a
+  production placeholder URL, `endpointDeployed: false`, and an explicit
+  "no A2A endpoint is deployed" note.
 - Stdio smoke-tested from outside the repo with
   `tsx --tsconfig <repo>/tsconfig.json <repo>/mcp/server.ts`.
+- Custom-harness runs recorded in [iterations/STAGE2-MCP.md](iterations/STAGE2-MCP.md):
+  HTTP with bearer auth (`/health` 200, missing token 401, 10 tools,
+  `verify_portal_url` and `redact_pii`), and stdio via the official SDK client
+  (10 tools, Marathi summary).
 
 ### Verification (local, 2026-10-26)
 
@@ -90,24 +119,18 @@
 
 ## Remaining
 
-### Stage 0 close-out
-
-- Push the CI workflow and confirm the first GitHub Actions run is green.
-- Repeat the Lighthouse check on the deployed HTTPS URL for `/` and
-  `/playground`.
-- Verify headers, `llms.txt`, `sitemap.xml`, and the Agent Card on the deployed
-  HTTPS URL.
-
-### Stage 1 close-out
-
-- Run the 12-tool surface in a Chrome origin-trial build and record the
-  inspector result. Current evidence is the local playground and unit tests.
-- Record a ChatGPT Site-tools run only if an eligible account is available.
-
 ### Stage 2 close-out
 
 - Deploy the HTTP transport to an always-on host with TLS and a bearer token.
-- Record a real Claude Desktop stdio run and a custom-harness HTTP run.
+- Record a real Claude Desktop stdio run. Claude Desktop is not installed on
+  this host; the existing profile directory is a leftover, and the `claude`
+  CLI is Claude Code, not Desktop.
+
+### Stage 1 follow-up
+
+- Record a ChatGPT Site-tools run only if an eligible account is available.
+- Request a production origin-trial token so native WebMCP works for ordinary
+  visitors before Chrome ships it broadly.
 
 ### Later stages
 
@@ -116,13 +139,14 @@
   depth, Stage 7 security audit, Stage 8 government integration prep,
   Stage 9 Phase 2.
 - Expand reviewed portal coverage beyond Maharashtra + national seeds.
-- Add Dependabot/Renovate, OSV scan, and Lighthouse CI once a preview URL exists.
+- Add Dependabot/Renovate, OSV scan, and Lighthouse CI against production
+  (preview URLs are SSO-protected; use a protection bypass or the public
+  production URL).
 - OAuth/per-user identity and server-side frequency enforcement for MCP.
 
 ## Deferred
 
 - ChatGPT Site-tools recording
-- Vercel HTTPS deploy (optional)
 - Hindi/Tamil OCR language packs beyond English Tesseract
 - True PDF export for `generate_checklist_document`; it currently returns
   print-ready HTML so Indic fonts stay in the browser instead of being embedded
