@@ -59,6 +59,22 @@ Rules for adding or changing a playbook:
 - Cache names are versioned (`nagrik-static-<hash>`) and activation removes
   older `nagrik-` caches. Change the template, not the generated worker.
 
+## Your data and backups
+
+- Never store, log, transmit, or request a backup passphrase. It exists only in
+  the form field for the operation the citizen started.
+- The backup envelope is versioned. A change to the KDF, cipher, envelope
+  fields, or authenticated data requires a version bump and tests for wrong
+  passphrase, tampering, malformed input, and unsupported versions.
+- Imported files are untrusted. Validate the strict schema, duplicate IDs, the
+  8 MB file cap, and the 200-case cap before writing to IndexedDB.
+- "Delete everything" must clear every saved case and the active-case pointer.
+  Never claim a server-side deletion when there is no server-side store.
+- The encrypted file is the only cross-device path today. Do not describe it
+  as automatic sync, zero-knowledge cloud storage, or recovery-capable.
+- Keep the `/privacy` inventory and `docs/SAFETY.md` aligned with what storage
+  actually does.
+
 ## Agent tool contract
 
 `src/lib/agent/tools.ts` is the single source of truth for 12 tools. The WebMCP

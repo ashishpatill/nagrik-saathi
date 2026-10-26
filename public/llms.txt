@@ -41,6 +41,15 @@
   are cached under a versioned cache; a lost connection serves the cached page,
   and an uncached route opens `/offline`. `/api/*` is never cached.
 
+## Your data
+
+- [Your data](https://nagrik-saathi.vercel.app/privacy): what the app stores in
+  the browser, how to make a passphrase-encrypted backup that can be restored
+  on another device, and how to delete every saved case. The passphrase is
+  never stored or sent, and Nagrik Saathi cannot recover it.
+- There is no account, no server-side case store, and no automatic sync. The
+  encrypted file is the only cross-device path today.
+
 ## Safety
 
 - [Safety boundary](https://github.com/ashishpatill/nagrik-saathi/blob/master/docs/SAFETY.md):
