@@ -234,6 +234,12 @@ export default function ToolPlayground() {
                 Portal status
               </Link>
               <Link
+                href="/privacy"
+                className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+              >
+                Your data
+              </Link>
+              <Link
                 href="/"
                 className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
               >
