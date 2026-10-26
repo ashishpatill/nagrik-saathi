@@ -357,6 +357,22 @@
 - Honest gaps: the response studio and grievance routing graph are not built;
   the library is English-only.
 
+### Verification — Stage 6 production (2026-10-26)
+
+- PR #7 merged to `master` as `5ddb9e8`; the master CI run `40362564954` is
+  green.
+- Production serves `/scams` with 10 pattern cards, and `/`, `/playbooks`,
+  `/playground`, `/privacy`, `/status`, `/sitemap.xml`,
+  `/precache-manifest.json`, and `/sw.js` all return 200.
+- The production precache manifest is `nagrik-a6d8f451b9` with 26 URLs
+  including `/scams`; the deployed worker hash matches; `/scams` is in the
+  sitemap.
+- The activated production worker cached `/scams`, `/privacy`, and `/offline`.
+  A pre-deploy tab kept the older `997f67b0c4` cache alive until it was closed;
+  after a reload the only cache was `nagrik-static-a6d8f451b9`.
+- Lighthouse on production `/scams`: **100 accessibility, 100 best practices,
+  100 SEO**.
+
 ## Remaining
 
 ### Stage 2 close-out
