@@ -220,7 +220,7 @@
     <li>At v1 close, still missing: CI audit/SBOM gate, auth, encrypted cloud case store, MCP server,
       process playbooks, portal-health fleet, offline PWA, and A2A. The current working tree has since
       added the CI/SBOM gate, the twelve-tool registry, the playground, a local MCP server, and the
-      sixteen process playbooks; see §9.2–§9.6.</li>
+      sixteen process playbooks; see §9.2–§9.7.</li>
   </ul>
 </div>
 
@@ -1215,7 +1215,76 @@ Any later claim of "encrypted at rest, access-controlled by passkey" must wait f
 Until then, the honest sentence is: the case stays in the browser, and the backup is a local file only
 the passphrase can open.</p>
 
-<h3>9.7 Exit criteria for the whole plan</h3>
+<h3>9.7 Stage 6 ships the scam library; the response studio is not built</h3>
+
+<p>Verified on 26 October 2026. The plan's Stage 6 bundles three things: a reviewed pattern library, a
+response studio, and a grievance routing graph. This pass shipped the first in full and left the other
+two unbuilt rather than imitate them.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">What was measured</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Reviewed scam pattern library</td>
+      <td><span class="status done">Present</span></td>
+      <td>Ten patterns cover OTP and PIN requests, digital arrest calls, personal UPI handles,
+        electricity disconnection threats, shortened links, advance-fee refunds, Aadhaar or PAN photos
+        over chat, pressure tactics, WhatsApp-only contacts, and QR payment requests. Each pattern
+        carries signals, why it matters, a safe action, a verification hint, registry keys, a source
+        note, and a review date.</td>
+    </tr>
+    <tr>
+      <td>Review loop that can fail CI</td>
+      <td><span class="status done">Present</span></td>
+      <td>Every rule has at least one positive example and one counterexample. The test suite runs both,
+        so a rule that flags a legitimate notice fails before release. A sentence that warns against a
+        pattern ("Never share your OTP") does not match it.</td>
+    </tr>
+    <tr>
+      <td>Public explanation</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>/scams</code> publishes all ten patterns, the review rules, the route after a payment,
+        and the limits. It is linked from the workspace, playbooks, and playground, and included in the
+        sitemap and the 26-URL precache list.</td>
+    </tr>
+    <tr>
+      <td>One detection path</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>analyzeText</code> and <code>check_scam_signals</code> both read
+        <code>src/data/scam-patterns.ts</code>. The old four-word regex is gone, and the result names the
+        matched pattern instead of returning a bare score.</td>
+    </tr>
+    <tr>
+      <td>Response studio</td>
+      <td><span class="status open">Not built</span></td>
+      <td>There is a plain citizen letter and a print-ready checklist, but no guided reply, objection, or
+        appeal flow with a reviewed template per notice type.</td>
+    </tr>
+    <tr>
+      <td>Grievance routing graph</td>
+      <td><span class="status open">Not built</span></td>
+      <td>Playbooks name the office and portal for a process, but there is no reviewed escalation graph
+        from the first desk to the appellate authority.</td>
+    </tr>
+    <tr>
+      <td>Scam library languages</td>
+      <td><span class="status partial">English only</span></td>
+      <td>The explanations are English. The workspace still explains a notice in eight languages, and
+        translation of the library is a content task with the same review rule.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The Stage 6 exit target is partly met. A citizen can read and check the patterns, and the rules are
+reviewable, but the drafting and escalation halves of the stage do not exist yet. The honest sentence is:
+the library names the pattern and the safe next step; it does not write the complaint or walk the
+escalation ladder.</p>
+
+<h3>9.8 Exit criteria for the whole plan</h3>
 
 <p>Nagrik Saathi succeeds when three things are true. Each is stated with its current status, because a
 criterion without a status is a wish:</p>
@@ -1514,7 +1583,8 @@ exposes the 10 flagged <code>mcpExposed</code>. Every tool carries
 
 <p class="footer">
   Nagrik Saathi v2 — Unconstrained Master Plan · 26 October 2026 ·
-  Re-verified at HEAD <code>3ba8473</code> (Stage 0–5 merged; 88 tests, green CI) ·
+  Re-verified on the Stage 6 branch (Stages 0–5 merged; scam library shipped;
+  97 tests) ·
   Supersedes the hackathon-scoped v1 plan ·
   Living status: <code>docs/STATUS.md</code> ·
   Companion to <code>docs/SAFETY.md</code>, <code>docs/CI.md</code>, <code>docs/PLAYBOOKS.md</code>,
