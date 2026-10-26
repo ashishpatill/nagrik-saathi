@@ -932,9 +932,9 @@ workflow is green on <code>master</code>; and the production deployment at
       <td>First run passed; OSV scan and Dependabot/Renovate remain</td>
     </tr>
     <tr>
-      <td>Local Lighthouse, <code>/</code> and <code>/playground</code></td>
+      <td>Deployed Lighthouse, <code>/</code> and <code>/playground</code></td>
       <td><span class="status done">Deployed</span></td>
-      <td>Deployed run recorded on both pages; playground font-size follow-up cleared the only deduction</td>
+      <td>Last full run: performance 95 / accessibility 100 / best practices 100 / SEO 100 on both pages. An intermittent <code>robots.txt</code> audit timeout is a Lighthouse runner flake; see <code>docs/CI.md</code></td>
     </tr>
   </tbody>
 </table>
@@ -947,11 +947,11 @@ workflow is green on <code>master</code>; and the production deployment at
   (Dependabot/Renovate, OSV scan, Lighthouse CI) is tracked in Stage 7 and the status file.
 </div>
 
-<h3>9.3 Stage 1 and Stage 2 are in the working tree, not closed</h3>
+<h3>9.3 Stage 1 is closed; Stage 2 is partway</h3>
 
 <p>Verified on 26 October 2026. The browser, the playground, and the MCP server now share one registry in
 <code>src/lib/agent/tools.ts</code>. Local tests cover the registry, the browser adapter's shared logic,
-and both MCP transports.</p>
+and both MCP transports. Stage 1 is closed by a native Chrome run; Stage 2 is not.</p>
 
 <div class="table-wrap">
 <table>
