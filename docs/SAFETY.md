@@ -45,10 +45,31 @@ Aadhaar, PAN, and account-like patterns before export. Redaction is a safety
 aid, not a guarantee; users should still avoid uploading unnecessary personal
 data.
 
+Saved cases can be carried to another device through `/privacy` as an
+encrypted backup file. The browser derives a key from the user's passphrase
+with PBKDF2-SHA-256 (600,000 iterations) and a random 16-byte salt, then
+encrypts the case bundle with AES-GCM-256 and a random 12-byte IV. The
+envelope binds its format, version, and creation time as additional
+authenticated data. The passphrase is never stored, logged, sent, or placed in
+a URL. Nagrik Saathi cannot decrypt or recover the file, and the file is
+ciphertext even in the Downloads folder.
+
+Import treats the selected file as untrusted: it validates a strict, versioned
+schema before writing anything, rejects duplicate case IDs, caps the file at
+8 MB and 200 cases, and distinguishes a wrong passphrase from a malformed or
+unsupported file. Restoring is explicit and makes the first restored case
+active. "Delete everything" removes all saved cases and the active-case pointer
+from this browser. It cannot delete a backup the user already downloaded or a
+copy in another browser.
+
+The backup contains the notice text and extracted fields, encrypted. A user who
+would not save a notice should not export it either. The passphrase must be
+kept separately from the file; there is no reset path.
+
 Redaction checks checksums where the format has one: payment cards are
 redacted in full only when Luhn-valid, and Aadhaar validity (Verhoeff) feeds
 the scam-signal check when a notice embeds a checksum-valid number. The
-redaction pipeline itself stays deliberately over-broad — formatted
+redaction pipeline itself stays deliberately over-broad: formatted
 Aadhaar-like groups and 9–18-digit account-like runs are redacted without a
 checksum requirement. Tool-call logs (IndexedDB) pass through the same
 pipeline (`redactDeep`) before they persist.
@@ -57,16 +78,26 @@ pipeline (`redactDeep`) before they persist.
 
 The default flow processes documents on-device and stores cases only in the
 user's own browser: Nagrik Saathi acts as neither a Data Fiduciary nor a
-Data Processor for that data — it never receives it. Two boundaries keep
-that true:
+Data Processor for that data because it never receives it. Three boundaries
+keep that true:
 
 - `/api/analyze` receives pasted text transiently for stateless analysis and
   persists nothing.
-- If a server-side case store, cloud sync, or any cross-device feature is
-  ever added, it must ship only with explicit opt-in consent, a stated
-  purpose, retention limits, a deletion endpoint, and field-level encryption
-  with per-user keys — until then this app stays out of DPDP fiduciary
-  scope by architecture, not by policy.
+- The encrypted backup is created in the browser and downloaded directly. The
+  passphrase and plaintext never reach a Nagrik Saathi server, and no backup
+  is uploaded.
+- Deletion runs in the browser against local storage. There is no server-side
+  case store, so there is no server-side deletion endpoint to call.
+
+The app does not yet have passkey identity, a server-side case store, or
+automatic cross-device sync. If any of those is added, it must ship only with
+explicit opt-in consent, a stated purpose, retention limits, a deletion
+endpoint, and field-level encryption with per-user keys. Until then this app
+stays out of DPDP fiduciary scope by architecture, not by policy.
+
+Do not describe the encrypted backup as zero-knowledge cloud sync. It is a
+local, user-held file: the server never sees it, but the user is responsible
+for storing the file and the passphrase.
 
 ## Agent safety
 

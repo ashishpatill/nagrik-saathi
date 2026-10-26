@@ -220,7 +220,7 @@
     <li>At v1 close, still missing: CI audit/SBOM gate, auth, encrypted cloud case store, MCP server,
       process playbooks, portal-health fleet, offline PWA, and A2A. The current working tree has since
       added the CI/SBOM gate, the twelve-tool registry, the playground, a local MCP server, and the
-      sixteen process playbooks; see §9.2–§9.5.</li>
+      sixteen process playbooks; see §9.2–§9.6.</li>
   </ul>
 </div>
 
@@ -1137,6 +1137,82 @@ and persistent history stay open because the repository still has no store or sc
 the playbooks — is met for the on-demand implementation. It is not the full plan. Without a scheduler,
 the dashboard reports what a visitor measured now, not a 24/7 fleet, and the page says so in plain
 language. A stale result is always labelled as saved, never presented as current.</p>
+
+<h3>9.6 Stage 5 ships the encrypted file path; passkey sync is not built</h3>
+
+<p>Verified on 26 October 2026. The plan's full Stage 5 needs passkey identity and a hosted, encrypted
+case store. Neither exists, so this pass shipped the zero-knowledge path the plan names as the fallback:
+a passphrase-encrypted file that moves between devices without a server ever seeing it, plus a real
+local wipe. It is useful, and it is not automatic sync.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">What was measured</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Encrypted case backup</td>
+      <td><span class="status done">Present</span></td>
+      <td>PBKDF2-SHA-256 at 600,000 iterations and a random 16-byte salt; AES-GCM-256 with a random
+        12-byte IV; format, version, and creation time bound as additional authenticated data. A
+        6,508-byte export of one real case contained no plaintext issuer, reference, amount, or
+        Aadhaar-like number.</td>
+    </tr>
+    <tr>
+      <td>Restore on another device</td>
+      <td><span class="status done">Present</span></td>
+      <td>Strict versioned schema, duplicate-ID rejection, 8 MB and 200-case caps. A wrong passphrase
+        produced a distinct error and wrote nothing; the correct passphrase restored the case and
+        made it active.</td>
+    </tr>
+    <tr>
+      <td>One-click delete</td>
+      <td><span class="status done">Present</span></td>
+      <td>A two-step control removes every saved case and the active-case pointer. The page states
+        that it cannot reach a downloaded backup or another browser.</td>
+    </tr>
+    <tr>
+      <td>Public data inventory</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>/privacy</code> lists what is stored and where, explains the passphrase limit, and
+        links the workspace, playbooks, playground, sitemap, and precache. Lighthouse accessibility,
+        best practices, and SEO are 100 after fixing a 4.28:1 table-header contrast.</td>
+    </tr>
+    <tr>
+      <td>Passkey identity</td>
+      <td><span class="status open">Not built</span></td>
+      <td>No WebAuthn registration or assertion flow. This needs a hosted relying party and a durable
+        credential store.</td>
+    </tr>
+    <tr>
+      <td>Server-side encrypted case store and automatic sync</td>
+      <td><span class="status open">Not built</span></td>
+      <td>There is no database, no per-user key vault, and no sync protocol. The encrypted file is the
+        only cross-device path today.</td>
+    </tr>
+    <tr>
+      <td>Retention caps, breach runbook, server deletion endpoint</td>
+      <td><span class="status open">Not built</span></td>
+      <td>Not applicable while no server stores personal data. The local delete control is the purge;
+        the DPDP memo and deletion endpoint belong with the cloud store, not before it.</td>
+    </tr>
+    <tr>
+      <td>DPDP posture</td>
+      <td><span class="status partial">Local-only</span></td>
+      <td>The app remains outside Data Fiduciary scope by architecture: it does not receive the
+        notice, the backup, or the passphrase. The page and <code>docs/SAFETY.md</code> say this
+        without calling the file "zero-knowledge cloud sync."</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The Stage 5 exit target is therefore partly met. A citizen can carry a case to another device and
+wipe everything, but the transfer is a file they move themselves, not a passkey session that syncs.
+Any later claim of "encrypted at rest, access-controlled by passkey" must wait for the hosted store.
+Until then, the honest sentence is: the case stays in the browser, and the backup is a local file only
+the passphrase can open.</p>
 
 <!-- ==================== 10 ==================== -->
 <div class="page-break"></div>

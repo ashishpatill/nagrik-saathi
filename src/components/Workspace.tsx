@@ -466,6 +466,9 @@ export default function Workspace() {
                 <Link href="/status" className="underline-offset-4 hover:underline">
                   Portal status →
                 </Link>
+                <Link href="/privacy" className="underline-offset-4 hover:underline">
+                  Your data →
+                </Link>
                 <Link href="/playground" className="underline-offset-4 hover:underline">
                   Agent tool playground →
                 </Link>

@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.6,
     },
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: new Date("2026-10-26T00:00:00Z"),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
   ];
 
   const playbookPages: MetadataRoute.Sitemap = listPlaybooks().map((playbook) => ({
