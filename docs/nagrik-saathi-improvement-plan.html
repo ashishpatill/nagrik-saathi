@@ -237,6 +237,7 @@
     <li><a href="#s8">Phase 2 — the government integration pitch</a></li>
     <li><a href="#s9">Implementation roadmap, stages, and exit criteria</a></li>
     <li><a href="#s10">Risks and honest limitations</a></li>
+    <li><a href="#appendix">Appendix: quick reference (tools, checklist, references)</a></li>
   </ol>
 </nav>
 
@@ -1214,6 +1215,45 @@ Any later claim of "encrypted at rest, access-controlled by passkey" must wait f
 Until then, the honest sentence is: the case stays in the browser, and the backup is a local file only
 the passphrase can open.</p>
 
+<h3>9.7 Exit criteria for the whole plan</h3>
+
+<p>Nagrik Saathi succeeds when three things are true. Each is stated with its current status, because a
+criterion without a status is a wish:</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Criterion</th><th scope="col">Status at HEAD <code>3ba8473</code></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A citizen in a village with a 2G connection can understand a scam notice offline and know
+        exactly which official link to trust.</td>
+      <td><span class="status partial">Largely built</span> — the offline PWA serves playbooks, registry,
+        and cached cases with the origin stopped; the honest gap is that no real 2G-device field test has
+        run, OCR beyond English is deferred, and Hindi/Tamil notice coverage is partial.</td>
+    </tr>
+    <tr>
+      <td>An AI agent can drive the full analyze → check → plan → discover flow through the MCP server
+        without a human touching the browser.</td>
+      <td><span class="status partial">Works locally</span> — stdio and Streamable-HTTP harness runs are
+        recorded (10 <code>mcpExposed</code> tools, Marathi summary end-to-end); it is not true for the
+        public until the HTTP transport is deployed always-on with TLS and a bearer token (Stage 2
+        close-out).</td>
+    </tr>
+    <tr>
+      <td>A government committee can review the architecture, the audit trail, and the DPDP memo and see
+        no reason to say no.</td>
+      <td><span class="status open">Not yet</span> — CI, SBOM, the DPDP posture document, and the
+        redaction/audit foundations exist; the third-party security audit (Stage 7), the hash-chained
+        audit trail, and the formal DPDP memo do not. This criterion gates Phase 2.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Hit those three and the band-aid has earned the right to propose the cure.</p>
+
 <!-- ==================== 10 ==================== -->
 <div class="page-break"></div>
 <h2 id="s10">10. Risks and honest limitations</h2>
@@ -1366,6 +1406,19 @@ early signals that should change the plan.</p>
   <li><strong>Distribution is not guaranteed.</strong> Agent adoption may stay flat; content requires
     consistency; government sales cycles are long. Do not build a company that only works if one ministry
     says yes. Phase 1 must be useful on its own, to real citizens, without anyone's permission.</li>
+  <li><strong>Incumbent response.</strong> If Nagrik Saathi gains traction, NeGD or a large systems
+    integrator will build a competing in-house version. The defense is openness and community: an open
+    protocol layer with third-party agents and public audits is harder to copy than a closed product, and
+    the content engine keeps the project visible while incumbents move through procurement cycles.</li>
+  <li><strong>CoRover and MeitY's unified agent platform may absorb the exact niche being built.</strong>
+    The counter is protocol-level interoperability positioning: not a competing product, but the layer that
+    makes their agents — and everyone else's — work against government services. That positioning survives
+    even if a bigger player enters, which is why the open-source MCP server and documented tool contracts
+    matter more than any proprietary feature.</li>
+  <li><strong>Scope creep under success pressure.</strong> The nine domains are the ceiling, not the
+    to-do list. The moat is narrow and deep — notice intelligence, resilience, state preservation — and
+    "expand only after the core is unassailable" is a hard gate, not a preference. A tenth domain before
+    the three core ones are undeniable is how the project becomes a mediocre super-app.</li>
 </ul>
 
 <h3>10.5 Pre-registered kill criteria</h3>
@@ -1393,12 +1446,79 @@ early signals that should change the plan.</p>
 
 </main>
 
+<!-- ==================== APPENDIX ==================== -->
+<div class="page-break"></div>
+<h2 id="appendix" style="margin-top: 52px;">Appendix: Quick Reference</h2>
+
+<h3>Current tool surface (verified 2026-10-26, HEAD <code>3ba8473</code>)</h3>
+<p>The shared registry lives in <code>src/lib/agent/tools.ts</code>: <strong>12 tools</strong> registered in
+the browser via <code>document.modelContext</code>; the MCP server (<code>mcp/create-server.ts</code>)
+exposes the 10 flagged <code>mcpExposed</code>. Every tool carries
+<code>trustLevel</code>, <code>maxFrequency</code>, approval and case flags, and a max-result cap.</p>
+<ul>
+  <li><code>analyze_notice</code> — structured extraction from notice text (untrusted content)</li>
+  <li><code>get_notice_summary</code> — plain-language overview in any of the 8 languages</li>
+  <li><code>check_scam_signals</code> — coercive-language and payment red-flag check</li>
+  <li><code>create_action_plan</code> — safe checklist plus required-document list</li>
+  <li><code>draft_citizen_letter</code> — review-only draft, never sent</li>
+  <li><code>export_family_brief</code> — redacted one-page summary (approval-gated)</li>
+  <li><code>find_official_portal</code> — reviewed-registry lookup by department/service/state</li>
+  <li><code>schedule_reminder</code> — ICS calendar reminder (approval-gated)</li>
+  <li><code>verify_portal_url</code> — registry check incl. lookalike hosts, HTTP, credentials, ports</li>
+  <li><code>redact_pii</code> — standalone Verhoeff/Luhn-backed redaction utility</li>
+  <li><code>translate_brief</code> — explicit language parameter over <code>LANGUAGES</code></li>
+  <li><code>generate_checklist_document</code> — print-ready HTML export (true PDF deferred so Indic
+    fonts render in-browser rather than embedding badly)</li>
+</ul>
+
+<h3>Next tool candidates</h3>
+<ul>
+  <li><code>lookup_process_playbook</code> — typed lookup over the 16 YAML playbooks. Deliberately
+    deferred twice: a 13th tool changes the documented contract, the MCP surface, docs, and tests all at
+    once.</li>
+  <li><code>get_portal_health</code> — wrap the existing on-demand <code>/api/portal-health</code> probe
+    as a read-only tool once the scheduled fleet exists to make it meaningful.</li>
+  <li><code>export_encrypted_backup</code> — the Stage 5 case-vault envelope as an approval-gated tool,
+    when identity exists to make agent-driven export safe to offer.</li>
+</ul>
+
+<h3>Phase 0 security checklist — shipped status</h3>
+<ul>
+  <li>✅ CSP/HSTS/<code>frame-ancestors 'none'</code>/Referrer-Policy in <code>next.config.ts</code>
+    (no <code>unsafe-eval</code>; verified on production). Nonce-based tightening remains open.</li>
+  <li>✅ Shared Zod schemas (<code>src/lib/webmcp/schemas.ts</code>, strictObject, generated JSON Schema)</li>
+  <li>✅ PII redaction: Verhoeff for Aadhaar, Luhn for cards, <code>redactDeep</code> over tool logs</li>
+  <li>✅ Rate limiting on <code>/api/discover</code> — per-IP and per-key token buckets</li>
+  <li>✅ CI gate (<code>.github/workflows/ci.yml</code>): lint, test, build, <code>pnpm audit</code>,
+    CycloneDX SBOM; playbook drift check runs first</li>
+  <li>✅ <code>robots.txt</code> (AI answer engines allowed, training crawlers disallowed) +
+    <code>llms.txt</code>; <code>sitemap.xml</code> is generated by <code>src/app/sitemap.ts</code> since
+    Stage 3 (the static file was removed)</li>
+  <li>✅ Dependencies pinned; <code>pnpm audit --audit-level high</code> clean as of Stage 0 close</li>
+  <li>⚠️ Append-only hash-chained audit log: the redacted client-side tool log exists; the tamper-evident
+    chain waits for the durable store</li>
+  <li>⚠️ Dependabot/Renovate, OSV scan, and Lighthouse CI are documented as release checks, not yet
+    automated on PRs</li>
+</ul>
+
+<h3>Key external references</h3>
+<ul>
+  <li><a href="https://ux4g.gov.in/">UX4G Design System</a> — MeitY; UI alignment still open, cheapest before the Stage 7 audit</li>
+  <li>MeitY CoRover agentic platform tender (October 2026) — the competitive/positioning constraint</li>
+  <li>NSA-CISA MCP security guidance (June 2026) — the compliance-matrix source for Phase 2</li>
+  <li>WebMCP W3C Community Group draft — Chrome origin trial; production token still unrequested</li>
+  <li>DPDP Act 2023 — posture documented in <code>docs/SAFETY.md</code>; formal memo belongs with Stage 7</li>
+  <li>India gov-portal complaint research and the e-Estonia/GOV.UK/Singpass benchmarks — background for
+    the Phase 2 pitch, summarized in this document's §8</li>
+</ul>
+
 <p class="footer">
   Nagrik Saathi v2 — Unconstrained Master Plan · 26 October 2026 ·
+  Re-verified at HEAD <code>3ba8473</code> (Stage 0–5 merged; 88 tests, green CI) ·
   Supersedes the hackathon-scoped v1 plan ·
-  Baseline: <code>ccb8cb0</code> plus the Stage 0–2 working-tree changes ·
-  Companion to <code>docs/SAFETY.md</code>, <code>docs/STATUS.md</code>, and
-  <code>docs/GOAL_AND_LOOP.md</code>.
+  Living status: <code>docs/STATUS.md</code> ·
+  Companion to <code>docs/SAFETY.md</code>, <code>docs/CI.md</code>, <code>docs/PLAYBOOKS.md</code>,
+  and <code>mcp/README.md</code>.
 </p>
 
 </body>
