@@ -30,6 +30,17 @@
 - The Aadhaar page explains the update process and never collects, stores, or
   verifies an Aadhaar number.
 
+## Portal status and offline
+
+- [Portal status](https://nagrik-saathi.vercel.app/status): a measured
+  reachability check for every portal in the reviewed registry, with HTTP
+  status, latency, helpline, and a browser-local last-known-good result. A
+  401, 403, 405, or 429 means the portal refused an automated client, not that
+  it is down. This is not an official uptime monitor.
+- The app is a PWA. After a first visit, the core routes and every playbook
+  are cached under a versioned cache; a lost connection serves the cached page,
+  and an uncached route opens `/offline`. `/api/*` is never cached.
+
 ## Safety
 
 - [Safety boundary](https://github.com/ashishpatill/nagrik-saathi/blob/master/docs/SAFETY.md):

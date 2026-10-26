@@ -18,8 +18,8 @@ Every push to `master` and every pull request runs:
 ## Local commands
 
 ```sh
-pnpm playbooks:build   # rewrite src/data/playbooks.generated.json
-pnpm playbooks:check   # validate + fail if the generated file is stale
+pnpm playbooks:build   # regenerate the JSON, precache manifest, and service worker
+pnpm playbooks:check   # validate + fail if any generated file is stale
 pnpm lint
 pnpm test
 pnpm build
@@ -35,19 +35,27 @@ record for a release.
 `content/playbooks/*.yaml` is the source of truth. The build script checks the
 schema, the required 15 workflows plus the Aadhaar guidance page, unique slugs
 and order values, portal keys against `src/data/official-portals.ts`, and that
-only `aadhaar-update` is guidance-only. `src/data/playbooks.generated.json` is
-committed so the UI can import it without a build step; `playbooks:check`
-compares a fresh serialization with the committed file.
+only `aadhaar-update` is guidance-only.
 
-A stale generated file fails CI with:
+It then writes three committed artifacts:
+
+- `src/data/playbooks.generated.json`, which the UI imports without a build step
+- `public/precache-manifest.json`, the PWA precache list
+- `public/sw.js`, generated from `scripts/sw-template.js` with a content hash
+
+`playbooks:check` compares fresh serializations with all three committed files.
+A stale file fails CI with a message naming it, for example:
 
 ```text
 src/data/playbooks.generated.json is stale. Run `pnpm playbooks:build` and commit the result.
 ```
 
-Run `pnpm playbooks:build` after any YAML change and commit both files
-together. The tests also re-validate the YAML sources and compare them with
-the generated registry, so a hand-edited JSON file fails twice.
+Run `pnpm playbooks:build` after any YAML or service-worker-template change and
+commit all three generated files together. The tests also re-validate the YAML
+sources and compare them with the generated registry, so a hand-edited JSON
+file fails twice. The generated worker hash changes whenever playbook content
+or the worker template changes, which is what makes the browser install the
+new precache instead of keeping an old one.
 
 ## Current advisory state
 

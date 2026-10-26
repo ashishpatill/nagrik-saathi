@@ -141,7 +141,47 @@
 - `lookup_process_playbook` is deliberately deferred to Stage 4, consistent
   with the plan's tool order.
 
-### Verification (local, 2026-10-26)
+### Stage 4 — resilience, portal health, and offline PWA
+
+- On-demand portal health instead of a scheduled fleet:
+  `src/lib/portal-health.ts` probes each reviewed portal once with a
+  four-second timeout and a bounded worker pool. `401`, `403`, `405`, and
+  `429` are `restricted` because the portal answered but refused an automated
+  client; other `4xx`/`5xx` responses and timeouts are `down`.
+- `GET /api/portal-health` probes at most 12 registry keys per request,
+  rejects unknown keys and unbounded requests, rate-limits 20 checks per IP,
+  and caches the response at the edge for two minutes. The dashboard sends
+  four parallel batches for the 39-portal registry (38 unique URLs).
+- `/status` is a public dashboard: summary counts, per-portal HTTP status,
+  latency, reviewed date, helpline, filter, recheck button, and a plain
+  "what this measures" note. It is not an official uptime guarantee.
+- Last-known-good: each successful check is stored in `localStorage`. If a
+  later check fails, the dashboard shows the saved rows with a visible
+  timestamp and a "saved in this browser" label, plus an alert. A saved row
+  is never presented as live.
+- PWA: `/manifest.webmanifest`, `/offline`, a production-only registrar, and
+  a connection banner. `scripts/sw-template.js` is the source;
+  `pnpm playbooks:build` generates `public/sw.js` with a build hash so every
+  content or worker change produces a byte-different worker.
+- Cache versions are explicit: `nagrik-static-<hash>`. Install precaches the
+  core routes plus all 16 playbooks (24 URLs); activate removes older
+  `nagrik-` caches. Navigations are network-first with a `5xx`/offline
+  fallback to the cached document or `/offline`; static chunks are
+  cache-first; other same-origin assets are stale-while-revalidate; `/api/*`
+  is never cached.
+- `pnpm playbooks:build` now writes the playbook JSON,
+  `public/precache-manifest.json`, and `public/sw.js`;
+  `pnpm playbooks:check` fails if any of the three is stale, and CI runs it
+  before lint.
+- Navigation and discovery: `/status` is linked from the home header and the
+  playbook/playground pages, included in the sitemap, and the PWA manifest
+  sets the theme color.
+- Tests: `src/lib/portal-health.test.ts` covers status classification,
+  restricted/down, timeouts, concurrency/order, and summaries;
+  `src/lib/playbooks/playbooks.test.ts` covers the precache manifest and the
+  generated worker hash.
+
+### Verification — Stage 3 (local, 2026-10-26)
 
 - `pnpm playbooks:check` — 16 playbooks valid, generated file current
 - `pnpm exec tsc --noEmit` — clean
@@ -159,6 +199,33 @@
   `/playbooks/passport`, and `/playbooks/aadhaar-update` — 100 on all three
   after raising the footnote contrast from 4.28:1 to the stronger ink color
 
+### Verification — Stage 4 (local, 2026-10-26)
+
+- `pnpm playbooks:check` — 16 playbooks valid; JSON registry, precache
+  manifest, and service worker current
+- `pnpm exec tsc --noEmit` — clean
+- `pnpm lint` — 0 errors, 1 pre-existing `<img>` warning in `Workspace.tsx`
+- `pnpm test` — **78 tests across 11 files** pass
+- `pnpm build` — passes; 29 routes emitted, including `/status`, `/offline`,
+  `/manifest.webmanifest`, `/api/portal-health`, and all 16 playbook pages
+- API: a three-key batch returned measured results; no-key, 13-key, and
+  unknown-key requests returned `400`; the response carried
+  `s-maxage=120, stale-while-revalidate=600`
+- `/status` on the production build: 39 rows, filter returned the passport
+  row, summary updated to the live result, no browser console errors
+- Lighthouse on `/status` — accessibility, best practices, and SEO all 100
+- Offline, with the origin process stopped: a real in-page navigation to
+  `/playbooks/passport` rendered the cached page; `/status` rendered with 39
+  saved rows and the "live check failed" alert; an uncached route returned
+  `/offline`; a dispatched offline event showed the connection banner
+- Service worker: the versioned cache held all 24 precache URLs, the older
+  cache was removed on activation, and `fetch('/playbooks/passport')` while
+  the origin was down returned the 26 KB cached document
+- Honest gap: this host has no bandwidth-throttling control, so the offline
+  pass used a stopped origin and a disconnected event rather than a
+  throttled profile. Scheduled probes, persistent history, and server-side
+  snapshots still need a durable store and scheduler.
+
 ## Remaining
 
 ### Stage 2 close-out
@@ -174,14 +241,26 @@
 - Request a production origin-trial token so native WebMCP works for ordinary
   visitors before Chrome ships it broadly.
 
+### Stage 4 follow-up
+
+- Scheduled portal probes and persistent history need a durable store plus a
+  scheduler; the current dashboard is on-demand with edge caching and
+  browser last-known-good.
+- Periodic text/metadata snapshots per domain, login/form render checks, and
+  latency percentiles.
+- Contextual per-user banners tied to the citizen's case.
+- `lookup_process_playbook` remains deferred; adding it changes the 12-tool
+  contract, the MCP surface, docs, and tests.
+
 ### Later stages
 
-- Stage 4 resilience/PWA/health fleet, Stage 5 identity + encrypted cloud
-  cases, Stage 6 language/accessibility depth, Stage 7 security audit,
-  Stage 8 government integration prep, Stage 9 Phase 2.
-- Stage 3 follow-up: add `lookup_process_playbook` with the Stage 4 tool
-  changes, translate step detail beyond English, and run the quarterly
-  playbook re-review.
+- Stage 5 identity + encrypted cloud cases, Stage 6 language/accessibility
+  depth, Stage 7 security audit, Stage 8 government integration prep,
+  Stage 9 Phase 2.
+- Stage 4's scheduled/history/snapshot items are listed above; the on-demand
+  dashboard and offline PWA are shipped.
+- Stage 3 follow-up: translate step detail beyond English and run the
+  quarterly playbook re-review.
 - Expand reviewed portal coverage beyond Maharashtra + national seeds.
 - Add Dependabot/Renovate, OSV scan, and Lighthouse CI against production
   (preview URLs are SSO-protected; use a protection bypass or the public

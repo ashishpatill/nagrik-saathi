@@ -103,6 +103,40 @@ describe("process playbook sources", () => {
       expect(playbook.lastReviewed).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
   });
+
+  it("precaches every playbook and the offline core", () => {
+    const precache = JSON.parse(
+      readFileSync(path.join(process.cwd(), "public", "precache-manifest.json"), "utf8"),
+    ) as { version: string; urls: string[] };
+    const serviceWorker = readFileSync(
+      path.join(process.cwd(), "public", "sw.js"),
+      "utf8",
+    );
+
+    expect(precache.version).toMatch(/^nagrik-[a-f0-9]{10}$/);
+    expect(new Set(precache.urls).size).toBe(precache.urls.length);
+    for (const { playbook } of sourcePlaybooks) {
+      expect(precache.urls).toContain(`/playbooks/${playbook.slug}`);
+    }
+    expect(precache.urls).toEqual(
+      expect.arrayContaining([
+        "/",
+        "/offline",
+        "/playbooks",
+        "/playground",
+        "/status",
+        "/manifest.webmanifest",
+      ]),
+    );
+    const hash = precache.version.replace(/^nagrik-/, "");
+    expect(serviceWorker).toContain(`const BUILD_HASH = "${hash}"`);
+    expect(serviceWorker).toContain("const CACHE_PREFIX = \"nagrik-static-\"");
+    expect(serviceWorker).toContain("const CACHE_NAME = `${CACHE_PREFIX}${BUILD_HASH}`");
+    expect(serviceWorker).toContain("/precache-manifest.json");
+    expect(serviceWorker).toContain("response.status >= 500");
+    expect(serviceWorker).toContain('cache.match("/offline")');
+    expect(serviceWorker).not.toContain("__BUILD_HASH__");
+  });
 });
 
 describe("playbook registry", () => {
