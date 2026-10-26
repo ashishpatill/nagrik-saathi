@@ -48,6 +48,31 @@ describe("safe public-document boundaries", () => {
     expect(scamSignals(invalid).flags.some((flag) => /checksum-valid/.test(flag))).toBe(false);
   });
 
+  it("returns reviewed patterns for a scam-shaped notice", () => {
+    const doc = analyzeText(
+      "Please share the OTP you received to stop the payment.",
+      "en",
+    );
+    const result = scamSignals(doc);
+    expect(result.patternCount).toBeGreaterThan(0);
+    expect(result.patterns[0]?.id).toBe("otp-pin-request");
+    expect(result.patterns[0]?.verify.some((portal) => portal.url.includes("cybercrime"))).toBe(
+      true,
+    );
+    expect(result.advice).toMatch(/not a fraud verdict/i);
+  });
+
+  it("keeps a legitimate notice with no pattern at no_obvious_signals", () => {
+    const doc = analyzeText(
+      "Notice 12345. Consumer number BU-411038-7781. Pay within 24 hours or a penalty applies. Helpline 1912.",
+      "en",
+    );
+    const result = scamSignals(doc);
+    expect(result.patternCount).toBe(0);
+    expect(result.risk).toBe("no_obvious_signals");
+    expect(result.advice).toMatch(/No reviewed pattern matched/);
+  });
+
   it("redacts nested strings in tool-log structures", () => {
     const logged = redactDeep({
       query: "bill for PAN ABCDE1234F",

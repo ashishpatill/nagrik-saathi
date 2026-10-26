@@ -124,6 +124,7 @@ describe("process playbook sources", () => {
         "/offline",
         "/playbooks",
         "/playground",
+        "/scams",
         "/status",
         "/privacy",
         "/manifest.webmanifest",

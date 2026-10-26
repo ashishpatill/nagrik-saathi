@@ -38,6 +38,12 @@ export default function PlaybooksPage() {
               Back to workspace
             </Link>
             <Link
+              href="/scams"
+              className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
+            >
+              Scam library
+            </Link>
+            <Link
               href="/status"
               className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-4 py-2 text-sm font-semibold text-[var(--ink-soft)] transition hover:border-[var(--accent)]"
             >

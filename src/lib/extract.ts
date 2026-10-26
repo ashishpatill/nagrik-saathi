@@ -1,5 +1,6 @@
 import type { DocumentAnalysis, DocumentType, Language, Urgency } from "@/lib/types";
 import { buildSummaries, PAID_ACTIONS, requiredDocumentsForCase, UNPAID_ACTIONS } from "@/lib/i18n/notice";
+import { detectScamPatterns, summarizeScamMatches } from "@/lib/scams";
 
 export const EMPTY_CASE: DocumentAnalysis = {
   id: "empty",
@@ -450,9 +451,8 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
   const deadlineDate = paid ? transactionDate : parseDeadline(text);
   const referenceNumber = parseReference(text, paid);
   const documentType: DocumentType = paid ? "payment_receipt" : issuer.documentType;
-  const scamRiskScore = /\b(otp|upi\s*pin|password|send\s*money|gift\s*card|whatsapp\s*pay)\b/i.test(text)
-    ? "suspicious"
-    : "safe";
+  const scamMatches = detectScamPatterns(text);
+  const scamRiskScore = scamMatches.length ? "suspicious" : "safe";
 
   return {
     id: `case-${Date.now()}`,
@@ -464,10 +464,7 @@ export function analyzeText(sourceText: string, language: Language = "en"): Docu
     amountDue,
     urgency: paid ? "low" : urgencyFromDeadline(deadlineDate),
     scamRiskScore,
-    riskReason:
-      scamRiskScore === "suspicious"
-        ? "Possible pressure or credential/payment cues were found. Do not share OTP, PIN, or passwords. Confirm through a printed source or official helpline."
-        : "Heuristic review only. Confirm the issuer and destination using a printed bill or official helpline before you act.",
+    riskReason: summarizeScamMatches(scamMatches),
     summary: buildSummaries({
       issuer: issuer.issuer,
       amountDue,

@@ -140,7 +140,7 @@ export function createAgentTools(): AgentTool[] {
       mcpExposed: true,
       schema: languageSchema,
       exampleInput: { language: "en" },
-      maxResultChars: 1400,
+      maxResultChars: 5000,
       execute: async (raw, runtime) => {
         const input = languageSchema.parse(raw) as CaseInput;
         return scamSignals(resolveCase(input, runtime));
