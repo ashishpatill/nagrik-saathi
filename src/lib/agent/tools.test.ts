@@ -89,6 +89,39 @@ describe("agent tool registry", () => {
     expect(hindi.disclaimer).toContain("मार्गदर्शन");
   });
 
+  it("returns reviewed scam patterns from check_scam_signals within its result cap", async () => {
+    const session = makeRuntime();
+    const analyze = byName(tools, "analyze_notice");
+    await analyze.execute(
+      {
+        sourceText:
+          "Your electricity connection will be disconnected tonight. Please share the OTP you received. Pay a processing fee of ₹500 to ramesh@okhdfcbank. Contact us on WhatsApp at 9876543210 immediately.",
+        language: "en",
+      },
+      session.runtime,
+    );
+    const check = byName(tools, "check_scam_signals");
+    const result = (await check.execute({ language: "en" }, session.runtime)) as {
+      risk: string;
+      patternCount: number;
+      patterns: Array<{ id: string; verify: Array<{ url: string }> }>;
+      boundary: string;
+    };
+    expect(result.risk).toBe("needs_review");
+    expect(result.patternCount).toBeGreaterThanOrEqual(4);
+    expect(result.patterns.some((pattern) => pattern.id === "otp-pin-request")).toBe(true);
+    expect(
+      result.patterns.some((pattern) =>
+        pattern.verify.some((portal) => portal.url.includes("cybercrime")),
+      ),
+    ).toBe(true);
+    expect(result.boundary).toMatch(/Heuristic review/);
+    expect(check.maxResultChars).not.toBeNull();
+    expect(JSON.stringify(result).length).toBeLessThanOrEqual(
+      check.maxResultChars as number,
+    );
+  });
+
   it("refuses case-dependent calls without a notice", async () => {
     const session = makeRuntime();
     await expect(

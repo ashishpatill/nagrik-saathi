@@ -93,6 +93,9 @@ function buildPresets(doc: DocumentAnalysis, explainLanguage: Language): ToolPre
 function describeActionResult(name: string, result: unknown): string {
   if (!result || typeof result !== "object") return "Done.";
   const data = result as Record<string, unknown>;
+  if (data.status === "truncated") {
+    return "This result is too large for the result panel. Open the related page to read it in full.";
+  }
   if (name === "get_notice_summary" && typeof data.summary === "string") return data.summary;
   if (name === "find_official_portal") {
     if (data.verified === true && typeof data.officialUrl === "string") {
@@ -103,10 +106,19 @@ function describeActionResult(name: string, result: unknown): string {
     return typeof data.reason === "string" ? data.reason : "No reviewed portal matched.";
   }
   if (name === "check_scam_signals") {
+    const patterns = Array.isArray(data.patterns) ? data.patterns : [];
     const flags = Array.isArray(data.flags) ? data.flags.map(String) : [];
     const risk = typeof data.risk === "string" ? data.risk : "unknown";
     const advice = typeof data.advice === "string" ? data.advice : "";
-    return [`Risk: ${risk}`, ...flags.map((flag) => `• ${flag}`), advice].filter(Boolean).join("\n");
+    const patternLines = patterns.map((item) => {
+      const pattern = item as Record<string, unknown>;
+      const title = typeof pattern.title === "string" ? pattern.title : "Pattern";
+      const action = typeof pattern.safeAction === "string" ? pattern.safeAction : "";
+      return `• ${title}${action ? `\n  ${action}` : ""}`;
+    });
+    return [`Risk: ${risk}`, ...patternLines, ...flags.map((flag) => `• ${flag}`), advice]
+      .filter(Boolean)
+      .join("\n");
   }
   if (name === "create_action_plan") {
     const checklist = Array.isArray(data.checklist) ? data.checklist.map(String) : [];
@@ -460,6 +472,9 @@ export default function Workspace() {
                 </label>
               </div>
               <div className="flex flex-col items-end gap-1 text-right text-xs font-semibold text-[var(--accent)]">
+                <Link href="/scams" className="underline-offset-4 hover:underline">
+                  Scam library →
+                </Link>
                 <Link href="/playbooks" className="underline-offset-4 hover:underline">
                   Process playbooks →
                 </Link>

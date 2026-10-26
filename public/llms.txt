@@ -17,6 +17,17 @@
   the twelve agent tools locally and inspect its trust level, frequency hint,
   approval requirement, and JSON schema.
 
+## Scam patterns
+
+- [Scam library](https://nagrik-saathi.vercel.app/scams): ten reviewed patterns
+  for OTP and PIN requests, digital arrest calls, personal UPI handles,
+  electricity disconnection threats, shortened links, advance-fee refunds,
+  Aadhaar or PAN photos over chat, pressure tactics, WhatsApp-only contacts,
+  and QR payment requests. Each pattern explains the safe next step and links
+  only to the reviewed portal registry.
+- A match is a signal, not a fraud verdict. A notice with no match can still be
+  fraudulent. The check runs locally and never uploads the notice.
+
 ## Government process playbooks
 
 - [Process playbooks](https://nagrik-saathi.vercel.app/playbooks): fifteen

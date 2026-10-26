@@ -212,6 +212,39 @@
   changes, short passphrases, unsupported versions, malformed files, and the
   size and case caps.
 
+### Stage 6 — scam pattern library (partial slice)
+
+- `src/data/scam-patterns.ts` is the reviewed source of truth for ten patterns:
+  `otp-pin-request`, `digital-arrest`, `personal-upi`,
+  `electricity-disconnection`, `shortened-link`, `fee-to-release`,
+  `document-over-chat`, `urgency-threat`, `whatsapp-only-contact`, and
+  `qr-code-payment`.
+- Every pattern declares a category, a severity, `match: "any" | "all"`,
+  citizen-facing signals, why it matters, a safe action, a verification hint,
+  registry keys, a source note, a review date, and deterministic rules.
+- Every rule carries at least one positive example and one counterexample.
+  `src/lib/scams.test.ts` fails if an example does not match or a counterexample
+  does, so a broad regex cannot ship a false positive unnoticed. The rules are
+  deliberately narrow: a genuine disconnection notice with a published helpline
+  and a future date, an ordinary bill QR code, and a final notice with a
+  reference number are counterexamples, not matches.
+- `src/lib/scams.ts` runs the rules, sorts matches by severity, resolves portal
+  keys through the reviewed registry, and writes the summary. The wording never
+  declares a notice safe or fraudulent.
+- `analyzeText` now derives `scamRiskScore` and `riskReason` from the library
+  instead of a four-word regex. `check_scam_signals` returns the matched
+  patterns, their safe actions, and reviewed verification links.
+- `/scams` publishes the library: the signal framing, every pattern, the review
+  rules, what to do after a payment, and the limits. It is linked from the
+  workspace, playbooks, and playground headers, added to the sitemap, and added
+  to the precache list. The generated worker cache now holds 26 URLs.
+- `docs/SCAMS.md` records the schema, detection semantics, review and correction
+  flow, and boundaries. `docs/SAFETY.md`, `AGENTS.md`, `public/llms.txt`, and
+  the README carry the same rule: a match is a signal, not a verdict.
+- Not built in this slice: the response studio (guided replies, objections,
+  appeals) and the grievance routing graph (reviewed escalation paths). The
+  plan's Stage 6 exit criterion is therefore only partly met.
+
 ### Verification — Stage 3 (local, 2026-10-26)
 
 - `pnpm playbooks:check` — 16 playbooks valid, generated file current
@@ -290,6 +323,40 @@
   passkey identity and a server-side encrypted store are not built; there is no
   backup-format migration path yet, so a future version bump must add one.
 
+### Verification — Stage 6 scam library (local, 2026-10-26)
+
+- `pnpm playbooks:check`: 16 playbooks valid; generated registry, precache
+  manifest, and service worker current
+- `pnpm exec tsc --noEmit`: clean
+- `pnpm lint`: 0 errors, 1 pre-existing `<img>` warning in `Workspace.tsx`
+- `pnpm test`: **97 tests across 13 files** pass, including the pattern metadata
+  and example/counterexample suite
+- `pnpm build`: passes; 31 routes emitted, including `/scams`
+- `/scams` on the production build: 10 pattern cards in editorial order, all
+  registry verification links resolve, and the page states the signal-versus-
+  verdict boundary
+- Browser, production build, a scam-shaped electricity notice:
+  - the workspace linked to `/scams` beside the playbooks, status, privacy, and
+    playground links; `/playbooks` and `/playground` carried the same link
+  - Analyze set the case to `suspicious`; **Check scam signals** returned
+    `Risk: needs_review` and named the top four matched patterns (electricity,
+    personal UPI, OTP, urgency) with the safe action for each
+  - benign regression checks: a legitimate final notice with a reference
+    number and published helpline, and an ordinary bill QR code, both stayed at
+    **Reviewed cues** and returned `Risk: no_obvious_signals` with no matched
+    pattern
+  - the first pass exposed a real regression: the richer payload exceeded the
+    old 1,400-character tool cap, so the panel received a truncated envelope
+    and showed `Risk: unknown`. The cap is now 5,000 and a test asserts a dense
+    notice stays within it; a truncated envelope now produces an honest message
+    instead of a partial result
+- `/scams` is in `sitemap.xml`; the generated precache manifest holds 26 URLs
+  including `/scams`; the activated worker cache is `nagrik-static-a6d8f451b9`
+  and holds `/scams`, `/privacy`, and `/offline`
+- Lighthouse on `/scams`: **100 accessibility, 100 best practices, 100 SEO**
+- Honest gaps: the response studio and grievance routing graph are not built;
+  the library is English-only.
+
 ## Remaining
 
 ### Stage 2 close-out
@@ -328,10 +395,20 @@
 - Consider Argon2id for passphrase stretching if a reviewed WASM dependency is
   acceptable; PBKDF2-SHA-256 at 600,000 iterations is the current choice.
 
+### Stage 6 follow-up
+
+- Build the response studio: guided replies, objections, and appeals with a
+  reviewed template per notice type and an explicit draft-only boundary.
+- Build the grievance routing graph: a reviewed escalation path from the first
+  desk to the appellate authority for each playbook.
+- Translate the scam library beyond English with the same source note and
+  counterexample review rule.
+- Add the library to the quarterly review alongside the portal registry and
+  playbooks.
+
 ### Later stages
 
-- Stage 6 language/accessibility depth, Stage 7 security audit, Stage 8
-  government integration prep, Stage 9 Phase 2.
+- Stage 7 security audit, Stage 8 government integration prep, Stage 9 Phase 2.
 - Stage 4's scheduled/history/snapshot items are listed above; the on-demand
   dashboard and offline PWA are shipped.
 - Stage 3 follow-up: translate step detail beyond English and run the

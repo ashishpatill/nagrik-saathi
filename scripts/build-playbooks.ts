@@ -108,6 +108,7 @@ const CORE_PRECACHE_URLS = [
   "/offline",
   "/playbooks",
   "/playground",
+  "/scams",
   "/status",
   "/privacy",
   "/llms.txt",

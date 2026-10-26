@@ -1,4 +1,5 @@
 import type { DocumentAnalysis, OfficialPortal } from "@/lib/types";
+import { detectScamPatterns, reviewedPortalsForPattern } from "@/lib/scams";
 
 // --- Checksum validators ----------------------------------------------------
 // Verhoeff (Aadhaar/UIDAI) and Luhn (payment cards). Used for full-run card
@@ -122,6 +123,7 @@ export function validateOfficialPortal(portal: OfficialPortal): boolean {
 }
 
 export function scamSignals(doc: DocumentAnalysis) {
+  const matches = detectScamPatterns(doc.sourceText);
   const flags: string[] = [];
   if (/\b(upi|otp|pin|password|click urgently)\b/i.test(doc.sourceText)) {
     flags.push("The message mentions credentials, OTP, payment handles, or urgent clicking.");
@@ -131,13 +133,34 @@ export function scamSignals(doc: DocumentAnalysis) {
       "The notice embeds a checksum-valid Aadhaar or card number. Treat it as sensitive and never re-enter it anywhere.",
     );
   }
-  if (doc.scamRiskScore !== "safe") flags.push(doc.riskReason);
   if (!doc.deadlineDate && doc.documentType !== "payment_receipt") {
-    flags.push("No clear deadline was found; verify the notice through a printed helpline.");
+    flags.push(
+      "No calendar date was found in the notice; confirm the deadline on the printed notice or the department portal.",
+    );
   }
+
+  const patterns = matches.slice(0, 4).map(({ pattern, ruleIds }) => ({
+    id: pattern.id,
+    title: pattern.title,
+    severity: pattern.severity,
+    summary: pattern.summary,
+    safeAction: pattern.safeAction,
+    matchedRules: ruleIds,
+    verify: reviewedPortalsForPattern(pattern).map((portal) => ({
+      name: portal.departmentName,
+      url: portal.portalUrl,
+      helpline: portal.helpline,
+    })),
+  }));
+
   return {
-    risk: flags.length ? "needs_review" : "no_obvious_signals",
+    risk: matches.length ? "needs_review" : "no_obvious_signals",
+    patternCount: matches.length,
+    patterns,
     flags,
-    advice: "Do not share OTPs or credentials. Verify the issuer using a printed notice or reviewed portal.",
+    advice: matches.length
+      ? "Signals are not a fraud verdict. Do not share OTPs or credentials. Verify the issuer through the reviewed portal or the printed helpline."
+      : "No reviewed pattern matched. This is not a safety guarantee. Do not share OTPs or credentials, and verify the issuer before you act.",
+    boundary: "Heuristic review only. Report fraud at the national Cyber Crime Portal or 1930.",
   };
 }
