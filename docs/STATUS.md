@@ -45,12 +45,16 @@
   `Permissions-Policy: tools=(self)`, `X-Content-Type-Options: nosniff`.
   `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/.well-known/agent-card.json`,
   and `/playground` all return 200.
-- Deployed Lighthouse (2026-10-26, before the playground font-size pass):
-  - `/` — performance 96, accessibility 100, best practices 100, SEO 100
-  - `/playground` — performance 99, accessibility 100, best practices 96,
-    SEO 100. The only deduction was “document doesn't use legible font sizes”
-    (13.9% legible). Small playground text was raised to 12px in the follow-up
-    change; the deployed re-run is recorded in `docs/CI.md`.
+- Deployed Lighthouse (2026-10-26, after the playground font-size pass):
+  - `/` — performance 95, accessibility 100, best practices 100, SEO 100
+  - `/playground` — performance 95, accessibility 100, best practices 100,
+    SEO 100
+  - Performance varied between runs (home 82–96, playground 91–100); the
+    numbers above are the last full run. The earlier playground legibility
+    deduction is gone.
+  - `/playground` intermittently fails the `robots.txt` audit in combined
+    runs because Lighthouse's internal fetch times out after two seconds;
+    direct `curl` and an SEO-only run both pass. Documented in `docs/CI.md`.
   - Run with `--force-prefers-reduced-motion` in headless Chrome; the entry
     animation otherwise prevents FCP in this display-less environment.
 - Agent Card is served with an explicit skeleton note and
