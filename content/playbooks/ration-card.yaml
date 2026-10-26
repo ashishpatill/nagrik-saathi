@@ -1,0 +1,103 @@
+schemaVersion: 1
+slug: ration-card
+version: 1
+order: 13
+lastReviewed: "2026-10-26"
+category: welfare
+guidanceOnly: false
+title:
+  en: Apply for a ration card or add a family member
+  hi: राशन कार्ड के लिए आवेदन या परिवार का सदस्य जोड़ें
+  mr: रेशन कार्डसाठी अर्ज किंवा कुटुंबातील सदस्य जोडा
+summary:
+  en: >-
+    Apply on the state Ration Card Management System, complete e-KYC for the
+    head of household and members, upload identity, address, and income proof,
+    and track verification by the food and civil supplies office.
+  hi: >-
+    राज्य के राशन कार्ड प्रबंधन प्रणाली पर आवेदन करें, परिवार के मुखिया और
+    सदस्यों का ई-केवाईसी पूरा करें, पहचान, पते और आय का प्रमाण अपलोड करें और
+    खाद्य एवं नागरिक आपूर्ति कार्यालय के सत्यापन की स्थिति देखें।
+  mr: >-
+    राज्याच्या रेशन कार्ड व्यवस्थापन प्रणालीवर अर्ज करा, कुटुंबप्रमुख व सदस्यांचे
+    ई-केवायसी पूर्ण करा, ओळख, पत्ता व उत्पन्नाचा पुरावा अपलोड करा आणि अन्न व
+    नागरी पुरवठा कार्यालयाच्या पडताळणीची स्थिती तपासा.
+feeNote:
+  en: >-
+    The state may charge a small fee for a new card or a duplicate. Confirm the
+    amount on the official portal or at the office; keep the receipt.
+  hi: >-
+    राज्य नए कार्ड या डुप्लिकेट के लिए छोटा शुल्क ले सकता है। आधिकारिक पोर्टल
+    या कार्यालय में राशि की पुष्टि करें और रसीद रखें।
+  mr: >-
+    राज्य नवीन कार्ड किंवा डुप्लिकेटसाठी थोडे शुल्क घेऊ शकते. अधिकृत पोर्टलवर
+    किंवा कार्यालयात रक्कम तपासा आणि पावती ठेवा.
+timelineNote:
+  en: >-
+    Verification usually takes about two to four weeks after a complete
+    application. Incomplete family or address details are the most common cause
+    of delay.
+  hi: >-
+    पूरा आवेदन मिलने के बाद सत्यापन में आमतौर पर लगभग दो से चार सप्ताह लगते हैं।
+    अधूरे पारिवारिक या पते के विवरण देरी का सबसे आम कारण हैं।
+  mr: >-
+    पूर्ण अर्ज मिळाल्यानंतर पडताळणीला साधारणपणे सुमारे दोन ते चार आठवडे लागतात.
+    अपूर्ण कौटुंबिक किंवा पत्ता तपशील उशिराचे सर्वात सामान्य कारण असतात.
+portalKeys:
+  - rcms_maharashtra
+helplines:
+  - "1800-22-4950 / 1967 (Maharashtra food and civil supplies helpline)"
+documents:
+  - en: "Identity proof of the head of household"
+  - en: "Address proof for the family's residence"
+  - en: "Aadhaar for e-KYC, where the portal requires it"
+  - en: "Income proof or self-declaration for the applicable category"
+  - en: "Existing ration card, if adding or removing a member"
+  - en: "Bank account details for the head of household"
+  - en: "Passport-size photograph of the head of household"
+steps:
+  - title:
+      en: Check the eligibility category
+    detail:
+      en: >-
+        The card category depends on family income and the state's scheme rules.
+        Read the current criteria on the official portal before applying.
+    portalKey: rcms_maharashtra
+  - title:
+      en: Start the application
+    detail:
+      en: >-
+        Choose new card, member addition, correction, or duplicate. Enter the
+        head of household and every family member exactly as in their identity
+        documents.
+  - title:
+      en: Complete e-KYC
+    detail:
+      en: >-
+        The head of household and adult members complete Aadhaar-based e-KYC
+        where required. Do not share the OTP with a fair-price-shop agent.
+  - title:
+      en: Upload proof and submit
+    detail:
+      en: >-
+        Attach identity, address, income, and bank details. Save the application
+        number and check that the preview shows the correct family composition.
+  - title:
+      en: Track verification
+    detail:
+      en: >-
+        The food and civil supplies office verifies the application, sometimes
+        through a field visit. Respond to any query through the portal.
+    portalKey: rcms_maharashtra
+  - title:
+      en: Collect or download the card
+    detail:
+      en: >-
+        After approval, collect the card or download the e-ration card. Check the
+        names, category, and fair-price shop before using it.
+rejectionReasons:
+  - en: "Family already holds an active ration card in another location"
+  - en: "Address or family-member details do not match the proof"
+  - en: "Income exceeds the limit for the claimed category"
+  - en: "e-KYC is incomplete for the head of household or adult members"
+  - en: "A field verification query was not answered"

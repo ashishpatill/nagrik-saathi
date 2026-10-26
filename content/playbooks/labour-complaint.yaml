@@ -1,0 +1,106 @@
+schemaVersion: 1
+slug: labour-complaint
+version: 1
+order: 8
+lastReviewed: "2026-10-26"
+category: welfare
+guidanceOnly: false
+title:
+  en: File a labour or wage complaint
+  hi: श्रम या वेतन शिकायत दर्ज करें
+  mr: कामगार किंवा वेतन तक्रार दाखल करा
+summary:
+  en: >-
+    Gather proof of employment and unpaid wages, file with the Labour
+    Department or the state labour portal for the workplace location, and keep
+    the complaint number for conciliation and escalation.
+  hi: >-
+    रोजगार और बकाया वेतन के प्रमाण इकट्ठा करें, कार्यस्थल के स्थान वाले श्रम
+    विभाग या राज्य के श्रम पोर्टल पर शिकायत दर्ज करें और सुलह तथा आगे की
+    कार्रवाई के लिए शिकायत संख्या रखें।
+  mr: >-
+    रोजगार आणि थकीत वेतनाचे पुरावे गोळा करा, कामाच्या ठिकाणाच्या ठिकाणी असलेल्या
+    कामगार विभागाकडे किंवा राज्याच्या कामगार पोर्टलवर तक्रार दाखल करा आणि
+    सलोखा व पुढील कारवाईसाठी तक्रार क्रमांक ठेवा.
+feeNote:
+  en: >-
+    Filing a labour complaint is normally free. A lawyer is not required to file,
+    though you may choose one for a contested or court-bound case.
+  hi: >-
+    श्रम शिकायत दर्ज करना आमतौर पर निःशुल्क है। दाखिल करने के लिए वकील ज़रूरी
+    नहीं, हालाँकि विवादित या अदालत जाने वाले मामले में आप वकील चुन सकते हैं।
+  mr: >-
+    कामगार तक्रार दाखल करणे साधारणपणे मोफत असते. दाखल करण्यासाठी वकील आवश्यक
+    नाही, तथापि वादग्रस्त किंवा न्यायालयात जाणाऱ्या प्रकरणात तुम्ही वकील निवडू
+    शकता.
+timelineNote:
+  en: >-
+    Timelines vary by district and dispute type. Conciliation is often listed
+    within a few weeks; a contested matter can take months, so keep every
+    acknowledgement.
+  hi: >-
+    समय-सीमा जिले और विवाद के प्रकार से बदलती है। सुलह अक्सर कुछ सप्ताह में
+    होती है; विवादित मामला महीनों ले सकता है, इसलिए हर पावती संभालकर रखें।
+  mr: >-
+    मुदती जिल्हा आणि वादाच्या प्रकारानुसार बदलतात. सलोखा सहसा काही आठवड्यांत
+    होतो; वादग्रस्त प्रकरण महिने घेऊ शकते, त्यामुळे प्रत्येक पावती जपून ठेवा.
+portalKeys:
+  - maha_labor
+  - maha_grievances
+helplines:
+  - "022-2657-3847 (Maharashtra Labour Department)"
+  - "1800-120-8040 (Aaple Sarkar citizen call centre)"
+documents:
+  - en: "Identity proof"
+  - en: "Appointment letter, contract, or offer letter"
+  - en: "Salary slips and bank statements showing the unpaid period"
+  - en: "Attendance record, messages, or emails about the work"
+  - en: "Termination letter or resignation correspondence, if any"
+  - en: "Employer's name, address, and establishment details"
+steps:
+  - title:
+      en: Write down the claim
+    detail:
+      en: >-
+        List the employer, workplace, employment period, wages due, and what you
+        already asked for. Keep the claim factual and attach only copies, never
+        original documents.
+  - title:
+      en: Choose the right office
+    detail:
+      en: >-
+        Labour jurisdiction usually follows the workplace location. Use the
+        state labour portal or the district Labour Commissioner's office for
+        that area.
+    portalKey: maha_labor
+  - title:
+      en: File the complaint
+    detail:
+      en: >-
+        Submit through the official portal or in person. Keep the complaint or
+        acknowledgement number and a copy of everything you attached.
+    portalKey: maha_grievances
+  - title:
+      en: Attend conciliation
+    detail:
+      en: >-
+        The Labour Department may call both sides. Bring the originals behind
+        your copies and a written summary of the amount claimed.
+  - title:
+      en: Escalate if conciliation fails
+    detail:
+      en: >-
+        Ask the office for the next step in writing. Depending on the claim, the
+        route may be the labour court, industrial tribunal, or civil court.
+  - title:
+      en: Track the outcome
+    detail:
+      en: >-
+        Keep every order, notice, and payment proof. Record the date and amount
+        of any settlement so a later claim does not rely on memory.
+rejectionReasons:
+  - en: "No proof that the employer employed the complainant"
+  - en: "Complaint filed in the wrong district or labour jurisdiction"
+  - en: "Wage claim is outside the applicable limitation period"
+  - en: "Employer details or the amount claimed are incomplete"
+  - en: "The dispute is a civil or criminal matter outside the labour forum"

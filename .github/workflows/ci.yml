@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Validate playbooks
+        run: pnpm playbooks:check
+
       - name: Lint
         run: pnpm lint
 

@@ -219,8 +219,8 @@
       <code>llms.txt</code>, <code>sitemap.xml</code>, and the eight-language API enum.</li>
     <li>At v1 close, still missing: CI audit/SBOM gate, auth, encrypted cloud case store, MCP server,
       process playbooks, portal-health fleet, offline PWA, and A2A. The current working tree has since
-      added the CI/SBOM gate, the twelve-tool registry, the playground, and a local MCP server; see §9.2
-      and §9.3.</li>
+      added the CI/SBOM gate, the twelve-tool registry, the playground, a local MCP server, and the
+      sixteen process playbooks; see §9.2–§9.4.</li>
   </ul>
 </div>
 
@@ -1001,6 +1001,61 @@ and both MCP transports. Stage 1 is closed by a native Chrome run; Stage 2 is no
 <p>Stage 1 is closed: the 12 tools were exercised in native Chrome and the result is recorded in
 <code>docs/iterations/STAGE1-CLOSEOUT.md</code>. Stage 2 has local HTTP and stdio harness evidence but is
 not closed until an always-on TLS deployment is reachable from Claude Desktop and one custom harness.</p>
+
+<h3>9.4 Stage 3 is closed</h3>
+
+<p>Closed on 26 October 2026. The process guidance layer is now versioned content, not hardcoded pages:
+sixteen YAML playbooks, a Zod contract, a generated registry, a public reader, and a contribution path that
+CI can enforce.</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Status</th><th scope="col">Remaining</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>15 planned workflows plus the Aadhaar guidance-only page</td>
+      <td><span class="status done">16 live</span></td>
+      <td>Content is reviewed for 26 October 2026; the quarterly re-review is an ongoing duty</td>
+    </tr>
+    <tr>
+      <td>Versioned YAML, schema validation, generated registry</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>pnpm playbooks:build</code> writes the JSON; <code>pnpm playbooks:check</code> fails on drift</td>
+    </tr>
+    <tr>
+      <td>Portal links at each step</td>
+      <td><span class="status done">Registry only</span></td>
+      <td>Playbooks store registry keys, never raw URLs; nine new reviewed portals were added with their playbooks</td>
+    </tr>
+    <tr>
+      <td>Localized overview</td>
+      <td><span class="status done">en / hi / mr</span></td>
+      <td>Title, summary, fee, and timeline are translated; step detail is English with a visible fallback</td>
+    </tr>
+    <tr>
+      <td>Public reader and discovery</td>
+      <td><span class="status done">Present</span></td>
+      <td><code>/playbooks</code>, <code>/playbooks/[slug]</code>, sitemap entries, and an <code>llms.txt</code> section</td>
+    </tr>
+    <tr>
+      <td>Community correction pipeline</td>
+      <td><span class="status done">Present</span></td>
+      <td>GitHub issue form, <code>docs/PLAYBOOKS.md</code>, and the CI playbook gate</td>
+    </tr>
+    <tr>
+      <td><code>lookup_process_playbook</code> agent tool</td>
+      <td><span class="status partial">Deferred</span></td>
+      <td>Deliberately left to Stage 4 so the tool surface changes with the resilience work, as the plan orders it</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The Aadhaar page is the only <code>guidanceOnly</code> playbook. It explains the update process and never
+asks for, stores, or verifies a number. No playbook adds a button or tool that files, pays, or submits
+anything; every action stays on the official portal the citizen opens.</p>
 
 <!-- ==================== 10 ==================== -->
 <div class="page-break"></div>

@@ -1,0 +1,110 @@
+schemaVersion: 1
+slug: birth-certificate
+version: 1
+order: 10
+lastReviewed: "2026-10-26"
+category: civic
+guidanceOnly: false
+title:
+  en: Get a birth certificate
+  hi: जन्म प्रमाणपत्र प्राप्त करें
+  mr: जन्म दाखला मिळवा
+summary:
+  en: >-
+    Register the birth with the local registrar, use the hospital or municipal
+    channel where available, and apply for the certificate with the parents'
+    identity and address proof.
+  hi: >-
+    स्थानीय रजिस्ट्रार के यहाँ जन्म पंजीकृत करें, जहाँ उपलब्ध हो वहाँ अस्पताल या
+    नगरपालिका के माध्यम का उपयोग करें और माता-पिता की पहचान तथा पते के प्रमाण
+    के साथ प्रमाणपत्र के लिए आवेदन करें।
+  mr: >-
+    स्थानिक निबंधकाकडे जन्म नोंदवा, उपलब्ध असल्यास रुग्णालय किंवा महानगरपालिकेचा
+    मार्ग वापरा आणि पालकांच्या ओळख व पत्ता पुराव्यासह दाखल्यासाठी अर्ज करा.
+feeNote:
+  en: >-
+    Registration within the first 21 days is usually free or nominal. Late
+    registration can attract a fee and may need an affidavit or order; confirm
+    with the local registrar.
+  hi: >-
+    पहले 21 दिनों में पंजीकरण आमतौर पर निःशुल्क या नाममात्र शुल्क पर होता है।
+    देर से पंजीकरण पर शुल्क लग सकता है और शपथ पत्र या आदेश की ज़रूरत हो सकती
+    है; स्थानीय रजिस्ट्रार से पुष्टि करें।
+  mr: >-
+    पहिल्या 21 दिवसांत नोंदणी साधारणपणे मोफत किंवा नाममात्र शुल्कात होते. उशिरा
+    नोंदणीला शुल्क लागू शकते आणि शपथपत्र किंवा आदेश लागू शकतो; स्थानिक
+    निबंधकाकडून खात्री करा.
+timelineNote:
+  en: >-
+    A routine registration usually produces the certificate within one to three
+    weeks. Late or disputed registrations take longer because they need
+    verification or a magistrate's order.
+  hi: >-
+    सामान्य पंजीकरण में प्रमाणपत्र आमतौर पर एक से तीन सप्ताह में मिल जाता है।
+    देर से या विवादित पंजीकरण में सत्यापन या मजिस्ट्रेट के आदेश के कारण अधिक
+    समय लगता है।
+  mr: >-
+    नियमित नोंदणीत दाखला साधारणपणे एक ते तीन आठवड्यांत मिळतो. उशिरा किंवा
+    वादग्रस्त नोंदणीत पडताळणी किंवा दंडाधिकाऱ्याच्या आदेशामुळे जास्त वेळ लागतो.
+portalKeys:
+  - crs_india
+  - mahaonline_rts
+helplines:
+  - "1800-120-8040 (Aaple Sarkar citizen call centre)"
+  - "srocrs.rgi@nic.in (Civil Registration System)"
+documents:
+  - en: "Hospital birth record or discharge summary"
+  - en: "Identity proof of both parents"
+  - en: "Address proof of the parents"
+  - en: "Marriage certificate, if the registrar asks for it"
+  - en: "Affidavit or order for late registration, when applicable"
+  - en: "Previous birth certificate for a correction or duplicate"
+steps:
+  - title:
+      en: Register the birth at the source
+    detail:
+      en: >-
+        Hospitals usually report births directly. If the birth happened at home,
+        inform the local registrar or municipal office promptly and keep the
+        supporting record.
+    portalKey: crs_india
+  - title:
+      en: Check the local application route
+    detail:
+      en: >-
+        Maharashtra residents can use the state service where the local body is
+        integrated; other states may use the Civil Registration System or a
+        municipal portal.
+    portalKey: mahaonline_rts
+  - title:
+      en: Fill the certificate application
+    detail:
+      en: >-
+        Enter the child's name, date and place of birth, parents' details, and
+        the hospital registration number exactly as recorded.
+  - title:
+      en: Upload or submit proof
+    detail:
+      en: >-
+        Attach the hospital record and parents' identity and address proof. Take
+        originals to the counter if the application asks for verification.
+  - title:
+      en: Handle late registration
+    detail:
+      en: >-
+        After the statutory window, the registrar may require an affidavit,
+        late fee, or magistrate's order. Ask for the exact local requirement
+        before paying anyone.
+  - title:
+      en: Collect and verify the certificate
+    detail:
+      en: >-
+        Check the spelling of the name, date, place, and parents' details.
+        Request a correction through the same official channel if anything is
+        wrong.
+rejectionReasons:
+  - en: "Birth was not recorded by the hospital or local registrar"
+  - en: "Parents' identity or address proof does not match the record"
+  - en: "Late registration filed without the required affidavit or order"
+  - en: "The application was sent to the wrong local body"
+  - en: "Name or date-of-birth spelling differs across documents"

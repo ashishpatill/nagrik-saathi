@@ -1,0 +1,105 @@
+schemaVersion: 1
+slug: aadhaar-update
+version: 1
+order: 16
+lastReviewed: "2026-10-26"
+category: identity
+guidanceOnly: true
+title:
+  en: Update Aadhaar details (guidance only)
+  hi: आधार विवरण अपडेट करें (केवल मार्गदर्शन)
+  mr: आधार तपशील अद्ययावत करा (केवळ मार्गदर्शन)
+summary:
+  en: >-
+    This page explains the update process only. It never asks for, stores, or
+    verifies an Aadhaar number. Book an appointment at an official UIDAI centre,
+    carry the original proof, complete biometrics there, and keep the
+    acknowledgement.
+  hi: >-
+    यह पृष्ठ केवल अपडेट प्रक्रिया समझाता है। यह आधार संख्या कभी नहीं माँगता,
+    संग्रहीत या सत्यापित नहीं करता। आधिकारिक यूआईडीएआई केंद्र पर अपॉइंटमेंट
+    बुक करें, मूल प्रमाण साथ ले जाएँ, वहीं बायोमेट्रिक्स पूरा करें और पावती रखें।
+  mr: >-
+    हे पान केवळ अद्ययावत प्रक्रिया समजावते. ते आधार क्रमांक कधीही मागत नाही,
+    साठवत नाही किंवा पडताळत नाही. अधिकृत यूआयडीएआय केंद्रावर अपॉइंटमेंट बुक करा,
+    मूळ पुरावा सोबत न्या, तिथेच बायोमेट्रिक्स पूर्ण करा आणि पावती ठेवा.
+feeNote:
+  en: >-
+    UIDAI publishes the current fee for demographic, biometric, and contact
+    updates. Pay at the official centre or portal; never pay a private website
+    that asks for your Aadhaar number first.
+  hi: >-
+    यूआईडीएआई जनसांख्यिकीय, बायोमेट्रिक और संपर्क अपडेट का मौजूदा शुल्क
+    प्रकाशित करता है। आधिकारिक केंद्र या पोर्टल पर भुगतान करें; ऐसी निजी
+    वेबसाइट को कभी न दें जो पहले आधार संख्या माँगे।
+  mr: >-
+    यूआयडीएआय लोकसंख्याशास्त्रीय, बायोमेट्रिक आणि संपर्क अद्ययावतनाचे सध्याचे
+    शुल्क प्रकाशित करते. अधिकृत केंद्र किंवा पोर्टलवर पैसे भरा; आधी आधार
+    क्रमांक मागणाऱ्या खाजगी वेबसाइटला कधीही देऊ नका.
+timelineNote:
+  en: >-
+    An update request is usually processed within about a week to a month.
+    Check the status with the acknowledgement number; do not send your Aadhaar
+    number to a third party for "status checking".
+  hi: >-
+    अपडेट अनुरोध आमतौर पर लगभग एक सप्ताह से एक महीने में संसाधित होता है। पावती
+    संख्या से स्थिति जाँचें; "स्थिति जाँचने" के लिए किसी तीसरे पक्ष को अपनी
+    आधार संख्या न भेजें।
+  mr: >-
+    अद्ययावत विनंती साधारणपणे सुमारे एक आठवड्यापासून एक महिन्यात प्रक्रिया
+    होते. पावती क्रमांकाने स्थिती तपासा; "स्थिती तपासण्यासाठी" तुमचा आधार
+    क्रमांक तिसऱ्या व्यक्तीला पाठवू नका.
+portalKeys:
+  - uidai
+helplines:
+  - "1947 (UIDAI helpline)"
+documents:
+  - en: "The existing Aadhaar card or e-Aadhaar, for your own reference at the centre"
+  - en: "Proof of identity, address, or date of birth for the field being changed"
+  - en: "Marriage certificate or name-change proof for a name update"
+  - en: "Mobile number linked to Aadhaar for OTP, if the process asks for it"
+steps:
+  - title:
+      en: Decide which field needs updating
+    detail:
+      en: >-
+        Name, address, date of birth, mobile number, email, and biometrics have
+        different proof requirements. Read the official list before booking.
+    portalKey: uidai
+  - title:
+      en: Book an appointment
+    detail:
+      en: >-
+        Use the official UIDAI appointment service or visit an authorised
+        centre. Choose a centre that handles the update you need.
+    portalKey: uidai
+  - title:
+      en: Carry original proof
+    detail:
+      en: >-
+        Take the original document that supports the change and a photocopy if
+        the centre asks for one. Do not leave originals with an agent.
+  - title:
+      en: Complete biometrics at the centre
+    detail:
+      en: >-
+        The operator captures fingerprints, iris, and a photograph as required.
+        Watch the screen and confirm the details before you sign.
+  - title:
+      en: Keep the acknowledgement
+    detail:
+      en: >-
+        The acknowledgement number is your only tracking reference. Store it
+        offline and check the update status only on the official UIDAI service.
+  - title:
+      en: Download or collect the updated Aadhaar
+    detail:
+      en: >-
+        After processing, download the e-Aadhaar from the official site or
+        collect the printed copy. Check every changed field before using it.
+rejectionReasons:
+  - en: "The proof document does not support the exact field being changed"
+  - en: "Name or date of birth differs across the submitted documents"
+  - en: "Biometric capture fails repeatedly at the centre"
+  - en: "The applicant visits a centre that does not handle that update type"
+  - en: "The acknowledgement number is lost, so the request cannot be tracked"

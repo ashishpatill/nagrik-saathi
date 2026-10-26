@@ -1,0 +1,107 @@
+schemaVersion: 1
+slug: driving-licence
+version: 1
+order: 4
+lastReviewed: "2026-10-26"
+category: transport
+guidanceOnly: false
+title:
+  en: Get a learner licence and a driving licence
+  hi: लर्नर लाइसेंस और ड्राइविंग लाइसेंस प्राप्त करें
+  mr: लर्नर परवाना आणि वाहन चालक परवाना मिळवा
+summary:
+  en: >-
+    Apply for a learner licence on Parivahan, pass the learner test, practise
+    within the rules, then book the driving test at your RTO and carry the
+    required medical and address documents.
+  hi: >-
+    परिवहन पोर्टल पर लर्नर लाइसेंस के लिए आवेदन करें, लर्नर टेस्ट पास करें,
+    नियमों के भीतर अभ्यास करें, फिर अपने आरटीओ में ड्राइविंग टेस्ट बुक करें और
+    आवश्यक मेडिकल तथा पते के दस्तावेज़ साथ रखें।
+  mr: >-
+    परिवहन पोर्टलवर लर्नर परवान्यासाठी अर्ज करा, लर्नर चाचणी उत्तीर्ण करा,
+    नियमांच्या मर्यादेत सराव करा, नंतर तुमच्या आरटीओमध्ये वाहन चाचणी बुक करा आणि
+    आवश्यक वैद्यकीय व पत्ता कागदपत्रे सोबत ठेवा.
+feeNote:
+  en: >-
+    Learner and driving-test fees are set by the state and service type. Confirm
+    the amount on Parivahan or at your RTO before paying; keep every receipt.
+  hi: >-
+    लर्नर और ड्राइविंग टेस्ट का शुल्क राज्य और सेवा के प्रकार के अनुसार तय होता
+    है। भुगतान से पहले परिवहन पोर्टल या अपने आरटीओ पर राशि की पुष्टि करें और
+    हर रसीद रखें।
+  mr: >-
+    लर्नर आणि वाहन चाचणीचे शुल्क राज्य आणि सेवेच्या प्रकारानुसार ठरते. पैसे
+    भरण्यापूर्वी परिवहन पोर्टलवर किंवा तुमच्या आरटीओमध्ये रक्कम तपासा आणि
+    प्रत्येक पावती ठेवा.
+timelineNote:
+  en: >-
+    A learner licence is often issued the same day after the test. The permanent
+    licence usually follows within about a week to a month after the driving
+    test, depending on RTO workload.
+  hi: >-
+    टेस्ट के बाद लर्नर लाइसेंस अक्सर उसी दिन मिल जाता है। स्थायी लाइसेंस
+    आमतौर पर ड्राइविंग टेस्ट के लगभग एक सप्ताह से एक महीने के भीतर मिलता है,
+    जो आरटीओ के काम पर निर्भर है।
+  mr: >-
+    चाचणीनंतर लर्नर परवाना सहसा त्याच दिवशी मिळतो. कायमचा परवाना साधारणपणे
+    वाहन चाचणीनंतर सुमारे एक आठवड्यापासून एक महिन्यात मिळतो, जो आरटीओच्या
+    कामावर अवलंबून असतो.
+portalKeys:
+  - parivahan
+helplines:
+  - "0120-4925505 (Parivahan helpline)"
+documents:
+  - en: "Proof of age"
+  - en: "Proof of address"
+  - en: "Passport-size photograph"
+  - en: "Medical certificate in the prescribed form, when required"
+  - en: "Existing learner licence or driving licence, if applicable"
+  - en: "Visa or other residency proof for eligible foreign applicants"
+steps:
+  - title:
+      en: Apply for a learner licence
+    detail:
+      en: >-
+        Choose your RTO, complete the learner application, upload the documents,
+        and book the learner test slot shown on Parivahan.
+    portalKey: parivahan
+  - title:
+      en: Pass the learner test
+    detail:
+      en: >-
+        The test checks road signs and basic rules. Carry the appointment slip
+        and original documents. A learner licence is normally valid for six
+        months.
+  - title:
+      en: Practise within the learner rules
+    detail:
+      en: >-
+        Drive only with a valid learner licence, with the required supervisor,
+        and with the correct L-board. Do not drive alone before you hold a
+        permanent licence.
+  - title:
+      en: Book the driving test
+    detail:
+      en: >-
+        Apply for the permanent licence before the learner licence expires.
+        Choose an RTO slot and pay the test fee on the official portal.
+    portalKey: parivahan
+  - title:
+      en: Take the driving test
+    detail:
+      en: >-
+        Carry the learner licence, application receipt, and originals. The
+        inspector tests vehicle control, signals, and road behaviour.
+  - title:
+      en: Collect or download the licence
+    detail:
+      en: >-
+        Track the application on Parivahan. Use the digital licence in DigiLocker
+        where accepted, and report errors at the RTO that issued it.
+rejectionReasons:
+  - en: "Learner licence has expired before the driving test"
+  - en: "Wrong RTO or jurisdiction for the applicant's address"
+  - en: "Missing medical certificate or address proof"
+  - en: "Applicant cannot demonstrate basic vehicle control or road signs"
+  - en: "Name or date of birth mismatch across documents"

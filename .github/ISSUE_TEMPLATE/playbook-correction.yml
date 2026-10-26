@@ -1,0 +1,123 @@
+name: Playbook correction
+description: Correct a process playbook — a step, document, fee, timeline, rejection reason, helpline, or portal link.
+title: "[Playbook] "
+labels: ["playbook"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping keep a playbook accurate. Playbooks explain a process;
+        they never file, pay, or submit anything.
+
+        Read [docs/PLAYBOOKS.md](https://github.com/ashishpatill/nagrik-saathi/blob/master/docs/PLAYBOOKS.md)
+        before submitting. A correction needs an official source that a reviewer
+        can open.
+
+  - type: dropdown
+    id: slug
+    attributes:
+      label: Playbook
+      description: Pick the page that needs the correction. One playbook per issue.
+      options:
+        - e-visa
+        - passport
+        - pan
+        - driving-licence
+        - gst-registration
+        - income-tax-filing
+        - rti
+        - labour-complaint
+        - property-registration
+        - birth-certificate
+        - death-certificate
+        - electricity-connection
+        - ration-card
+        - consumer-complaint
+        - municipal-grievance
+        - aadhaar-update
+        - "Not sure / new playbook proposal"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: section
+    attributes:
+      label: Section
+      description: Where in the playbook is the problem?
+      options:
+        - Title or summary
+        - Fee note
+        - Timeline note
+        - A step
+        - Required documents
+        - Common rejection reasons
+        - Helpline
+        - Official portal link
+        - Translation (Hindi or Marathi)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What the playbook says now
+      description: Quote the current text so the change is unambiguous.
+      placeholder: >-
+        Example: "Typical timeline: about 72 hours after application."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: What it should say
+      description: Give the corrected wording, or describe the change precisely.
+      placeholder: >-
+        Example: "Most e-Visas are decided within 72 hours, but apply at least
+        four days before travel and check status before booking."
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL
+      description: >-
+        A government portal, gazette, rule, or official notice page. Private
+        agents, coaching sites, and news articles are not accepted as the
+        source of truth. Screening portals are fine only for the screen itself.
+        Do not paste an Aadhaar number or any personal data.
+      placeholder: "https://..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What the source shows
+      description: >-
+        Quote the relevant line and say when you checked it. If the source is a
+        form or PDF, describe the page and section.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: This change keeps the playbook guidance-only and does not add a button, agent tool, or automation that files, pays, or submits on a citizen's behalf.
+          required: true
+        - label: This change does not add an Aadhaar number, PAN, or other personal data collection to the page.
+          required: true
+        - label: I have not included anyone's personal information in this issue.
+          required: true
+
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Would you like to open the pull request?
+      options:
+        - label: I can edit the YAML in `content/playbooks/` and open a pull request.
+        - label: I would like a maintainer to make the change from this report.
