@@ -8,6 +8,17 @@ export default function ReviewedPortalDirectory({ activeKey = "" }: { activeKey?
   const [query, setQuery] = useState("");
   const [stateFilter, setStateFilter] = useState<"all" | "Maharashtra" | "India">("all");
 
+  // Entries share one review date today; take the oldest so the label stays
+  // honest if per-entry dates diverge later.
+  const lastReviewed = useMemo(
+    () =>
+      VERIFIED_PORTALS.reduce(
+        (oldest, portal) => (portal.lastReviewed < oldest ? portal.lastReviewed : oldest),
+        VERIFIED_PORTALS[0]?.lastReviewed ?? "",
+      ),
+    [],
+  );
+
   const portals = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return VERIFIED_PORTALS.filter((portal) => {
@@ -26,14 +37,17 @@ export default function ReviewedPortalDirectory({ activeKey = "" }: { activeKey?
     <div className="border-t border-[var(--line)] pt-8">
       <h3 className="text-sm font-semibold text-[var(--ink)]">Browse reviewed channels</h3>
       <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-        {VERIFIED_PORTALS.length} curated HTTPS portals. The card above is the best match for this notice; use this
-        list if you need another reviewed department.
+        {VERIFIED_PORTALS.length} curated HTTPS portals, last human-reviewed {lastReviewed}. The card above is the
+        best match for this notice; use this list if you need another reviewed department.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <label className="min-w-[12rem] flex-1 text-xs text-[var(--muted)]">
           <span className="mb-1 block font-semibold uppercase tracking-[0.12em]">Search</span>
           <input
+            id="portal-search"
+            name="portalSearch"
             type="search"
+            aria-label="Search reviewed portals"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Department or domain"
@@ -43,6 +57,8 @@ export default function ReviewedPortalDirectory({ activeKey = "" }: { activeKey?
         <label className="text-xs text-[var(--muted)]">
           <span className="mb-1 block font-semibold uppercase tracking-[0.12em]">State</span>
           <select
+            id="portal-state"
+            name="portalState"
             value={stateFilter}
             onChange={(event) => setStateFilter(event.target.value as "all" | "Maharashtra" | "India")}
             className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--panel)] px-2 py-2 text-xs"

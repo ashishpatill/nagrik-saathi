@@ -1,15 +1,64 @@
 import { describe, expect, it } from "vitest";
 import { VERIFIED_PORTALS } from "@/data/official-portals";
 import { buildIcs } from "@/lib/calendar";
-import { findOfficialPortal, getPortalByKey } from "@/lib/portals";
-import { redactSensitiveData, validateOfficialPortal } from "@/lib/safety";
-import { languageSchema, portalSchema, analyzeSchema } from "@/lib/webmcp/schemas";
 import { analyzeText } from "@/lib/extract";
+import { findOfficialPortal, getPortalByKey } from "@/lib/portals";
+import { LANGUAGES } from "@/lib/languages";
+import {
+  containsValidAadhaar,
+  isValidAadhaar,
+  isValidCardNumber,
+  redactDeep,
+  redactSensitiveData,
+  scamSignals,
+  validateOfficialPortal,
+} from "@/lib/safety";
+import { languageSchema, portalSchema, analyzeSchema } from "@/lib/webmcp/schemas";
 
 describe("safe public-document boundaries", () => {
   it("redacts Aadhaar, PAN, and long account-like values", () => {
     expect(redactSensitiveData("Aadhaar 1234 5678 9012 PAN ABCDE1234F account 1234567890")).toContain("[redacted]");
     expect(redactSensitiveData("Aadhaar 1234 5678 9012")).not.toContain("1234");
+  });
+
+  it("redacts a Luhn-valid card in full, not just its first 12 digits", () => {
+    const redacted = redactSensitiveData("Card 4111 1111 1111 1111 statement");
+    expect(redacted).toContain("[redacted]");
+    expect(redacted).not.toContain("4111");
+    expect(redacted).not.toContain("1111");
+  });
+
+  it("validates Aadhaar with Verhoeff and cards with Luhn", () => {
+    expect(isValidAadhaar("234567890124")).toBe(true);
+    expect(isValidAadhaar("2345 6789 0124")).toBe(true);
+    expect(isValidAadhaar("123456789012")).toBe(false);
+    expect(isValidAadhaar("23456789012")).toBe(false);
+    expect(isValidCardNumber("4111 1111 1111 1111")).toBe(true);
+    expect(isValidCardNumber("4111111111111112")).toBe(false);
+    expect(isValidCardNumber("1234567890")).toBe(false);
+  });
+
+  it("flags notices that embed a checksum-valid Aadhaar or card number", () => {
+    const valid = { ...analyzeText("notice"), sourceText: "Aadhaar 2345 6789 0124" };
+    expect(containsValidAadhaar(valid.sourceText)).toBe(true);
+    expect(scamSignals(valid).flags.some((flag) => /checksum-valid/.test(flag))).toBe(true);
+
+    const invalid = { ...analyzeText("notice"), sourceText: "Aadhaar 1234 5678 9012" };
+    expect(containsValidAadhaar(invalid.sourceText)).toBe(false);
+    expect(scamSignals(invalid).flags.some((flag) => /checksum-valid/.test(flag))).toBe(false);
+  });
+
+  it("redacts nested strings in tool-log structures", () => {
+    const logged = redactDeep({
+      query: "bill for PAN ABCDE1234F",
+      items: ["account 1234567890", { note: "card 4111 1111 1111 1111" }],
+      count: 2,
+    });
+    const serialized = JSON.stringify(logged);
+    expect(serialized).not.toContain("ABCDE1234F");
+    expect(serialized).not.toContain("1234567890");
+    expect(serialized).not.toContain("4111");
+    expect(logged.count).toBe(2);
   });
 
   it("returns only a reviewed official MSEDCL host", () => {
@@ -23,11 +72,25 @@ describe("safe public-document boundaries", () => {
     expect(findOfficialPortal("msedcl", "bank_login", "Maharashtra").verified).toBe(false);
   });
 
-  it("creates a reviewable ICS reminder", () => {
+  it("creates a reviewable ICS reminder with an exclusive next-day end", () => {
     const ics = buildIcs("Review bill; deadline", "2026-09-02");
     expect(ics).toContain("DTSTART;VALUE=DATE:20260902");
+    expect(ics).toContain("DTEND;VALUE=DATE:20260903");
+    expect(ics).toContain("UID:");
+    expect(ics).toContain("DTSTAMP:");
     expect(ics).toContain("Nagrik Saathi");
-    expect(ics).toContain("SUMMARY:Review bill  deadline");
+    expect(ics).toContain("SUMMARY:Review bill deadline");
+  });
+
+  it("keeps calendar titles on one property line", () => {
+    const ics = buildIcs("Bill due\r\nATTENDEE:mailto:attacker@example.com", "2026-12-31");
+    expect(ics.split("\r\n").some((line) => line.startsWith("ATTENDEE:"))).toBe(false);
+    expect(ics).toContain("SUMMARY:Bill due ATTENDEE:mailto:attacker@example.com");
+  });
+
+  it("rolls the ICS end date across month boundaries", () => {
+    expect(buildIcs("Month end", "2026-12-31")).toContain("DTEND;VALUE=DATE:20270101");
+    expect(buildIcs("Leap day", "2028-02-28")).toContain("DTEND;VALUE=DATE:20280229");
   });
 
   it("keeps every curated portal on HTTPS with allowed hostnames", () => {
@@ -65,5 +128,14 @@ describe("safe public-document boundaries", () => {
 
   it("returns an empty case for blank input", () => {
     expect(analyzeText("").id).toBe("empty");
+  });
+
+  it("produces a non-empty brief in all eight supported languages", () => {
+    const analysis = analyzeText(
+      "MSEDCL Pune Urban Circle. Amount due ₹2,430. Please pay by 02 September 2026.",
+    );
+    for (const language of LANGUAGES) {
+      expect(analysis.summary[language].trim().length, `language ${language}`).toBeGreaterThan(0);
+    }
   });
 });

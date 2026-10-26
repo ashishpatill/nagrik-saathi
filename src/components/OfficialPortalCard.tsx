@@ -32,6 +32,7 @@ export default function OfficialPortalCard({
       <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--ink-soft)]">
         Helpline <strong>{portal.helpline}</strong>. You open, log in, and act on the official site yourself.
       </p>
+      <p className="mt-2 text-[11px] text-[var(--muted)]">Human-reviewed {portal.lastReviewed}. An official-looking domain alone is not evidence; this one was checked.</p>
       <a
         href={portal.portalUrl}
         target="_blank"

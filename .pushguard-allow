@@ -1,0 +1,3 @@
+# Synthetic values used only to test that the MCP HTTP transport rejects a
+# missing or wrong bearer token. These are literal test fixtures, not secrets.
+test-token-not-a-real-secret

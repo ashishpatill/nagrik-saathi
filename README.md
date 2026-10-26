@@ -60,8 +60,9 @@ visitors paste their own free SerpApi key, stored only in their browser,
 so the operator cannot be charged for anyone's searches. To deploy with a
 server key instead, set SERPAPI_API_KEY in the host's environment.
 
-Local verify: pnpm lint, pnpm test, pnpm build. There is intentionally no
-GitHub Actions CI. Optional HTTPS deploy notes live in docs/DEPLOY.md.
+Local verify: pnpm lint, pnpm test, pnpm build. CI runs the same checks plus
+`pnpm audit` and a CycloneDX SBOM on pushes to `master` and on pull requests;
+see [docs/CI.md](docs/CI.md). Optional HTTPS deploy notes live in docs/DEPLOY.md.
 
 ## Goals
 
@@ -70,12 +71,14 @@ Living status: [docs/STATUS.md](docs/STATUS.md).
 
 ## WebMCP
 
-The home page registers eight top-level tools through
-`document.modelContext`. Native WebMCP is preferred; the MCP-B polyfill makes
-local inspection possible when the browser has no native implementation.
-Chrome local testing uses `chrome://flags/#enable-webmcp-testing` and the
-Model Context Tool Inspector. ChatGPT Site tools require its desktop built-in
-browser and an eligible model/account rollout.
+The home page registers twelve top-level tools through
+`document.modelContext`. The same registry powers the public `/playground`
+and the local MCP server in `mcp/`. Native WebMCP is preferred; the MCP-B
+polyfill makes local inspection possible when the browser has no native
+implementation. Chrome local testing uses
+`chrome://flags/#enable-webmcp-testing` and the Model Context Tool Inspector.
+ChatGPT Site tools require its desktop built-in browser and an eligible
+model/account rollout.
 
 ## Live official-portal discovery (SerpApi)
 

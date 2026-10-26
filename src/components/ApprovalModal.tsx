@@ -1,8 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type PendingApproval = { action: string; payload: unknown; resolve: (value: boolean) => void };
+
+const LANGUAGE_LABELS: Record<string, string> = {
+  en: "English",
+  hi: "Hindi",
+  mr: "Marathi",
+  ta: "Tamil",
+  kn: "Kannada",
+  gu: "Gujarati",
+  te: "Telugu",
+  bn: "Bengali",
+};
 
 function humanPayload(payload: unknown): string {
   if (!payload || typeof payload !== "object") {
@@ -13,21 +24,49 @@ function humanPayload(payload: unknown): string {
     return `Reminder “${data.title}” for ${data.date}.`;
   }
   if (typeof data.language === "string") {
-    const labels: Record<string, string> = { en: "English", hi: "Hindi", mr: "Marathi" };
-    return `Family brief in ${labels[data.language] ?? data.language}, with sensitive numbers redacted.`;
+    return `Family brief in ${LANGUAGE_LABELS[data.language] ?? data.language}, with sensitive numbers redacted.`;
   }
   return "Review this request before continuing.";
 }
 
 export default function ApprovalModal({ pending }: { pending: PendingApproval }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    function focusable(): HTMLElement[] {
+      const nodes = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      return nodes ? Array.from(nodes) : [];
+    }
+
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        event.preventDefault();
         pending.resolve(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      previous?.focus();
+    };
   }, [pending]);
 
   return (
@@ -37,6 +76,7 @@ export default function ApprovalModal({ pending }: { pending: PendingApproval })
       role="presentation"
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="approval-title"
