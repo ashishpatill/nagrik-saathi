@@ -164,11 +164,11 @@
   `pnpm playbooks:build` generates `public/sw.js` with a build hash so every
   content or worker change produces a byte-different worker.
 - Cache versions are explicit: `nagrik-static-<hash>`. Install precaches the
-  core routes plus all 16 playbooks (24 URLs); activate removes older
-  `nagrik-` caches. Navigations are network-first with a `5xx`/offline
-  fallback to the cached document or `/offline`; static chunks are
-  cache-first; other same-origin assets are stale-while-revalidate; `/api/*`
-  is never cached.
+  core routes plus all 16 playbooks (24 URLs at Stage 4; 25 after `/privacy`
+  was added in Stage 5); activate removes older `nagrik-` caches. Navigations
+  are network-first with a `5xx`/offline fallback to the cached document or
+  `/offline`; static chunks are cache-first; other same-origin assets are
+  stale-while-revalidate; `/api/*` is never cached.
 - `pnpm playbooks:build` now writes the playbook JSON,
   `public/precache-manifest.json`, and `public/sw.js`;
   `pnpm playbooks:check` fails if any of the three is stale, and CI runs it
@@ -180,6 +180,37 @@
   restricted/down, timeouts, concurrency/order, and summaries;
   `src/lib/playbooks/playbooks.test.ts` covers the precache manifest and the
   generated worker hash.
+
+### Stage 5 — encrypted case backup and local deletion
+
+- `src/lib/case-vault.ts` defines a versioned, client-side backup envelope.
+  The user's passphrase is stretched with PBKDF2-SHA-256 (600,000
+  iterations) and a random 16-byte salt; the case bundle is encrypted with
+  AES-GCM-256 and a random 12-byte IV. The format, version, and creation time
+  are bound as additional authenticated data, so editing the envelope breaks
+  decryption.
+- The passphrase is never stored, logged, sent, or placed in a URL. The file is
+  written as ciphertext, and there is no recovery path if the passphrase is
+  lost.
+- Import treats the selected file as untrusted. A strict Zod schema validates
+  every case field, duplicate IDs are rejected, the file is capped at 8 MB and
+  200 cases, and unsupported versions, malformed files, and wrong passphrases
+  return distinct error codes.
+- `src/lib/storage.ts` gains `listCases`, `importCases`, and `deleteAllCases`.
+  Import is idempotent by case ID and activates the first restored case.
+  Delete clears the whole case store and the active-case pointer, and says
+  plainly that it cannot reach a downloaded backup or another browser.
+- `/privacy` is a public data page: an inventory of what is stored and where,
+  encrypted export, restore, and a two-step delete control. It states that
+  passkey identity, a server-side case store, and automatic sync are not
+  built, so the encrypted file is the only cross-device path today.
+- `/privacy` is linked from the workspace, playbooks, and playground headers,
+  added to the sitemap, and included in the precache list. The generated
+  worker cache now holds 25 URLs.
+- Tests: `src/lib/case-vault.test.ts` covers round-trip fidelity, plaintext
+  absence, wrong passphrase, tampered ciphertext, authenticated envelope
+  changes, short passphrases, unsupported versions, malformed files, and the
+  size and case caps.
 
 ### Verification — Stage 3 (local, 2026-10-26)
 
@@ -226,6 +257,39 @@
   throttled profile. Scheduled probes, persistent history, and server-side
   snapshots still need a durable store and scheduler.
 
+### Verification: Stage 5 (local, 2026-10-26)
+
+- `pnpm playbooks:check`: 16 playbooks valid; registry, precache manifest, and
+  service worker current
+- `pnpm exec tsc --noEmit`: clean
+- `pnpm lint`: 0 errors, 1 pre-existing `<img>` warning in `Workspace.tsx`
+- `pnpm test`: **88 tests across 12 files** pass, including 10 backup tests
+- `pnpm build`: passes; 30 routes emitted, including `/privacy`
+- Browser, production build, one real Pune property-tax notice seeded through
+  the workspace:
+  - `/privacy` showed 1 saved case and the six-row data inventory
+  - export produced a 6,508-byte `nagrik-saathi-backup-2026-10-26.json`; a
+    plaintext scan for issuer, reference number, amount, and the embedded
+    Aadhaar-like number returned 0 matches; the envelope carried format,
+    version 1, PBKDF2-SHA-256 at 600,000 iterations, and AES-GCM, and both
+    passphrase fields were cleared
+  - delete removed 1 case and the active pointer; the count fell to 0 and the
+    delete button disabled
+  - a wrong passphrase showed the "did not decrypt" alert and wrote nothing;
+    the correct passphrase restored 1 case, set it active, and cleared the
+    field
+  - reopening the workspace loaded the restored notice, issuer, and amount with
+    no console errors
+- PWA: the single `nagrik-static-997f67b0c4` cache contained all 25 precache
+  entries, including `/privacy`, alongside runtime static chunks
+- Lighthouse on `/privacy`: the first run scored accessibility 96 because the
+  table header used muted text at 4.28:1 on the wash background. The header now
+  uses the stronger ink color and the rerun scored **100 accessibility, 100
+  best practices, 100 SEO**.
+- Honest gaps: the backup is a manual file transfer, not automatic sync;
+  passkey identity and a server-side encrypted store are not built; there is no
+  backup-format migration path yet, so a future version bump must add one.
+
 ## Remaining
 
 ### Stage 2 close-out
@@ -252,11 +316,22 @@
 - `lookup_process_playbook` remains deferred; adding it changes the 12-tool
   contract, the MCP surface, docs, and tests.
 
+### Stage 5 follow-up
+
+- Passkey identity, a server-side field-encrypted case store, automatic
+  cross-device sync, retention caps, and a server-side deletion endpoint need a
+  durable store and a hosted auth service. The plan's full exit target is not
+  met by the encrypted-file path alone; the file path and local wipe are
+  shipped.
+- Add a backup-format migration path before changing the envelope version.
+  Today an unsupported version is rejected rather than converted.
+- Consider Argon2id for passphrase stretching if a reviewed WASM dependency is
+  acceptable; PBKDF2-SHA-256 at 600,000 iterations is the current choice.
+
 ### Later stages
 
-- Stage 5 identity + encrypted cloud cases, Stage 6 language/accessibility
-  depth, Stage 7 security audit, Stage 8 government integration prep,
-  Stage 9 Phase 2.
+- Stage 6 language/accessibility depth, Stage 7 security audit, Stage 8
+  government integration prep, Stage 9 Phase 2.
 - Stage 4's scheduled/history/snapshot items are listed above; the on-demand
   dashboard and offline PWA are shipped.
 - Stage 3 follow-up: translate step detail beyond English and run the
