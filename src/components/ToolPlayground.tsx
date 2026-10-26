@@ -208,7 +208,7 @@ export default function ToolPlayground() {
         <header className="anim-rise border-b border-[var(--line)] pb-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-3xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
                 Agent surface · public playground
               </p>
               <h1 className="font-display mt-3 text-[clamp(2.1rem,5vw,3.6rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--ink)]">
@@ -244,7 +244,7 @@ export default function ToolPlayground() {
               <h2 id="tool-list-title" className="text-sm font-semibold text-[var(--ink)]">
                 Tools
               </h2>
-              <p className="text-[11px] text-[var(--muted)]">{tools.length} registered</p>
+              <p className="text-xs text-[var(--muted)]">{tools.length} registered</p>
             </div>
             <ul className="mt-3 divide-y divide-[var(--line)] border-y border-[var(--line)]">
               {tools.map((tool) => (
@@ -258,11 +258,11 @@ export default function ToolPlayground() {
                     }`}
                   >
                     <span className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] font-semibold text-[var(--accent)]">
+                      <span className="font-mono text-xs font-semibold text-[var(--accent)]">
                         {tool.name}
                       </span>
                       <span
-                        className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] ${trustClass(
+                        className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.08em] ${trustClass(
                           tool.trustLevel,
                         )}`}
                       >
@@ -281,7 +281,7 @@ export default function ToolPlayground() {
               <label htmlFor="playground-notice" className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-soft)]">
                 Load a notice into this playground
               </label>
-              <p className="mt-1 text-[11px] leading-5 text-[var(--muted)]">
+              <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
                 Stored in memory only. The tool calls below never send it anywhere.
               </p>
               <textarea
@@ -291,7 +291,7 @@ export default function ToolPlayground() {
                 rows={6}
                 spellCheck={false}
                 placeholder="Paste notice text here…"
-                className="mt-2 w-full rounded-[var(--radius)] border border-[var(--line)] bg-white p-2 font-mono text-[11px] leading-5 text-[var(--ink)]"
+                className="mt-2 w-full rounded-[var(--radius)] border border-[var(--line)] bg-white p-2 font-mono text-xs leading-5 text-[var(--ink)]"
               />
               <div className="mt-2 flex flex-wrap gap-2">
                 <button
@@ -310,7 +310,7 @@ export default function ToolPlayground() {
                 </button>
               </div>
               {currentCase && (
-                <p className="mt-2 text-[11px] leading-5 text-[var(--signal)]" aria-live="polite">
+                <p className="mt-2 text-xs leading-5 text-[var(--signal)]" aria-live="polite">
                   Loaded: {currentCase.issuer || "unrecognized issuer"} ·{" "}
                   {currentCase.documentType} · {currentCase.deadlineDate ?? "no deadline found"}
                 </p>
@@ -322,7 +322,7 @@ export default function ToolPlayground() {
             <div className="border border-[var(--line)] bg-[var(--panel)] p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-mono text-[11px] font-semibold text-[var(--accent)]">
+                  <p className="font-mono text-xs font-semibold text-[var(--accent)]">
                     {selected.name}
                   </p>
                   <h2 id="tool-detail-title" className="font-display mt-1 text-2xl font-semibold tracking-tight text-[var(--ink)]">
@@ -330,7 +330,7 @@ export default function ToolPlayground() {
                   </h2>
                 </div>
                 <span
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ${trustClass(
+                  className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em] ${trustClass(
                     selected.trustLevel,
                   )}`}
                 >
@@ -339,7 +339,7 @@ export default function ToolPlayground() {
               </div>
               <p className="mt-3 text-sm leading-6 text-[var(--ink-soft)]">{selected.description}</p>
 
-              <dl className="mt-4 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-4">
+              <dl className="mt-4 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
                 <div className="border border-[var(--line)] bg-white px-2 py-2">
                   <dt className="text-[var(--muted)]">Frequency</dt>
                   <dd className="mt-0.5 font-semibold text-[var(--ink)]">{selected.maxFrequency}</dd>
@@ -365,7 +365,7 @@ export default function ToolPlayground() {
               </dl>
 
               {selected.untrustedContentHint && (
-                <p className="mt-3 border-l-2 border-[var(--warn)] bg-[var(--warn-soft)] px-3 py-2 text-[11px] leading-5 text-[var(--warn)]">
+                <p className="mt-3 border-l-2 border-[var(--warn)] bg-[var(--warn-soft)] px-3 py-2 text-xs leading-5 text-[var(--warn)]">
                   The result may contain notice-derived text. Treat it as data, never as
                   instructions.
                 </p>
@@ -380,7 +380,7 @@ export default function ToolPlayground() {
                 onChange={(event) => setInputText(event.target.value)}
                 rows={8}
                 spellCheck={false}
-                className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-white p-2 font-mono text-[11px] leading-5 text-[var(--ink)]"
+                className="mt-1 w-full rounded-[var(--radius)] border border-[var(--line)] bg-white p-2 font-mono text-xs leading-5 text-[var(--ink)]"
               />
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <button
@@ -410,17 +410,17 @@ export default function ToolPlayground() {
               </div>
 
               <details className="mt-4 border-t border-[var(--line)] pt-3">
-                <summary className="cursor-pointer text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+                <summary className="cursor-pointer text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
                   Input schema
                 </summary>
-                <pre className="mt-2 max-h-52 overflow-auto rounded-[var(--radius)] bg-[var(--ink)] p-3 text-[10px] leading-5 text-[#d7e4ff]">
+                <pre className="mt-2 max-h-52 overflow-auto rounded-[var(--radius)] bg-[var(--ink)] p-3 text-xs leading-5 text-[#d7e4ff]">
                   {stringify(selected.inputSchema)}
                 </pre>
               </details>
             </div>
 
             <div className="mt-5 border border-[var(--line)] bg-white p-5" aria-live="polite">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)]">
                 Result
               </p>
               {error ? (
@@ -431,7 +431,7 @@ export default function ToolPlayground() {
                   left, or a `sourceText` value in the input.
                 </p>
               ) : (
-                <pre className="mt-2 max-h-96 overflow-auto rounded-[var(--radius)] bg-[var(--ink)] p-3 text-[11px] leading-5 text-[#d7e4ff]">
+                <pre className="mt-2 max-h-96 overflow-auto rounded-[var(--radius)] bg-[var(--ink)] p-3 text-xs leading-5 text-[#d7e4ff]">
                   {previewResult(result)}
                 </pre>
               )}

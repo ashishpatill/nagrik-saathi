@@ -873,10 +873,12 @@ that sits in front of what exists.</strong></p>
     before adding a tenth.</li>
 </ul>
 
-<h3>9.2 Stage 0 is already mostly in the working tree</h3>
+<h3>9.2 Stage 0 is closed</h3>
 
-<p>Verified on 26 October 2026 against the current checkout. This is not a claim that Stage 0 is closed:
-the CI workflow has not run on GitHub yet, and deployed headers are still open.</p>
+<p>Closed on 26 October 2026. PR #1 merged to <code>master</code> as <code>6790f62</code>; the CI
+workflow is green on <code>master</code>; and the production deployment at
+<code>https://nagrik-saathi.vercel.app</code> serves the required headers, <code>llms.txt</code>,
+<code>robots.txt</code>, <code>sitemap.xml</code>, and the Agent Card skeleton over HTTPS.</p>
 
 <div class="table-wrap">
 <table>
@@ -886,8 +888,8 @@ the CI workflow has not run on GitHub yet, and deployed headers are still open.<
   <tbody>
     <tr>
       <td><code>public/robots.txt</code>, <code>llms.txt</code>, <code>sitemap.xml</code></td>
-      <td><span class="status done">Present</span></td>
-      <td>Confirm production serving and AI-crawler behavior</td>
+      <td><span class="status done">Served</span></td>
+      <td>Monitor AI-crawler behavior and keep the sitemap current</td>
     </tr>
     <tr>
       <td>CSP, HSTS, frame-ancestors, Referrer-Policy</td>
@@ -926,22 +928,23 @@ the CI workflow has not run on GitHub yet, and deployed headers are still open.<
     </tr>
     <tr>
       <td>CI audit gate + CycloneDX SBOM</td>
-      <td><span class="status done">Present in repo</span></td>
-      <td>First GitHub Actions run is unverified; OSV scan and Dependabot/Renovate remain</td>
+      <td><span class="status done">Green</span></td>
+      <td>First run passed; OSV scan and Dependabot/Renovate remain</td>
     </tr>
     <tr>
       <td>Local Lighthouse, <code>/</code> and <code>/playground</code></td>
-      <td><span class="status done">Passed</span></td>
-      <td>100 accessibility / best practices / SEO on both pages; repeat on the deployed HTTPS URL</td>
+      <td><span class="status done">Deployed</span></td>
+      <td>Deployed run recorded on both pages; playground font-size follow-up cleared the only deduction</td>
     </tr>
   </tbody>
 </table>
 </div>
 
 <div class="callout success">
-  <strong>Definition of done for Stage 0:</strong> <code>pnpm lint &amp;&amp; pnpm test &amp;&amp; pnpm build</code>
-  green, CI running the same, headers verified on the deployed URL, and the audit/SBOM gate blocking a
-  known-vulnerable dependency. Until then, treat Stage 0 as "mostly landed," not "finished."
+  <strong>Definition of done for Stage 0 — met.</strong> <code>pnpm lint &amp;&amp; pnpm test &amp;&amp; pnpm build</code>
+  are green locally and in CI, the deployed HTTPS headers and discovery files are verified, and the
+  audit/SBOM gate reports no known high or critical vulnerabilities. Remaining supply-chain work
+  (Dependabot/Renovate, OSV scan, Lighthouse CI) is tracked in Stage 7 and the status file.
 </div>
 
 <h3>9.3 Stage 1 and Stage 2 are in the working tree, not closed</h3>
@@ -959,7 +962,7 @@ and both MCP transports.</p>
     <tr>
       <td>12 tools with <code>trustLevel</code>, <code>maxFrequency</code>, approval, case, and MCP flags</td>
       <td><span class="status done">Present</span></td>
-      <td>Chrome origin-trial and inspector run not yet recorded</td>
+      <td>Native Chrome run recorded 2026-10-26: 12 tools, all executed</td>
     </tr>
     <tr>
       <td><code>AGENTS.md</code> tool contract table</td>
@@ -969,12 +972,12 @@ and both MCP transports.</p>
     <tr>
       <td><code>/playground</code> public tool runner</td>
       <td><span class="status done">Present</span></td>
-      <td>Lighthouse passes on both pages; one <code>redact_pii</code> run recorded, the rest of the surface still needs recording</td>
+      <td>Native run covers all 12 tools; the public playground keeps the polyfill/local path for browsers without WebMCP</td>
     </tr>
     <tr>
       <td>MCP server with stdio + Streamable HTTP</td>
-      <td><span class="status done">Local</span></td>
-      <td>No deployment; no Claude Desktop or custom-harness run recorded</td>
+      <td><span class="status done">Local + harness</span></td>
+      <td>HTTP and stdio custom-harness runs recorded; no always-on deployment or Claude Desktop run</td>
     </tr>
     <tr>
       <td>MCP tool surface (10 read-only tools)</td>
@@ -984,7 +987,7 @@ and both MCP transports.</p>
     <tr>
       <td>A2A Agent Card skeleton</td>
       <td><span class="status done">Skeleton</span></td>
-      <td>No A2A endpoint exists; the card uses a loopback placeholder and says so</td>
+      <td>No A2A endpoint exists; the card uses a production placeholder and sets <code>endpointDeployed: false</code></td>
     </tr>
     <tr>
       <td>Local verification</td>
@@ -995,8 +998,9 @@ and both MCP transports.</p>
 </table>
 </div>
 
-<p>Stage 2 is not closed until a deployed server is reachable from Claude Desktop and one custom harness.
-Stage 1 is not closed until the 12 tools are exercised in a Chrome build and the result is recorded.</p>
+<p>Stage 1 is closed: the 12 tools were exercised in native Chrome and the result is recorded in
+<code>docs/iterations/STAGE1-CLOSEOUT.md</code>. Stage 2 has local HTTP and stdio harness evidence but is
+not closed until an always-on TLS deployment is reachable from Claude Desktop and one custom harness.</p>
 
 <!-- ==================== 10 ==================== -->
 <div class="page-break"></div>

@@ -3,7 +3,7 @@
   "protocolVersion": "0.3.0",
   "name": "Nagrik Saathi",
   "description": "Guidance for Indian public government notices: summary, deadlines, scam signals, action checklists, and links to a human-reviewed portal registry. Guidance only, not an official government decision. The agent never pays, submits forms, or contacts officials.",
-  "url": "http://127.0.0.1:8787/a2a",
+  "url": "https://nagrik-saathi.vercel.app/a2a",
   "preferredTransport": "JSONRPC",
   "version": "0.1.0-skeleton",
   "provider": {
@@ -59,7 +59,8 @@
   "security": [],
   "x-nagrik-saathi": {
     "status": "skeleton",
-    "note": "No A2A endpoint is deployed. This file records intended identity only and must not be treated as a live agent. The implemented surface is the MCP server in mcp/, which exposes ten read-only tools over stdio or Streamable HTTP.",
+    "endpointDeployed": false,
+    "note": "No A2A endpoint is deployed; the url above is a placeholder and returns 404. This file records intended identity only and must not be treated as a live agent. The implemented surface is the MCP server in mcp/, which exposes ten read-only tools over stdio or Streamable HTTP.",
     "implementedSurface": "mcp",
     "mcpEndpoint": "stdio, or http://127.0.0.1:8787/mcp when MCP_TRANSPORT=http",
     "toolSource": "src/lib/agent/tools.ts",
