@@ -74,6 +74,26 @@ Aadhaar-like groups and 9–18-digit account-like runs are redacted without a
 checksum requirement. Tool-call logs (IndexedDB) pass through the same
 pipeline (`redactDeep`) before they persist.
 
+## Scam signals
+
+`src/data/scam-patterns.ts` is a reviewed, versioned library of ten patterns:
+OTP and PIN requests, digital arrest calls, personal UPI handles, electricity
+disconnection threats, shortened links, advance-fee refunds, Aadhaar or PAN
+photos over chat, pressure tactics, WhatsApp-only contacts, and QR payment
+requests. `/scams` publishes the explanations and the safe next step.
+
+A match is a signal, not a verdict. The library never declares a notice safe,
+and a notice with no match can still be fraudulent. Every rule has at least one
+positive example and one counterexample in `src/lib/scams.test.ts`, so a rule
+that flags a legitimate notice fails before release. Portal links come from the
+reviewed registry by key, never from free-form text.
+
+The library does not upload or analyze the notice on a server, call a number,
+message an official, pay, file, or report for the citizen. A citizen who has
+already paid is directed to the bank or wallet provider and the national Cyber
+Crime Portal or 1930. See [SCAMS.md](SCAMS.md) for the review and correction
+flow.
+
 ## Data protection (DPDP Act 2023 posture)
 
 The default flow processes documents on-device and stores cases only in the

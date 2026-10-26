@@ -43,6 +43,32 @@ Rules for adding or changing a playbook:
   change. `pnpm playbooks:check`, `pnpm test`, and CI fail if any is stale.
 - Update `docs/PLAYBOOKS.md` when the schema, rules, or contribution flow change.
 
+## Scam pattern library
+
+`src/data/scam-patterns.ts` is the single source of truth for the reviewed
+scam signals. `/scams` and `check_scam_signals` both read it; never duplicate a
+pattern in a component or a route.
+
+Rules for adding or changing a pattern:
+
+- Every pattern declares `id`, `title`, `summary`, `signals`, `whyItMatters`,
+  `safeAction`, `verifyHint`, `category`, `severity`, `match`,
+  `officialPortalKeys`, `sourceNote`, `lastReviewed`, and at least one rule.
+- Every rule needs at least one positive `example` and one `counterexample`.
+  `src/lib/scams.test.ts` fails if an example does not match or a
+  counterexample does. Fix the rule, not the test.
+- Use `anyPositiveSentence` for a request so "Never share your OTP" does not
+  match the same rule as "Share your OTP".
+- Portal links are registry keys. Never put a raw URL in a pattern.
+- A match is a signal, not a verdict. Never claim a notice is safe or
+  fraudulent, and never describe the library as a fraud investigation.
+- Do not upload, log, or transmit a notice for scam analysis. The check runs
+  locally.
+- Update `docs/SCAMS.md`, `/scams`, `public/llms.txt`, and the README when the
+  pattern count or the public behavior changes.
+- Bump `SCAM_LIBRARY_VERSION` for a substantive correction and set
+  `lastReviewed` only after a human has checked the claim.
+
 ## Resilience and offline
 
 - Portal health is measured, never asserted: show the HTTP result, latency,

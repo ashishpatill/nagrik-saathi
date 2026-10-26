@@ -68,10 +68,13 @@ separately, so a Marathi reader can keep an English interface or the reverse.
 
 ### 4. Check for scam signals before money moves
 
-The scam check looks for pressure tactics, payment red flags, mismatched
-issuer details, and checksum-valid identifiers embedded in the notice. It does
-not declare a notice "safe." It surfaces the signals and points to the
-reviewed portal or the printed helpline.
+The scam check matches the notice against a reviewed library of ten patterns:
+OTP and PIN requests, digital arrest calls, personal UPI handles, electricity
+disconnection threats, shortened links, advance-fee refunds, Aadhaar or PAN
+photos over chat, pressure tactics, WhatsApp-only contacts, and QR payment
+requests. It returns the matched pattern, why it matters, and the safe next
+step. A match is not a fraud verdict, and a notice with no match is not
+guaranteed safe.
 
 ### 5. Turn the notice into a checklist
 
@@ -155,6 +158,11 @@ The portal registry records who reviewed an entry and when. A correction flow
 exists. A stale generated file fails CI. This is slower than scraping, and it
 is the reason the guidance can be trusted.
 
+The scam library follows the same rule. Every pattern carries a source note, a
+review date, and registry keys. Every detection rule must pass a positive
+example and a counterexample, so a rule that flags a legitimate notice fails in
+CI before a citizen sees it.
+
 ### It works on the devices and networks people actually have
 
 No account, no upload, a small client bundle, OCR on the device, a service
@@ -194,10 +202,11 @@ door. The citizen walks through it.
 
 | Surface | What works now |
 | --- | --- |
-| Notice workspace | Paste, PDF, or photo input; on-device OCR; extracted amount, deadline, reference, and issuer; eight explanation languages; scam signals; checklist and letter drafts; saved case resumes in the browser |
+| Notice workspace | Paste, PDF, or photo input; on-device OCR; extracted amount, deadline, reference, and issuer; eight explanation languages; reviewed scam patterns; checklist and letter drafts; saved case resumes in the browser |
+| Scam library | Ten reviewed patterns with signals, why each works, the safe next step, and reviewed verification links. Deterministic rules, checked against examples and counterexamples in CI |
 | Process playbooks | Sixteen validated YAML playbooks, English/Hindi/Marathi overviews, steps, documents, fees, timelines, rejection reasons, reviewed portal links |
 | Portal status | On-demand measurement of 39 registry entries (38 unique URLs), four-second timeout, `up` / `restricted` / `down`, filter, recheck, browser-local last-known-good |
-| Offline PWA | 25 precached URLs, versioned `nagrik-static-<hash>` cache, `/offline` fallback, 5xx and lost-connection handling, connection banner, `/api/*` never cached |
+| Offline PWA | 26 precached URLs, versioned `nagrik-static-<hash>` cache, `/offline` fallback, 5xx and lost-connection handling, connection banner, `/api/*` never cached |
 | Your data | Passphrase-encrypted backup and restore, explicit delete-all, a plain inventory of what is stored and where |
 | Agent surface | Twelve WebMCP tools, ten read-only MCP tools, public `/playground`, native Chrome evidence in the repo |
 | Delivery | Lint, tests, build, `playbooks:check`, dependency audit, CycloneDX SBOM, CI on every push and pull request |
@@ -209,7 +218,12 @@ door. The citizen walks through it.
   today.
 - Scheduled portal probes, persistent health history, latency percentiles, and
   server-side snapshots. The current check is on demand with edge caching.
-- Deeper translation of playbook step detail beyond the English source.
+- The response studio: guided drafting for replies, objections, and appeals
+  beyond today's plain citizen letter.
+- The grievance routing graph: a reviewed escalation path from the first office
+  to the appellate authority for each process.
+- Deeper translation of playbook step detail beyond the English source. The scam
+  library is English-only for now.
 - Any government write automation. This is deliberately out of scope.
 
 The live status file keeps the exact verification record:
@@ -221,10 +235,12 @@ The live status file keeps the exact verification record:
 2. Paste the sample electricity notice from the demo video, or any real notice,
    and click **Analyze**. Read the brief, switch the explanation to Hindi or
    Marathi, and run the scam signal check.
-3. Open `/playbooks/passport` to see a reviewed workflow, then `/status` to see
+3. Open `/scams` to read the reviewed patterns, then paste a scam-shaped message
+   and run the scam check to see the matched pattern and its safe action.
+4. Open `/playbooks/passport` to see a reviewed workflow, then `/status` to see
    the measured portal check.
-4. Open `/privacy` to make an encrypted backup or delete the saved case.
-5. From the repo, run `pnpm install` and `pnpm test`. The registry filter and
+5. Open `/privacy` to make an encrypted backup or delete the saved case.
+6. From the repo, run `pnpm install` and `pnpm test`. The registry filter and
    backup encryption are covered by automated tests, so the core trust rules
    can be verified with no external key.
 
@@ -258,8 +274,9 @@ pnpm playbooks:check   # fail if any generated file is stale
 | Agent contract | One Zod-backed registry in `src/lib/agent/tools.ts`; WebMCP adapter, playground, and MCP server share it |
 | MCP server | Official MCP SDK, stdio and Streamable HTTP, bearer auth, loopback guard |
 | Local state | IndexedDB for cases, localStorage for the active case and preferences |
+| Scam library | Typed reviewable patterns in `src/data/scam-patterns.ts`; deterministic rules with example and counterexample tests; one public page and one `check_scam_signals` path |
 | Backup crypto | WebCrypto PBKDF2-SHA-256 (600,000 iterations) and AES-GCM-256 |
-| Offline layer | Generated service worker, versioned cache, 25 precache URLs, `/offline` |
+| Offline layer | Generated service worker, versioned cache, 26 precache URLs, `/offline` |
 | Delivery | GitHub Actions, dependency audit, CycloneDX SBOM, Vercel deployment |
 
 ## Live official-portal discovery (SerpApi)
