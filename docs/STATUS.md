@@ -1,6 +1,6 @@
 # Status — Nagrik Saathi
 
-**Updated:** 2026-10-26
+**Updated:** 2026-10-29
 
 **Authority:** this file + [nagrik-saathi-improvement-plan.html](nagrik-saathi-improvement-plan.html) (v2).
 
@@ -372,6 +372,29 @@
   after a reload the only cache was `nagrik-static-a6d8f451b9`.
 - Lighthouse on production `/scams`: **100 accessibility, 100 best practices,
   100 SEO**.
+
+### Verification: release pass (production, 2026-10-29)
+
+- The local gate still passes on `master` at `c72aeea`: `pnpm playbooks:check`
+  is current, `pnpm exec tsc --noEmit` is clean, `pnpm lint` has 0 errors and the
+  one pre-existing `<img>` warning, `pnpm test` passes 97 tests across 13 files,
+  and `pnpm build` emits 31 routes including `/scams`.
+- Production serves `/`, `/scams`, `/playbooks`, `/playground`, `/privacy`,
+  `/status`, `/sitemap.xml`, `/precache-manifest.json`, `/sw.js`, and
+  `/llms.txt` with 200. The precache manifest is `nagrik-a6d8f451b9` with 26
+  URLs including `/scams`, `/privacy`, and `/offline`, and the deployed worker
+  hash matches.
+- A production analyze of a scam-shaped electricity notice set the workspace to
+  **Check carefully**, named the OTP and QR-only patterns plus one more, and kept
+  the "Signals are not a fraud verdict" line. The run made 15 same-origin
+  requests, no POST, and no third-party hosts.
+- The production `/playground` ran `check_scam_signals` on the same notice:
+  `risk: needs_review`, three matched patterns (`otp-pin-request`,
+  `qr-code-payment`, `whatsapp-only-contact`), each with its safe action and the
+  reviewed Cyber Crime Portal link plus 1930, and two honest flags. No console
+  errors.
+- Lighthouse on production `/scams` again scored **100 accessibility, 100 best
+  practices, 100 SEO**.
 
 ## Remaining
 
